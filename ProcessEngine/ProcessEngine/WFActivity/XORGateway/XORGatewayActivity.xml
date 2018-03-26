@@ -1,0 +1,5 @@
+﻿<activity nr="" id="Kapsch.IS.ProcessEngine.WFActivity.XORGateway.XORGatewayActivity" instance=".XORGatewayActivity">
+  <name>XOR Exclusive Gateway</name>
+  <properties />
+  <transition to="" default="true" />
+</activity>

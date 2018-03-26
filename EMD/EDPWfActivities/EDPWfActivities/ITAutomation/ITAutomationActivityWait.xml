@@ -1,0 +1,14 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.ITAutomation.ITAutomationActivityWait" instance=".ITAutomationActivityWait">
+  <name>ITAutomation Wait</name>
+  <linkedTo instance="." />
+
+  <properties>
+    <property name="pollingIntervalSeconds" direction="input"  dataType="intType"/>
+    <property name="timeOutIntervalDays"    direction="input"  dataType="intType" />
+    <property name="returnStatus"           direction="output" dataType="stringType"/>
+    <property name="returnMessage"           direction="output" dataType="stringType"/>
+  </properties>
+
+  <transition to=".">
+  </transition>
+</activity>

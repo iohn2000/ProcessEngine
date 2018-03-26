@@ -1,0 +1,322 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.EmploymentPackageTabModel
+@using Kapsch.IS.EMD.EMD20Web.Models;
+
+@{
+    Layout = null;
+}
+
+<style>
+    .k-grid .k-delete {
+        background-position: 0 0;
+        background-image: none;
+        /*display:none;*/
+    }
+</style>
+
+<script type="text/javascript">
+    function removePackageFromEmployment(e) {
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        var packagegrid = $('#@ViewData["ProfilePackageGridId"].ToString()').data('kendoGrid');
+        packagegrid.dataSource.read();
+        var equipmentgrid = $('#@ViewData["ProfileEquipmentGridId"].ToString()').data('kendoGrid');
+        equipmentgrid.dataSource.read();
+        $.ajax({
+            url: '@Url.Content("~/Employment/RemovePackageFromEmployment")',
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            @*data: JSON.stringify({ empl_guid: '@Model.EP_Guid', pack_guid: dataItem.Guid }),*@
+            data: JSON.stringify({ empl_guid: '@Model.EP_Guid', pack_guid: dataItem.Guid }),
+            success: function (response) {
+                //alert("Success" + response.responseText);
+                var packagegrid = $('#@ViewData["ProfilePackageGridId"].ToString()').data('kendoGrid');
+                packagegrid.dataSource.read();
+                var equipmentgrid = $('#@ViewData["ProfileEquipmentGridId"].ToString()').data('kendoGrid');
+                equipmentgrid.dataSource.read();
+            },
+            error: function (response) {
+                alert('Error: ' + response.responseText + response.error);
+            }
+
+        })
+    }
+
+    function removeEquipmentFromEmployment(e) {
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        $.ajax({
+            url: '@Url.Content("~/Employment/RemoveEquipmentInstanceFromEmployment")',
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify({ empl_guid: '@Model.EP_Guid', obre_guid: dataItem.ObjectRelationGuid }),
+            success: function (response) {
+                //alert("Success" + response.responseText);
+                var equipmentgrid = $('#@ViewData["ProfileEquipmentGridId"].ToString()').data('kendoGrid');
+                equipmentgrid.dataSource.read();
+            },
+            error: function (response) {
+                alert('Error: ' + response.responseText + response.error);
+            }
+        })
+    }
+
+    function getSelectedObjectRelationGuid(e) {
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        alert(dataItem.Guid);
+    }
+
+    var btnAddPackage = '#btnAddPackage' + '@Model.EP_Guid';
+    var btnAddEquipment = '#btnAddEquipment' + '@Model.EP_Guid';
+    $(btnAddPackage).click(function (e) {
+        e.preventDefault();
+        @*var urlparameters = '@Model.EP_Guid?GridName=@ViewData["ProfilePackageGridId"].ToString(),@ViewData["ProfileEquipmentGridId"].ToString()';*@
+        var urlparameters = '@Model.EP_Guid/true?GridName=@ViewData["ProfilePackageGridId"].ToString(),@ViewData["ProfileEquipmentGridId"].ToString()';
+        showInWindow('@Url.Content("~/PersonProfile/ProfilePackageAddPackageToEmployment/")' + urlparameters, "Add package to employment");
+    });
+
+    $(btnAddEquipment).click(function (e) {
+        e.preventDefault();
+
+        var urlparameters = '@Model.EP_Guid/true?GridName=@ViewData["ProfileEquipmentGridId"].ToString()';
+        showInWindow('@Url.Content("~/PersonProfile/ProfilePackageAddEquipmentToEmployment/")' + urlparameters, "Add equipment to employment");
+    });
+</script>
+
+@if (Model.ShowGuidEntities)
+{
+    <div style="margin-bottom: 20px">@Model.EP_Guid</div>
+}
+
+@{ if (Model.CanViewPackages)
+    {
+        <div class="text-header">Packages:</div>
+        <div>
+
+            @(Html.Kendo().Grid<PackageModel>()
+                    .Name(ViewData["ProfilePackageGridId"].ToString())
+                    .Columns(columns =>
+                    {
+                        if (Model.CanManagePackages)
+                        {
+                            columns.Bound(item => item.Guid).Title("")
+                            .ClientTemplate(
+
+                                          "<a title='Delete' href='\\#' "
+                                        + "onclick='personprofile.Package.Functions.Delete(\"" + Model.EP_Guid + "\",\"#= Package_Guid#\",\"Package\",\"#=Name#\",\"" + @ViewData["ProfilePackageGridId"].ToString() + "\");' "
+                                        //+ "onclick='personprofile.Equipment.Functions.Delete(\"" + Model.EP_Guid + "\",\"#= ObjectRelationGuid#\",\"Equipment\",\"#=EquipmentName#\");' "
+                                        + " data-id='#=Guid#'"
+                                        + ">"
+                                        + "<i class='material-icons'>delete</i>"
+                                        + "</a>"
+
+                                      ).Width(60).Filterable(false);
+
+                            //columns.Command(command => { command.Custom("RemovePackage").Text("remove from employment").HtmlAttributes(new { @class = "kapsch-grid-button", @style = "" }).Click("removePackageFromEmployment"); }).Width(200).Title(" ").Visible(Model.CanManagePackages);
+                        }
+
+                        columns.Bound(item => item.Name).Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")))
+                        .ClientTemplate(
+                                           "<span title='"
+                                          + "#= Guid #'"
+                                          + ">"
+                                          + "#= Name#"
+                                          + "</span>"
+                                          );
+                        columns.Bound(item => item.Description).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")))
+                        .ClientTemplate(
+                                           "<span title='"
+                                          + "#= Description #'"
+                                          + ">"
+                                          + "#= Description#"
+                                          + "</span>"
+                                          );
+                        columns.Bound(item => item.PackageStatusShort).Width(150).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")))
+                        .ClientTemplate(
+                                           "<span title='"
+                                          + "#=PackageStatusInt# - #=PackageStatusLong#'"
+                                          + ">"
+                                          + "#= PackageStatusShort#"
+                                          + "</span>"
+                                          );
+
+                        ;
+                        columns.Bound(item => item.Package_Guid).Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")));
+
+
+
+
+
+                    })
+                    .Editable(e => e.Mode(GridEditMode.PopUp)) //.TemplateName("PersonProfileAddPackagePopUp"))
+                    .Sortable()
+                    .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+
+                    .ToolBar(t =>
+                    {
+                        if (Model.CanManagePackages)
+                        {
+                            t.Custom().Text("Add Package").Name("AddPackage").HtmlAttributes(new { id = "btnAddPackage" + Model.EP_Guid, @class = "kapsch-text-button" });
+                        }
+
+                    })
+                     .Pageable(pageable => pageable
+                            .Refresh(true)
+                            .PageSizes(true)
+                            .ButtonCount(5)
+                            .PageSizes(new[] { 10, 20, 50 }))
+
+                    .DataSource(dataSource => dataSource
+                        .Ajax()
+                        .PageSize(10)
+                        .Model(model => model.Id(m => m.Guid))
+                        .Read("ReadConfiguredListOfPackagesForEmployment", "Employment", new { ep_guid = Model.EP_Guid })
+                        .Events(events => events.Error("exceptionManager.Events.HandleError"))
+                        )
+
+            )
+        </div>
+        <hr style="margin-bottom: 20px; margin-top: 20px">
+    }
+}
+
+
+
+<div class="text-header">Equipments:</div>
+<div>
+    @(Html.Kendo().Grid<EquipmentInstanceModel>()
+    .HtmlAttributes(new { @class = "test" })
+    .Name(ViewData["ProfileEquipmentGridId"].ToString())
+    .Columns(columns =>
+    {
+        if (Model.CanManageEquipments)
+        {
+            columns.Bound(item => item.ObjectRelationGuid).Title("").Width(30).Filterable(false)
+            .ClientTemplate(
+
+                              "<a title='Delete' href='\\#' style='visibility:#=CssVisibilityValue#'"
+                            //+ "onclick='personprofile.Equipment.Functions.Delete(\"" + Model.EP_Guid + "\",\"#= ObjectRelationGuid#\",\"Equipment\",\"#=EquipmentName#\",\"" + @ViewData["ProfileEquipmentGridId"].ToString() + "\" );' "
+                            + "onclick='showInWindow(\"/PersonProfile/RemoveEquipment/" + Model.EP_Guid + "/#= ObjectRelationGuid#/true\",\"Remove Equipment #=EquipmentName#\");'>"
+                            + "<i class='material-icons' style='color:#=CssDeleteIconColor#'> delete</i>"
+                            + "</a>"
+
+                          );
+
+            //columns.Command(command => { command.Custom("RemoveEquipment").Text("remove from employment").HtmlAttributes(new { @class = "kapsch-grid-button", @style = "" }).Click("removeEquipmentFromEmployment"); }).Width(150).Title("Action");
+        }
+        if (Model.IsAdmin)
+        {
+            columns.Bound(item => item.ObjectRelationGuid).Title("").Width(30).Filterable(false)
+         .ClientTemplate(
+
+                           "<a title='Change Status' href='\\#' style='visibility:#=CssChangeStatusVisibilityValue#'"
+                         //+ "onclick='personprofile.Equipment.Functions.Delete(\"" + Model.EP_Guid + "\",\"#= ObjectRelationGuid#\",\"Equipment\",\"#=EquipmentName#\",\"" + @ViewData["ProfileEquipmentGridId"].ToString() + "\" );' "
+                         + "onclick='showInWindow(\"/PersonProfile/ChangeEquipmentStatus/#= ObjectRelationGuid#/true\",\"Change Equipment-Status for Equipment #=EquipmentName#\");'>"
+                         + "<i class='material-icons'>edit</i>"
+                         + "</a>"
+
+                       );
+        }
+
+
+
+
+        if (!string.IsNullOrWhiteSpace(Model.FilteredObreGuid))
+        {
+            columns.Bound(item => item.ObjectRelationGuid).Title("Guid").Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter"))).Width(320);
+        }
+        columns.Bound(item => item.IdWorkflowInstance).Title("").Filterable(false).Width(90)
+        .ClientTemplate(
+            "<a title='View Workflowinstance' style='visibility: #=WorkflowInstanceCssVisibility#' href='\\#' "
+                   + "onclick='showInWindow(\""
+                   + "/Workflow/WorkflowInstances"
+                   + "/true?InstanceID=#=IdWorkflowInstance#\",\"Workflow Instances\");' "
+                   + "data-id='#=IdWorkflowInstance#'"
+                   + ">"
+                   + "<i class='material-icons'>pageview</i>"
+                   + "</a>"
+            ).Visible(Model.CanManageEquipments);
+        //columns.Bound(item => item.ObjectRelationGuid).Title("Guid").Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")));
+        columns.Bound(item => item.EquipmentName).Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")))
+        .ClientTemplate(
+                           "<span title='"
+                          + "#= ObjectRelationGuid #'"
+                          + ">"
+                          + "#= EquipmentName#"
+                          + "</span>"
+                          );
+        columns.Bound(item => item.PackageName).Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")));
+
+
+        columns.Bound(item => item.ProcessStatusStringShort).Title(" ").Width(30).Filterable(false).Sortable(false)
+        .ClientTemplate(
+                      "<span style='cursor: arrow;' onmouseover='personprofile.Events.OnEquipmentMouseover(this, \"#= ObjectRelationGuid #\", #= IsAdmin #)' >"
+                     + "<i class='material-icons'>info</i>"
+                     + "</span>"
+                     );
+
+
+        columns.Bound(item => item.ProcessStatusStringShort).Width(150).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")))
+        .ClientTemplate(
+                           "<span title='"
+                          + "#=ProcessStatusStringInt# - #= ProcessStatusStringLong # #=TechnicalExceptionHtmlTitle#'"
+                          + ">"
+                          + "#= ProcessStatusStringShort#"
+                          + "</span>"
+                          );
+
+
+
+        // columns.Bound(item => item.TechnicalException).Width(100).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")));
+        //columns.Bound(item => item.TargetDate).Width(100).Format("{0:dd.MM.yyyy}");   => Laut Johannes nur mit viel Aufwand möglich
+
+        // The valid From field is declard as active-from as workaround
+        // this is the date where the datarow was changed the last time and therefore got the status active
+        columns.Bound(item => item.ActiveFrom).Title("Active From").Width(100).Format("{0:dd.MM.yyyy}");
+        columns.Bound(item => item.EquipmentStatusStringShort).Width(100).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")))
+        .ClientTemplate(
+                           "<span title='"
+                          + "#= EquipmentStatusStringInt # - #= EquipmentStatusStringLong #'"
+                          + ">"
+                          + "#= EquipmentStatusStringShort#"
+                          + "</span>"
+                          );
+
+
+    })
+    .Sortable()
+    .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+    .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(true)
+            .ButtonCount(5)
+            .PageSizes(new[] { 10, 20, 50 }))
+    .ToolBar(t =>
+    {
+        if (Model.CanManageEquipments)
+        {
+            t.Custom().Text("Add Equipment").Name("AddEquipment").HtmlAttributes(new { id = "btnAddEquipment" + Model.EP_Guid, @class = "kapsch-text-button" });
+        }
+    })
+    .DataSource(dataSource =>
+
+        dataSource
+          .Ajax()
+          .PageSize(10)
+          .Model(model => model.Id(m => m.ObjectRelationGuid))
+          .Read("ReadConfiguredListOfEquipmentIntancesForEmployment", "Employment", new { empl_guid = Model.EP_Guid, deliverInActive = !Model.EmploymentIsActive, isEquipmentOwner = Model.IsEquipmentOwner })
+          .Events(events => events.Error("exceptionManager.Events.HandleError"))
+          .Filter(filter =>
+          {
+              filter.Add(f => f.ObjectRelationGuid).Contains(Model.FilteredObreGuid);
+          })
+
+
+        )
+    )
+</div>
+
+
+

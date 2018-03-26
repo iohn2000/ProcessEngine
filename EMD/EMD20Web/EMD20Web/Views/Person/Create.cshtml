@@ -1,0 +1,164 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.PersonModel
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+@{
+    ViewBag.Title = "Create";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/Person_Create%20.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+<div id="formcontent">
+    @using (Ajax.BeginForm("DoCreate", "Person", null, new AjaxOptions
+    {
+        HttpMethod = "Post",
+        OnBegin = "formValidation.OnBegin(xhr)",
+        OnSuccess = "formValidation.OnSuccess(xhr)",
+        OnFailure = "formValidation.OnFailure(xhr)"
+    }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div id="formresults" class="infobox error" style="display:none"></div>
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="k-edit-form-container" style="float:left;">
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.FamilyName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.FamilyName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FamilyName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.C128_FamilyName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.C128_FamilyName, new { @class = "form-control, k-textbox", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.C128_FamilyName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Display_FamilyName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Display_FamilyName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Display_FamilyName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.C128_FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.C128_FirstName, new { @class = "form-control, k-textbox", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.C128_FirstName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Display_FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Display_FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Display_FirstName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.DegreePrefix, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.DegreePrefix, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DegreePrefix, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.DegreeSuffix, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.DegreeSuffix, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DegreeSuffix, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Sex, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @(Html.Kendo().DropDownListFor(m => m.Sex)
+                .Name("Sex")
+                .DataTextField("Name")
+                .DataValueField("Key")
+                .Filter(FilterType.Contains)
+                .OptionLabel("Please select")
+                .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("readGenderListForSelect", "Person");
+                    });
+                })
+                        )
+
+                        @Html.ValidationMessageFor(model => model.Sex, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group form-group-buttons">
+                    <label></label>
+                    <div class="col-md-10">
+                        <button type="button" value="Cancel" class="k-button kapsch-text-button" onclick="closeWindow();">Cancel</button>
+                        <input type="submit" value="Save" class="btn k-button kapsch-text-button" />
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $(function () {
+        $("form").kendoValidator();
+    });
+
+
+
+    //Fill Reduced Name Fields
+    function registerOnBlurEvent() {
+        //inputname = 'state';
+        //var outputname = '#output_' + inputname;
+        var inputname = '#' + FamilyName;
+        $(inputname).onblur(function (event) {
+            alert('asadf');
+            newText = event.target.value;
+            //$(outputname).text(newText);
+            //if (event.target.value.length > 1) {
+            //    $('#output_state').append(' <span style="color: #ffcc00; vertical-align: middle;">|</span>');
+            //}
+        });
+    }
+
+    $('#FamilyName').blur(function () {
+        person.Functions.FillInReducedString($(this).val(), "C128_FamilyName");
+        person.Functions.SetFieldValue($(this).val(), "Display_FamilyName");
+    });
+
+    $('#FirstName').blur(function () {
+        person.Functions.FillInReducedString($(this).val(), "C128_FirstName");
+        person.Functions.SetFieldValue($(this).val(), "Display_FirstName");
+    });
+
+    $(document).ready(function () {
+        //registerOnBlurEvent();
+
+    });
+</script>

@@ -1,0 +1,15 @@
+﻿@(Html.Kendo().MultiSelect()
+                .Name("EmploymentTypes")
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .Filter(FilterType.Contains)
+                .Placeholder("Please select")
+                .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("ReadForSelect", "EmploymentType");
+                    })
+                    .ServerFiltering(false);
+                })
+)

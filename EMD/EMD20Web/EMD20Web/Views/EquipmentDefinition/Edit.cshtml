@@ -1,0 +1,688 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.Onboarding.EquipmentDefinitionModel
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+@{
+    ViewBag.Title = "Edit Equipment definition";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/EquipmentDefinition_Edit.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+<div id="formcontent">
+    @using (Ajax.BeginForm("DoEdit", "EquipmentDefinition", null, new AjaxOptions
+    {
+        HttpMethod = "Post",
+        OnBegin = "formValidation.OnBegin(xhr)",
+        OnSuccess = "formValidation.OnSuccess(xhr)",
+        OnFailure = "formValidation.OnFailure(xhr)"
+    }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.Guid)
+        @Html.HiddenFor(model => model.ValidFrom)
+        @Html.HiddenFor(model => model.ValidTo)
+        @Html.HiddenFor(model => model.ActiveFrom)
+        @Html.HiddenFor(model => model.ActiveTo)
+
+        <div id="formresults" class="infobox error" style="display:none"></div>
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="k-edit-form-container" style="float:left;">
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @{ if (Model.IsAdmin)
+                            {
+                                @Html.EditorFor(model => model.Name)
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.Name, new { @readonly = "readonly", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                            }
+                        }
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @{
+                            if (string.IsNullOrWhiteSpace(Model.Description))
+                            {
+                                @Html.Kendo().TextBoxFor(model => model.Description).HtmlAttributes(new { placeholder = "http://www.example.co.at/documentName.pdf" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.Description, new { @style = "width:320px;", @class = "k-textbox" })
+                                <a title="Open link in new window" style="float:right;" href="@Model.Description" target="_blank"><i class="material-icons">open_in_new</i></a>
+                            }
+                        }
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+
+
+                    @Html.LabelForRequired(model => model.DescriptionLong, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @*@Html.EditorFor(model => model.DescriptionLong)*@
+                        <div id="descriptionLong"></div>
+                        @Html.ValidationMessageFor(model => model.DescriptionLong, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.WorkingInstructions, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @{
+                            if (string.IsNullOrWhiteSpace(Model.WorkingInstructions))
+                            {
+                                @Html.Kendo().TextBoxFor(model => model.WorkingInstructions).HtmlAttributes(new { placeholder = "http://www.example.co.at/documentName.pdf" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.WorkingInstructions, new { @style = "width:320px;", @class = "k-textbox" })
+                                <a title="Open link in new window" style="float:right;" href="@Model.WorkingInstructions" target="_blank"><i class="material-icons">open_in_new</i></a>
+                            }
+                        }
+                        @Html.ValidationMessageFor(model => model.WorkingInstructions, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.CanKeep, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.CheckBoxFor(model => model.CanKeep)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.IsDefault, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.CheckBoxFor(model => model.IsDefault)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.IsPeriodic, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @{
+                            if (Model.IsAdmin)
+                            {
+                                @Html.CheckBoxFor(model => model.IsPeriodic)
+                            }
+                            else
+                            {
+                                @Html.HiddenFor(model => model.IsPeriodic)
+                                @Html.CheckBoxFor(model => model.IsPeriodic, new { @disabled = "disabled", htmlAttributes = new { @class = "form-control" } })
+                            }
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.MaxNumberAllowedEquipments, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.MaxNumberAllowedEquipments)
+                        @Html.ValidationMessageFor(model => model.MaxNumberAllowedEquipments, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.NavisionSourceSystemNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @if (Model.IsAdmin)
+                        {
+                            @(Html.Kendo().DropDownListFor(m => m)
+                                                                                                                                                .OptionLabel("Please select")
+                                                                                                                                                .Name("NavisionSourceSystemNumber")
+                                                                                                                                                .DataTextField("Text")
+                                                                                                                                                .DataValueField("Value")
+                                                                                                                                                .HtmlAttributes(new { @style = "width:100%;" })
+                                                                                                                                                .Filter(FilterType.Contains)
+                                                                                                                                                .BindTo(Kapsch.IS.EMD.EMD20Web.Models.Onboarding.EquipmentDefinitionModel.AvailableNavisionSourcSystemNumbers)
+                                                                                                                                                .Value(Model.NavisionSourceSystemNumber)
+                            )
+                        }
+                        else
+                        {
+                            @(Html.Kendo().DropDownListFor(m => m)
+                                                                                                                                            .OptionLabel("Please select")
+                                                                                                                                            .Name("NavisionSourceSystemNumber")
+                                                                                                                                            .DataTextField("Text")
+                                                                                                                                            .DataValueField("Value")
+                                                                                                                                            .HtmlAttributes(new { @style = "width:100%;", @readonly = "readonly" })
+                                                                                                                                            .Filter(FilterType.Contains)
+                                                                                                                                            .BindTo(Kapsch.IS.EMD.EMD20Web.Models.Onboarding.EquipmentDefinitionModel.AvailableNavisionSourcSystemNumbers)
+                                                                                                                                            .Value(Model.NavisionSourceSystemNumber)
+                            )
+                        }
+
+
+
+                        @Html.ValidationMessageFor(model => model.NavisionSourceSystemNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.ActiveDirectoryGroupName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @{
+                            if (Model.IsAdmin)
+                            {
+                                @Html.EditorFor(model => model.ActiveDirectoryGroupName)
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.ActiveDirectoryGroupName, new { @readonly = "readonly", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                            }
+                        }
+                        @Html.ValidationMessageFor(model => model.ActiveDirectoryGroupName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.GuidApprover, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @if (Model.IsAdmin)
+                        {
+                            @(Html.Kendo().DropDownListFor(m => m)
+                                                                                                                                                .OptionLabel("Please select")
+                                                                                                                                                .Name("GuidApprover")
+                                                                                                                                                .DataTextField("Text")
+                                                                                                                                                .DataValueField("Value")
+                                                                                                                                                .HtmlAttributes(new { @style = "width:100%" })
+                                                                                                                                                .Filter(FilterType.Contains)
+                                                                                                                                                .IgnoreCase(true)
+                                                                                                                                                .AutoBind(true)
+                                                                                                                                                .DataSource(source =>
+                                                                                                                                                {
+                                                                                                                                                    source.Read(read =>
+                                                                                                                                                    {
+                                                                                                                                                        read.Action("ReadForSelect", "Role");
+                                                                                                                                                    })
+                                                                                                                                              .ServerFiltering(false);
+                                                                                                                                                })
+                            )
+                        }
+                        else
+                        {
+                            @(Html.Kendo().DropDownListFor(m => m)
+                                                                                                                                    .OptionLabel("Please select")
+                                                                                                                                    .Name("GuidApprover")
+                                                                                                                                    .DataTextField("Text")
+                                                                                                                                    .DataValueField("Value")
+                                                                                                                                    .HtmlAttributes(new { @style = "width:100%", @readonly = "readonly" })
+                                                                                                                                    .Filter(FilterType.Contains)
+                                                                                                                                    .IgnoreCase(true)
+                                                                                                                                    .AutoBind(true)
+                                                                                                                                    .DataSource(source =>
+                                                                                                                                    {
+                                                                                                                                        source.Read(read =>
+                                                                                                                                        {
+                                                                                                                                            read.Action("ReadForSelect", "Role");
+                                                                                                                                        })
+                                                                                                                                    .ServerFiltering(false);
+                                                                                                                                    })
+                            )
+                        }
+
+
+
+                        @Html.ValidationMessageFor(model => model.GuidApprover, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label></label>
+                    <div class="col-md-10">
+                        <div class="col-header">Price information</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.ClientReferenceSystemForPrice, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    <div class="col-md-10">
+                        @{
+                            if (Model.IsAdmin || Model.IsOwnerOfEquipment)
+                            {
+                                @(Html.Kendo().DropDownList()
+                                                                                                                                            .OptionLabel("Please select")
+                                                                                                                                            .Name("ClientReferenceSystemForPrice")
+                                                                                                                                            .DataTextField("Text")
+                                                                                                                                            .DataValueField("Value")
+                                                                                                                                            .Filter(FilterType.Contains)
+                                                                                                                                            .IgnoreCase(true)
+                                                                                                                                            .HtmlAttributes(new { @style = "width:100%" })
+                                                                                                                                            .Events(e => e.Change("equipmentDefinition.Events.OnPriceClientReferenceSystemChanged"))
+                                                                                                                                            .DataSource(source =>
+                                                                                                                                            {
+                                                                                                                                                source.Read(read =>
+                                                                                                                                                {
+                                                                                                                                                    read.Action("GetClientReferenceSystemsForPrice", "EquipmentDefinitionPrice");
+                                                                                                                                                })
+                                                                                                                                                .ServerFiltering(false);
+                                                                                                                                            })
+                                )
+                            }
+                            else
+                            {
+                                @(Html.Kendo().DropDownList()
+                                                                                                                                            .OptionLabel("Please select")
+                                                                                                                                            .Name("ClientReferenceSystemForPrice")
+                                                                                                                                            .DataTextField("Text")
+                                                                                                                                            .DataValueField("Value")
+                                                                                                                                            .Filter(FilterType.Contains)
+                                                                                                                                            .IgnoreCase(true)
+                                                                                                                                            .HtmlAttributes(new { @style = "width:100%", @readonly = "readonly" })
+                                                                                                                                            .DataSource(source =>
+                                                                                                                                            {
+                                                                                                                                                source.Read(read =>
+                                                                                                                                                {
+                                                                                                                                                    read.Action("GetClientReferenceSystemsForPrice", "EquipmentDefinitionPrice");
+                                                                                                                                                })
+                                                                                                                                                .ServerFiltering(false);
+                                                                                                                                            })
+                                )
+                            }
+                        }
+                        @Html.ValidationMessageFor(model => model.ClientReferenceSystemForPrice, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div id="areaClientReferenceId" style="display:none" class="form-group">
+                    @Html.LabelForRequired(model => model.ClientReferenceIDForPrice, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    <div class="col-md-10">
+                        @{
+                            if (Model.IsAdmin || Model.IsOwnerOfEquipment)
+                            {
+                                @Html.TextBoxFor(model => model.ClientReferenceIDForPrice, new { @onblur = "equipmentDefinition.Events.OnPriceClientReferenceIdLeave(this)", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } }) // new { htmlAttributues = new { onblur = "equipmentDefinition.Events.OnPriceClientReferenceIdLeave(this)" } })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.ClientReferenceIDForPrice, new { @readonly = "readonly", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                            }
+                        }
+                        @Html.ValidationMessageFor(model => model.ClientReferenceIDForPrice, "", new { @class = "text-danger" })
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.ClientReferenceIDForPrice) && Model.LastPriceInfo != null)
+                    {
+                        <span class="" style="">
+                            <i id="tooltipLastPrice" style="" class="material-icons k-state-border-down" data-role="tooltip" aria-describedby="kendoTooltip_tt_active">info</i>
+                        </span>
+                        @(Html.Kendo().Tooltip()
+                        .For("#tooltipLastPrice") //The for option of the Tooltip is mandatory.
+                                                  //                //It is a jQuery selector which specifies the element or the container for the elements for which the Tooltip will be shown.
+                                                  //.Filter("a[title]") //The jQuery selector which narrows the elements within the container for which the Tooltip will be shown.
+                        .Content(Model.LastPriceHtml)
+                        )
+                    }
+
+
+                    <div id="areaExternalPriceInfo" style="margin-left:10px">
+                        <div style="float:left; width:auto; height:34px"><span style="line-height:34px">Current external price:</span><span id="valueExternalPriceInfo" style="line-height:34px">--,--</span></div>
+                        <button id="buttonSetPrice" disabled="disabled" type="button" style="float:left; margin-left:10px; display: inline-block" class="k-button kapsch-text-button" onclick="equipmentDefinition.Functions.SetPriceFromExternal();">Set price</button>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+
+                        <a id="buttonEditPrice" title="Edit price" href="#" style="display:none; position: absolute; left: 695px;" onclick="javascript:  showInWindow('/EquipmentDefinitionPrice/Edit/@Model.Guid/true','Edit price')"><i class="material-icons">edit</i></a>
+
+                        <div id="DivPriceInformation">@(Html.DisplayTextFor(model => model.PriceInformation))</div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FuturePrice, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10" id="DivFuturePriceInformationWithActiveFromDate">
+                        @(Html.DisplayTextFor(model => model.FuturePriceInformation))
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.IsAccountingJob, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @{
+                            if (Model.IsAdmin)
+                            {
+                                @Html.CheckBoxFor(model => model.IsAccountingJob)
+                            }
+                            else
+                            {
+                                @Html.HiddenFor(model => model.IsAccountingJob)
+                                @Html.CheckBoxFor(model => model.IsAccountingJob, new { @disabled = "disabled", htmlAttributes = new { @class = "form-control" } })
+                            }
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.IsAccountingOnMainEmployment, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @{
+                            if (Model.IsAdmin)
+                            {
+                                @Html.CheckBoxFor(model => model.IsAccountingOnMainEmployment)
+                            }
+                            else
+                            {
+                                @Html.HiddenFor(model => model.IsAccountingOnMainEmployment)
+                                @Html.CheckBoxFor(model => model.IsAccountingOnMainEmployment, new { @disabled = "disabled", htmlAttributes = new { @class = "form-control" } })
+                            }
+                        }
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label></label>
+                    <div class="col-md-10">
+                        <div class="col-header">E-Mails for creation via User Support</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.IdEmailTemplateAdd, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @if (Model.IsAdmin)
+                        {
+                            @(Html.Kendo().DropDownListFor(m => m)
+                                                                                                                                                .OptionLabel("Please select")
+                                                                                                                                                .Name("IdEmailTemplateAdd")
+                                                                                                                                                .DataTextField("Text")
+                                                                                                                                                .DataValueField("Value")
+                                                                                                                                                .HtmlAttributes(new { @style = "width:100%" })
+                                                                                                                                                .Filter(FilterType.Contains)
+                                                                                                                                                .IgnoreCase(true)
+                                                                                                                                                .AutoBind(true)
+                                                                                                                                                .DataSource(source =>
+                                                                                                                                                {
+                                                                                                                                                    source.Read(read =>
+                                                                                                                                                    {
+                                                                                                                                                        read.Action("ReadEmailTemplatesForSelect", "Workflow");
+                                                                                                                                                    })
+                                                                                                                                              .ServerFiltering(false);
+                                                                                                                                                })
+                                                                                                                                                .Value(Model.IdEmailTemplateAdd)
+                            )
+                        }
+                        else
+                        {
+                            @(Html.Kendo().DropDownListFor(m => m)
+                                                                                                                                            .OptionLabel("Please select")
+                                                                                                                                            .Name("IdEmailTemplateAdd")
+                                                                                                                                            .DataTextField("Text")
+                                                                                                                                            .DataValueField("Value")
+                                                                                                                                            .HtmlAttributes(new { @style = "width:100%", @readonly = "readonly" })
+                                                                                                                                            .Filter(FilterType.Contains)
+                                                                                                                                            .IgnoreCase(true)
+                                                                                                                                            .AutoBind(true)
+                                                                                                                                            .DataSource(source =>
+                                                                                                                                            {
+                                                                                                                                                source.Read(read =>
+                                                                                                                                                {
+                                                                                                                                                    read.Action("ReadEmailTemplatesForSelect", "Workflow");
+                                                                                                                                                })
+                                                                                                                                          .ServerFiltering(false);
+                                                                                                                                            })
+                                                                                                                                            .Value(Model.IdEmailTemplateAdd)
+                            )
+                        }
+
+                        @Html.ValidationMessageFor(model => model.IdEmailTemplateAdd, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.IdEmailTemplateChange, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @if (Model.IsAdmin)
+                        {
+                            @(Html.Kendo().DropDownListFor(m => m)
+                                                                                                                                                .OptionLabel("Please select")
+                                                                                                                                                .Name("IdEmailTemplateChange")
+                                                                                                                                                .DataTextField("Text")
+                                                                                                                                                .DataValueField("Value")
+                                                                                                                                                .HtmlAttributes(new { @style = "width:100%" })
+                                                                                                                                                .Filter(FilterType.Contains)
+                                                                                                                                                .IgnoreCase(true)
+                                                                                                                                                .AutoBind(true)
+                                                                                                                                                .DataSource(source =>
+                                                                                                                                                {
+                                                                                                                                                    source.Read(read =>
+                                                                                                                                                    {
+                                                                                                                                                        read.Action("ReadEmailTemplatesForSelect", "Workflow");
+                                                                                                                                                    })
+                                                                                                                                              .ServerFiltering(false);
+                                                                                                                                                })
+                                                                                                                                                     .Value(Model.IdEmailTemplateChange)
+                            )
+                        }
+                        else
+                        {
+                            @(Html.Kendo().DropDownListFor(m => m)
+                                                                                                                                            .OptionLabel("Please select")
+                                                                                                                                            .Name("IdEmailTemplateChange")
+                                                                                                                                            .DataTextField("Text")
+                                                                                                                                            .DataValueField("Value")
+                                                                                                                                            .HtmlAttributes(new { @style = "width:100%", @readonly = "readonly" })
+                                                                                                                                            .Filter(FilterType.Contains)
+                                                                                                                                            .IgnoreCase(true)
+                                                                                                                                            .AutoBind(true)
+                                                                                                                                            .DataSource(source =>
+                                                                                                                                            {
+                                                                                                                                                source.Read(read =>
+                                                                                                                                                {
+                                                                                                                                                    read.Action("ReadEmailTemplatesForSelect", "Workflow");
+                                                                                                                                                })
+                                                                                                                                          .ServerFiltering(false);
+                                                                                                                                            })
+                                                                                                                                                 .Value(Model.IdEmailTemplateChange)
+                            )
+                        }
+
+                        @Html.ValidationMessageFor(model => model.IdEmailTemplateChange, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.IdEmailTemplateRemove, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @if (Model.IsAdmin)
+                        {
+                            @(Html.Kendo().DropDownListFor(m => m)
+                                                                                                                                                .OptionLabel("Please select")
+                                                                                                                                                .Name("IdEmailTemplateRemove")
+                                                                                                                                                .DataTextField("Text")
+                                                                                                                                                .DataValueField("Value")
+                                                                                                                                                .HtmlAttributes(new { @style = "width:100%" })
+                                                                                                                                                .Filter(FilterType.Contains)
+                                                                                                                                                .IgnoreCase(true)
+                                                                                                                                                .AutoBind(true)
+                                                                                                                                                .DataSource(source =>
+                                                                                                                                                {
+                                                                                                                                                    source.Read(read =>
+                                                                                                                                                    {
+                                                                                                                                                        read.Action("ReadEmailTemplatesForSelect", "Workflow");
+                                                                                                                                                    })
+                                                                                                                                              .ServerFiltering(false);
+                                                                                                                                                })
+                                                                                                                                                  .Value(Model.IdEmailTemplateRemove)
+                            )
+                        }
+                        else
+                        {
+                            @(Html.Kendo().DropDownListFor(m => m)
+                                                                                                                                            .OptionLabel("Please select")
+                                                                                                                                            .Name("IdEmailTemplateRemove")
+                                                                                                                                            .DataTextField("Text")
+                                                                                                                                            .DataValueField("Value")
+                                                                                                                                            .HtmlAttributes(new { @style = "width:100%", @readonly = "readonly" })
+                                                                                                                                            .Filter(FilterType.Contains)
+                                                                                                                                            .IgnoreCase(true)
+                                                                                                                                            .AutoBind(true)
+                                                                                                                                            .DataSource(source =>
+                                                                                                                                            {
+                                                                                                                                                source.Read(read =>
+                                                                                                                                                {
+                                                                                                                                                    read.Action("ReadEmailTemplatesForSelect", "Workflow");
+                                                                                                                                                })
+                                                                                                                                          .ServerFiltering(false);
+                                                                                                                                            })
+                                                                                                                                              .Value(Model.IdEmailTemplateRemove)
+                            )
+                        }
+
+
+                        @Html.ValidationMessageFor(model => model.IdEmailTemplateRemove, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label></label>
+                    <div class="col-md-10">
+                        <div class="col-header">Dynamic Fields</div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label>Computer name</label>
+                    <div class="col-md-10">
+                        @{ if (Model.IsAdmin)
+                            {
+                                @Html.CheckBoxFor(model => model.ShowComputerName)@Html.SpanFor(model => model.ShowComputerName)
+                            }
+                            else
+                            {
+                                @Html.HiddenFor(model => model.ShowComputerName)
+                                @Html.CheckBoxFor(model => model.ShowComputerName, new { @disabled = "disabled", htmlAttributes = new { @class = "form-control" } })@Html.SpanFor(model => model.ShowComputerName)
+                            }
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label></label>
+                    <div class="col-md-10">
+                        @{ if (Model.IsAdmin)
+                            {
+                                @Html.CheckBoxFor(model => model.IsComputerNameMandatory)@Html.SpanFor(model => model.IsComputerNameMandatory)
+                            }
+                            else
+                            {
+                                @Html.HiddenFor(model => model.IsComputerNameMandatory)
+                                @Html.CheckBoxFor(model => model.IsComputerNameMandatory, new { @disabled = "disabled", htmlAttributes = new { @class = "form-control" } })@Html.SpanFor(model => model.IsComputerNameMandatory)
+                            }
+                        }
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label>E-Mail</label>
+                    <div class="col-md-10">
+                        @{ if (Model.IsAdmin)
+                            {
+                                @Html.CheckBoxFor(model => model.ShowEmailAddress)@Html.SpanFor(model => model.ShowEmailAddress)
+                            }
+                            else
+                            {
+                                @Html.HiddenFor(model => model.ShowEmailAddress)
+                                @Html.CheckBoxFor(model => model.ShowEmailAddress, new { @disabled = "disabled", htmlAttributes = new { @class = "form-control" } })@Html.SpanFor(model => model.ShowEmailAddress)
+                            }
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label></label>
+                    <div class="col-md-10">
+                        @{ if (Model.IsAdmin)
+                            {
+                                @Html.CheckBoxFor(model => model.IsEmailAddressMandatory)@Html.SpanFor(model => model.IsEmailAddressMandatory)
+                            }
+                            else
+                            {
+                                @Html.HiddenFor(model => model.IsEmailAddressMandatory)
+                                @Html.CheckBoxFor(model => model.IsEmailAddressMandatory, new { @disabled = "disabled", htmlAttributes = new { @class = "form-control" } })@Html.SpanFor(model => model.IsEmailAddressMandatory)
+                            }
+                        }
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label></label>
+                    <div class="col-md-10">
+                        <div class="col-header">Filterrules</div>
+                    </div>
+                </div>
+
+                @Html.Partial("Controls/_PartialRuleFilterView", Model.RuleFilterModel)
+
+
+                <div class="form-group form-group-buttons">
+                    <label></label>
+                    <div class="col-md-10">
+                        <button type="button" value="Cancel" class="k-button kapsch-text-button" onclick="closeWindow();">Cancel</button>
+                        <input type="submit" value="Save" class="btn k-button kapsch-text-button" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
+</div>
+<script>
+    var kapschEditor = null;
+    var showClientReferenceId = @(Model.EditPriceInformationAllowed.ToString().ToLower());
+    var priceSystem = '@Html.Raw(Model.ClientReferenceSystemForPrice)';
+    var clientReferenceId = '@Html.Raw(Model.ClientReferenceIDForPrice)';
+    equipmentDefinition.Entities.EqdeGuid = '@Html.Raw(Model.Guid)';
+
+
+     $(function () {
+        $("form").kendoValidator();
+    });
+
+    $(document).ready(function (e) {
+
+
+
+        if (showClientReferenceId === true) {
+            $('#buttonEditPrice').show();
+        }
+        else {
+            $('#areaClientReferenceId').show();
+            $('#buttonSetPrice').removeAttr('disabled');
+            equipmentDefinition.Functions.UpdatePriceForClientReferenceId(priceSystem, clientReferenceId);
+        }
+
+
+        kapschEditor = new kapsch.control();
+
+        kapschEditor.id = 'descriptionLong';
+        kapschEditor.idHiddenField = 'DescriptionLong';
+        kapschEditor.title = 'Long Description';
+        kapschEditor.text = '@Html.Raw(Model.DescriptionLong)';
+        kapschEditor.toolConfig = kapsch.enum.text;
+
+        kapschEditor.init();
+    });
+</script>

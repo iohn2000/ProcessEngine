@@ -1,0 +1,118 @@
+﻿@using Kapsch.IS.EMD.EMD20Web.Models;
+@using System.Web.Mvc.Html;
+@model Kapsch.IS.EMD.EMD20Web.Models.OrgUnitRoleModel
+@{
+    ViewBag.Title = "Orgunit employees";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/OrgUnitRole_Manage.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+@if (Model.CanView || Model.CanManage)
+{
+    @(Html.Kendo().Grid<OrgUnitRoleModel>()
+    .Name("Grid").HtmlAttributes(new { @class = "k-grid-big" })
+    .Sortable()
+    .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+      .Pageable(pageable => pageable
+        .Refresh(true)
+        .PageSizes(true)
+        .ButtonCount(5)
+        .PageSizes(new[] { 15, 50, 100 }))
+    .Scrollable(s => s.Enabled(true).Height("auto"))
+    .Columns(columns =>
+    {
+        columns.Bound(item => item.Guid).Title("").Filterable(false).Width(60)
+        .ClientTemplate(
+                          "# if (CanManage == true) { #"
+
+                          + "<a title='Edit' href='\\#' "
+                          + "onclick='showInWindow(\""
+                          + "/OrgUnitRole/Edit/"
+                          + "#= Guid #/true\",\"Edit OrgUnit Employment\");' "
+                          + "data-id='#=Guid#'"
+                          + ">"
+                          + "<i class='material-icons'>edit</i>"
+                          + "</a>"
+
+                          + "# if (CanDelete == true) { #"
+                          + "<a title='Delete' href='\\#' "
+                            + "onclick='orgunitrole.Functions.Delete(\"#=Guid#\",\"Orgunit Employment\",\"#=Guid#\");' "
+                            + "data-id='#=Guid#'"
+                            + ">"
+                            + "<i class='material-icons'>delete</i>"
+                            + "</a>"
+                               + "# } #"
+
+                            + "# } else {#"
+
+                            + "<a title='View' href='\\#' "
+                            + "onclick='showInWindow(\""
+                            + "/OrgUnitRole/View/"
+                            + "#= Guid #/true\",\"View Orgunit Employment\");' "
+                            + "data-id='#=Guid#'"
+                            + ">"
+                            + "<i class='material-icons'>pageview</i>"
+                            + "</a>"
+
+                            + "#} #"
+
+                          );
+
+        columns.Bound(item => item.O_Name).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+        columns.Bound(item => item.R_Name).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+        columns.Bound(item => item.PERS_Name).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+
+        columns.Bound(item => item.EP_ID).Filterable(ftb => ftb.Cell(cell => cell.Template("kendoHelper.IntegerFilter")));
+        columns.Bound(item => item.EMPL_PersNr).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+        columns.Bound(item => item.EmploymentTypeName).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+    })
+
+    .Editable(editable => editable.Mode(GridEditMode.PopUp).DisplayDeleteConfirmation(false).Window(win => win.Width(700)))
+    .ToolBar(tb =>
+    {
+        if (Model.CanManage)
+        {
+            string guid = HtmlHelperExtensions.GetParameterFromUrl(Request.Url, "Guid");
+            if (!string.IsNullOrEmpty(guid))
+            {
+                tb.Custom().Text("Add Employment as role").Url("#").HtmlAttributes(new { onclick = string.Format("showInWindow('/OrgUnitRole/CreateByGuid/{0}/true','Add Employment',false);", HtmlHelperExtensions.GetParameterFromUrl(Request.Url, "Guid")), @class = "kapsch-text-button" });
+            }
+            else
+            {
+                tb.Custom().Text("Add Employment as role").Url("#").HtmlAttributes(new { onclick = "showInWindow('/OrgUnitRole/Create/true','Add Employment',false);", @class = "kapsch-text-button" });
+            }
+        }
+    })
+
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .ServerOperation(true)
+        .Sort(a =>
+        {
+            a.Add("O_Name").Ascending();
+            a.Add("R_Name").Ascending();
+            a.Add("PERS_Name").Ascending();
+        })
+        .PageSize(15)
+        .Model(model =>
+        {
+            model.Id(item => item.Guid);
+        })
+        .Read(read =>
+        {
+            read.Action("Read", "OrgUnitRole", new { guid_orgunit = HtmlHelperExtensions.GetParameterFromUrl(Request.Url, "Guid") }); //.Data("orgunitrole.Entities.OrgUnitRoleParameters");
+                                                                                                                                      // read.Action("Read", "OrgUnitRole").Data("orgunitrole.Entities.OrgUnitRoleParameters");
+        })
+
+        .Events(events => events.Error("exceptionManager.Events.HandleError"))
+        )
+    )
+
+}
+
+

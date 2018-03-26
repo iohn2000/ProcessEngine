@@ -1,0 +1,10 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.SetEmploymentStatus.SetEmploymentStatusActivity" instance=".SetEmploymentStatusActivity">
+  <name>Employment Status Set</name>
+  <properties>
+    <property name="emplGuid"         direction="input"   dataType="stringType" />
+    <property name="status"           direction="input"   dataType="stringType" />
+    <property name="returnStatus"     direction="output"  dataType="stringType" />
+  </properties>
+  <transition to=".XXX"/>
+</activity>
+

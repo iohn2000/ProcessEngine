@@ -1,0 +1,122 @@
+<workflow id="tasktest01" name="task mit async wait" status="new">
+
+  <variables>
+    <variable name="0.requestor"  direction="both" dataType="stringType">Alex Tischer</variable>
+    
+    <variable name="1.taskTitle"                direction="input"  dataType="stringType">Please approve the Visio</variable>
+    <variable name="1.effectedPerson_EmplGUID"  direction="input"  dataType="stringType">fleckj</variable>
+    <variable name="1.requestor_EmplGUID"       direction="input"  dataType="stringType">fleckj</variable>
+    <variable name="1.toDo"                     direction="input"  dataType="stringType">make decision</variable>
+    <variable name="1.decisionOptions"          direction="input"  dataType="stringType">approve,decline,request more info</variable>
+    
+    <variable name="1.taskInformation"          direction="input"  dataType="stringType">some more detailed info about this task here</variable>
+    <variable name="1.dueDate"                  direction="input"  dataType="stringType">2016-01-28 17:00:00</variable>
+    <variable name="1.nextReminder"             direction="input"  dataType="stringType"></variable>
+    <variable name="1.approver_EmplGUIDs"       direction="input"  dataType="stringType">stagl</variable>
+    <variable name="1.emailBody"                direction="input"  dataType="stringType">emailTemplates\approverBody.html</variable>
+   
+    <variable name="2.pollingIntervalSeconds" direction="input"  dataType="intType">60</variable>
+    <variable name="2.demoDecision"           direction="input"  dataType="stringType">approve</variable>
+    <variable name="2.returnStatus"           direction="output"  dataType="stringType"/>
+
+    <variable name="3.logText" direction="input"  dataType="stringType">Approved</variable>
+    <variable name="4.logText" direction="input"  dataType="stringType">Declined</variable>
+    <variable name="5.logText" direction="input"  dataType="stringType">Request for more Information</variable>
+    <variable name="6.logText" direction="input"  dataType="stringType">"Did not respond up to " + {{0.duedate}}</variable>
+    <variable name="7.logText" direction="input"  dataType="stringType">eq anlegen</variable>
+  </variables>
+
+  <activities>
+
+    <activity nr="0" id="start" instance="start" >
+      <name>Start Task Test 01</name>
+      <transition to="1.TaskDecisionActivity"/>
+    </activity>
+
+    <activity nr="1" id="Kapsch.IS.ProcessEngine.WFActivity.TaskDecisionActivity" instance="1.TaskDecisionActivity">
+      <name>Approval from Teamleader</name>
+      <properties>
+        
+        <property name="taskTitle"              direction="input"  dataType="stringType" />
+        <property name="effectedPerson_EmplGUID"  direction="input"  dataType="stringType" />
+        <property name="requestor_EmplGUID"       direction="input"  dataType="stringType" />
+        <property name="toDo"                   direction="input"  dataType="stringType" />
+        <property name="decisionOptions"        direction="input"  dataType="stringType" />
+        <property name="taskInformation"        direction="input"  dataType="stringType" />
+        <property name="dueDate"                direction="input"  dataType="stringType" />
+        <property name="nextReminder"           direction="input"  dataType="stringType" />
+        <property name="approver_EmplGUIDs"       direction="input"  dataType="stringType" />
+        <property name="emailBody"                direction="input"  dataType="stringType" />
+      </properties>
+      <transition to="2.TaskDecisionActivityWait"/>
+    </activity>
+
+    <activity nr="2" id="Kapsch.IS.ProcessEngine.WFActivity.TaskDecisionActivityWait" instance="2.TaskDecisionActivityWait">
+      <name>Wait for approval decision</name>
+      <linkedTo instance="1.TaskDecisionActivity" />
+      <properties>
+        <property name="pollingIntervalSeconds" direction="input"  dataType="intType"/>
+        <property name="demoDecision"           direction="input"  dataType="stringType"/>
+        <property name="returnStatus"           direction="output" dataType="stringType"/>
+      </properties>
+      <transition to="3.AuditLogActivity">
+        <condition>
+          <![CDATA[{{2.returnStatus}} = "approve"]]>
+        </condition>
+      </transition>
+      <transition to="4.AuditLogActivity">
+        <condition>
+          <![CDATA[{{2.returnStatus}} = "decline"]]>
+        </condition>
+      </transition>
+      <transition to="5.AuditLogActivity">
+        <condition>
+            <![CDATA[{{2.returnStatus}} = "request more info"]]>
+        </condition>
+      </transition>      
+      
+    <transition to="6.AuditLogActivity">
+        <condition>
+          <![CDATA[{{2.returnStatus}} = "timeout"]]>
+        </condition>
+      </transition>
+    </activity>
+
+    <activity nr="3" id="Kapsch.IS.ProcessEngine.WFActivity.AuditLogActivity" instance="3.AuditLogActivity" >
+      <name>visio approved</name>
+      <properties>
+        <property name="logText" direction="input"  dataType="stringType"/>
+      </properties>
+      <transition to="7.AuditLogActivity"/>
+    </activity>
+
+    <activity nr="4" id="Kapsch.IS.ProcessEngine.WFActivity.AuditLogActivity" instance="4.AuditLogActivity" >
+      <name>visio declined</name>
+      <properties>
+        <property name="logText" direction="input"  dataType="stringType" />
+      </properties>
+    </activity>
+
+    <activity nr="5" id="Kapsch.IS.ProcessEngine.WFActivity.AuditLogActivity" instance="5.AuditLogActivity">
+        <name>request more info</name>
+      <properties>
+        <property name="logText" direction="input"  dataType="stringType"/>
+      </properties>
+    </activity>
+
+    <activity nr="6" id="Kapsch.IS.ProcessEngine.WFActivity.AuditLogActivity" instance="6.AuditLogActivity" >
+        <name>timeout</name>
+      <properties>
+        <property name="logText" direction="input"  dataType="stringType" />
+      </properties>
+    </activity>
+    
+    <activity nr="7" id="Kapsch.IS.ProcessEngine.WFActivity.AuditLogActivity" instance="7.AuditLogActivity" >
+        <name>eq anlegen</name>
+      <properties>
+        <property name="logText" direction="input"  dataType="stringType" />
+      </properties>
+    </activity>    
+  </activities>
+
+</workflow>

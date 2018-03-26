@@ -1,0 +1,14 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.TaskDecision.TaskCallbackActivity" instance=".TaskCallbackActivity">
+  <name>Handle a Task Callback</name>
+  <description>is able to handle AutoCallback</description>
+  <properties>
+    <property name = "ClientReferenceID"  direction="input"  dataType="stringType" ></property>
+    <property name = "AutoComplete" direction="input" dataType="stringType"></property>
+    <property name=  "TaskAutoField" direction="input" dataType="stringType"/>
+    <property name=  "TaskAutoValue" direction="input" dataType="stringType"/>
+    
+    <property name = "Status"  direction="output"  dataType="stringType" ></property>
+    <property name = "Result"  direction="output"  dataType="stringType" ></property>
+  </properties>
+  <transition to=".xx"/>
+</activity>

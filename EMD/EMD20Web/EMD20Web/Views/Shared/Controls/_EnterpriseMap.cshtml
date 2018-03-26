@@ -1,0 +1,137 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.EnterpriseModelList
+@{
+    ViewBag.Title = "EnterpriseMap";
+}
+
+<script type="text/javascript">
+    var nodes = null;
+    var edges = null;
+    var network = null;
+    //var directionInput = document.getElementById("direction");
+
+    function destroy() {
+        if (network !== null) {
+            network.destroy();
+            network = null;
+        }
+    }
+
+    function draw() {
+        destroy();
+        nodes = [];
+        edges = [];
+        var connectionCount = [];
+
+
+        @if (Model.HasParent && Model.ParentEnterprise != null)
+        {
+            @Html.Raw("nodes.push({id:'" + Model.ParentEnterprise.Guid+ "',label:'" + Model.ParentEnterprise.NameShort + "',shape:'box',level:" + Model.ParentEnterpriseLevel + "});");
+        }
+
+        @Html.Raw("nodes.push({id:'" + Model.CurrentEnterprise.Guid+ "',label:'" + Model.CurrentEnterprise.NameShort + "',shape:'box',level:" + Model.CurrentEnterpriseLevel + ",color:{color:'orange', border:'black'}});");
+
+        @if (Model.ParentEnterprise != null && Model.HasParent)
+        {
+            @Html.Raw("edges.push({ from: '" + Model.ParentEnterprise.Guid + "', to: '" + Model.CurrentEnterprise.Guid + "'});") ;
+        }
+        var childlevel = @Model.CurrentEnterpriseLevel +1;
+        @for (var i = 0; i < Model.EnterpriseModels.Count; i++)
+        {
+            @Html.Raw("nodes.push({id:'" + Model.EnterpriseModels[i].Guid+ "',label:'" + Model.EnterpriseModels[i].NameShort + "',shape:'box',level:2,color:{color:'lightgreen', border:'black'}});");
+        }
+
+        @for (var i = 0; i < Model.EnterpriseModels.Count; i++)
+        {
+            @Html.Raw("edges.push({ from: '" + Model.CurrentEnterprise.Guid + "', to: '" + Model.EnterpriseModels[i].Guid + "'});") ;
+        }
+
+        // create a network
+        var container = document.getElementById('mynetwork');
+        var data = { nodes: nodes, edges: edges };
+
+        var options = {
+            edges: {
+                smooth: {
+                    type: 'cubicBezier',
+                    forceDirection: 'horizontal',
+                    //forceDirection: (directionInput.value == "UD" || directionInput.value == "DU") ? 'vertical' : 'horizontal',
+                    roundness: 0.4
+                }
+            },
+            layout: {
+                hierarchical: {
+                    //direction: directionInput.value
+                    direction: 'LR'
+                }
+            },
+            physics: false
+        };
+        network = new vis.Network(container, data, options);
+
+        // add event listeners
+        //network.on('select', function (params) {
+        //    document.getElementById('selection').innerHTML = 'Selection: ' + params.nodes;
+        //});
+
+        network.on("doubleClick", function (params) {
+            params.event = "[original event]";
+            //alert(params.nodes[0]);
+            //document.getElementById('eventSpan').innerHTML = '<h2>doubleClick event:</h2>' + JSON.stringify(params, null, 4);
+            //window.location = "http://localhost:8021/Enterprise/EnterpriseMap/" + params.nodes[0];
+            if (params.nodes[0] != null && params.nodes[0] != 'undefined') {
+                closeWindow();
+                showInWindow('Edit/' + params.nodes[0] + '/true', 'Edit Enterprise');
+                //parent.location = "http://localhost:8021/Enterprise/Edit/" + params.nodes[0];
+            }
+        });
+    }
+
+</script>
+
+@*<p>
+    <input type="button" id="btn-UD" value="Up-Down">
+    <input type="button" id="btn-DU" value="Down-Up">
+    <input type="button" id="btn-LR" value="Left-Right">
+    <input type="button" id="btn-RL" value="Right-Left">
+    
+</p>*@
+
+@*<input type="hidden" id='direction' value="UD">*@
+
+<div id="mynetwork" style="height:1000px;"></div>
+
+@*@using (Html.BeginForm("DoEdit", "Enterprise"))
+{
+    @Html.AntiForgeryToken()
+
+    <pre id="eventSpan"></pre>
+
+}*@
+
+<script type="text/javascript">
+
+    //var directionInput = document.getElementById("direction");
+    //var btnUD = document.getElementById("btn-UD");
+    //btnUD.onclick = function () {
+    //    directionInput.value = "UD";
+    //    draw();
+    //};
+    //var btnDU = document.getElementById("btn-DU");
+    //btnDU.onclick = function () {
+    //    directionInput.value = "DU";
+    //    draw();
+    //};
+    //var btnLR = document.getElementById("btn-LR");
+    //btnLR.onclick = function () {
+    //    directionInput.value = "LR";
+    //    draw();
+    //};
+    //var btnRL = document.getElementById("btn-RL");
+    //btnRL.onclick = function () {
+    //    directionInput.value = "RL";
+    //    draw();
+    //};
+
+    draw();
+
+</script>

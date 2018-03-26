@@ -1,0 +1,153 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.EnterpriseViewModel
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+@{
+    ViewBag.Title = "View Enterprise";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/Enterprise_View.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+<div id="formcontent" style="width: 720px">
+        @Html.AntiForgeryToken()
+        <div id="formresults" class="infobox error" style="display:none"></div>
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="k-edit-form-container" style="float:left;">
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.NameShort, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.NameShort, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.NameLong, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.NameLong, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.E_ID, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.E_ID, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.E_ID_new, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.E_ID_new, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.E_ID_new, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.ARA, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.ARA, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.DVR, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.DVR, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Guid_Parent, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.ParentDisplayName, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Guid_Root, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.RootDisplayName, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.FibuGericht, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.FibuGericht, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.FibuNummer, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.FibuNummer, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.HasEmployees, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.CheckBoxFor(model => model.HasEmployees, new { disabled = "disabled",  @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.AD_Picture, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.CheckBoxFor(model => model.AD_Picture, new { disabled = "disabled", @class = "form-control"  })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.O_Guid_Dis, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.O_Name_Dis, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.O_Guid_Prof, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.O_Name_Prof, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Synonyms, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Synonyms, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.UID1, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.UID1, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.UID2, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.UID2, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group form-group-buttons">
+                    <label></label>
+                    <div class="col-md-10">
+                        <button type="button" value="Close" class="k-button kapsch-text-button" onclick="closeWindow();">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+</div>
+
+<div style="width:900px;height:800px;float:left;border:none; margin-left: 30px;">
+    @Html.Partial("Controls/_EnterpriseMap", Model.enterpriseModelList)
+</div>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="Windows-1252"?>
+
+<workflow id="x" name="a-simple" status="NotStarted" demoMode='true'>
+  <variables>
+    <!-- Typisch erstellt und befüllt beim Design des Workflows -->
+    <variable name="requestor"   dataType='stringType' direction="input">Alex Tischer</variable>
+    <variable name="requestDate" dataType='stringType' direction="input">Nov. 2013</variable>
+    <variable name="kosten"      dataType='intType' direction="input">39</variable>
+  </variables>
+  <activities></activities>
+</workflow>

@@ -1,0 +1,626 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{014E7240-BEC9-459A-BD5E-AFAF6A05C4F2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kapsch.IS.EDP.Core</RootNamespace>
+    <AssemblyName>Kapsch.IS.EDP.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Kapsch.IS.EDP.Core.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'HotFix|AnyCPU'">
+    <OutputPath>bin\HotFix\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Ciloci.Flee">
+      <HintPath>..\..\..\libs\Flee\Ciloci.Flee.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentValidationNA, Version=1.2.16.24816, Culture=neutral, PublicKeyToken=0950390b87309e14, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidationNA.1.2.16\lib\net40\FluentValidationNA.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Kapsch.IS.ProcessEngine.Shared, Version=1.0.22.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\KapschLibs\Kapsch.IS.ProcessEngine.Shared\1.0.25.0\Kapsch.IS.ProcessEngine.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="Kapsch.IS.Util, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\KapschLibs\Kapsch.IS.Util\1.0.4.0\Kapsch.IS.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="LinqKit, Version=1.1.3.1, Culture=neutral, PublicKeyToken=bc217f8844052a91, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqKit.1.1.3.1\lib\net45\LinqKit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Linq.Dynamic, Version=1.1.14.15853, Culture=neutral, PublicKeyToken=b72be0322d1b32a8, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.Library.1.1.14\lib\net40\System.Linq.Dynamic.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DB\Access.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Account.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\AccountGroup.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\BaseContainer.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Category.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\CategoryEntity.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\ComponentVersion.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Contact.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\ContactType.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Country.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\DatabaseVersion.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\DistributiongroupType.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\EMD20DataModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EMD20DataModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\EMD20DataModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\EMD20DataModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EMD20DataModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Employment.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\EmploymentAccount.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\EmploymentType.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Enterprise.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\EnterpriseLocation.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\EntityCheck.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\EquipmentDefinition.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\EquipmentDefinitionOwner.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\EquipmentDefinitionPrice.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\FilterRule.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Group.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\GroupMember.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Location.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\ModifcationLog.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\ObjectContainer.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\ObjectContainerContent.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\ObjectFlag.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\ObjectRelation.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\ObjectRelationType.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\OrgUnit.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\OrgUnitRole.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Person.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\PersonPortrait.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\PersonTranslation.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\ProcessEntity.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\ProcessMapping.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Role.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\SecurityAction.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\sp_helpdiagrams_Result.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\sysdiagrams.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\TaskItem.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\User.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\UserDomain.cs">
+      <DependentUpon>EMD20DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EMDCategory.cs" />
+    <Compile Include="Entities\EMDCategoryEntity.cs" />
+    <Compile Include="Entities\EMDDatabaseVersion.cs" />
+    <Compile Include="Entities\EMDEntityCheck.cs" />
+    <Compile Include="Entities\EMDEquipmentDefinitionOwner.cs" />
+    <Compile Include="Entities\EMDProcessEntity.cs" />
+    <Compile Include="Entities\Enhanced\EMDAccountEnhanced.cs" />
+    <Compile Include="Entities\Enhanced\EMDOrgUnitRoleEnhanced.cs" />
+    <Compile Include="Entities\Enhanced\EMDPersonEmployment.cs" />
+    <Compile Include="Entities\EntityFunctions\IsOffboardingAllowedForEmployment.cs" />
+    <Compile Include="Entities\EntityFunctions\GetOrgunitGuidforEmployment.cs" />
+    <Compile Include="Entities\EntityFunctions\SearchContactItemByCTIDForEmployment.cs" />
+    <Compile Include="Entities\EntityFunctions\SearchContactItemForEmployment.cs" />
+    <Compile Include="Entities\EntityFunctions\SearchResponsibleRoleForEmployment.cs" />
+    <Compile Include="Entities\EntityFunctions\GetEqdeXmlSettingByNameAttribute.cs" />
+    <Compile Include="Entities\EntityFunctions\IsEnterpriseUnderParentAt.cs" />
+    <Compile Include="Entities\EntityFunctions\GetTaskApproversForEffectedEmployment.cs" />
+    <Compile Include="Entities\EntityFunctions\GetNameTaskApproverForEffectedPerson.cs" />
+    <Compile Include="Entities\EntityFunctions\GetAccountGuidForEmployment.cs" />
+    <Compile Include="Entities\EntityFunctions\GetEqdeSettingByNameAttributeFromOBRE.cs" />
+    <Compile Include="Entities\EntityFunctions\GetUserTypeName.cs" />
+    <Compile Include="Entities\EnumCategoryType.cs" />
+    <Compile Include="Entities\EnumClientReferenceSystemForPrice.cs" />
+    <Compile Include="Entities\EnumContactType.cs" />
+    <Compile Include="Entities\EnumEquipmentDefinitionPriceBillingPeriod.cs" />
+    <Compile Include="Entities\EnumManagedByType.cs" />
+    <Compile Include="Entities\EnumNavisionSourceSystemNumber.cs" />
+    <Compile Include="Entities\Enums\EnumOffboardingDeclined.cs" />
+    <Compile Include="Entities\EquipmentDefinitionConfig.cs" />
+    <Compile Include="Entities\EMDEquipmentDefinitionPrice.cs" />
+    <Compile Include="Entities\EquipmentDef\DynamicField.cs" />
+    <Compile Include="Entities\EquipmentDef\EnumDynamicFieldEquipment.cs" />
+    <Compile Include="Entities\EquipmentDef\EnumDynamicFieldType.cs" />
+    <Compile Include="Entities\Handler\CategoryHandler.cs" />
+    <Compile Include="Entities\Handler\CategoryEntityHandler.cs" />
+    <Compile Include="Entities\Handler\DatabaseVersionHandler.cs" />
+    <Compile Include="Entities\Handler\EntityCheckHandler.cs" />
+    <Compile Include="Entities\Handler\EquipmentDefinitionOwnerHandler.cs" />
+    <Compile Include="Entities\Handler\EquipmentDefinitionPriceHandler.cs" />
+    <Compile Include="Entities\Handler\IEMDObjectHandler.cs" />
+    <Compile Include="Entities\DefaultEquipmentInfo.cs" />
+    <Compile Include="Entities\Handler\ProcessEntityHandler.cs" />
+    <Compile Include="Entities\IEntityCheck.cs" />
+    <Compile Include="Entities\Operator\BaseOperator.cs" />
+    <Compile Include="Entities\Operator\EMDAccesOperator.cs" />
+    <Compile Include="Entities\Operator\EMDAccountGroupOperator.cs" />
+    <Compile Include="Entities\Operator\EMDAccountOperator.cs" />
+    <Compile Include="Entities\Operator\Enum\HistorySearchTypeEnum.cs" />
+    <Compile Include="Entities\Operator\Interface\IReadOperator.cs" />
+    <Compile Include="Entities\Operator\Interface\IWriteOperator.cs" />
+    <Compile Include="Entities\PriceInformation\ExternalPriceInfo.cs" />
+    <Compile Include="Entities\RemoveEquipmentInfo.cs" />
+    <Compile Include="Framework\EntityFunctionException.cs" />
+    <Compile Include="Entities\EntityFunctions\DemoFunction.cs" />
+    <Compile Include="Framework\Exceptions\DeleteWithRelationsException.cs" />
+    <Compile Include="Framework\Exceptions\EntityValidationException.cs" />
+    <Compile Include="Framework\Exceptions\GuidCastException.cs" />
+    <Compile Include="Framework\Exceptions\WorkflowMappingException.cs" />
+    <Compile Include="Framework\Exceptions\SecurityException.cs" />
+    <Compile Include="Framework\Exceptions\EntityNotAllowedException.cs" />
+    <Compile Include="Framework\EntityFunction.cs" />
+    <Compile Include="Logic\AccountGroupManager.cs" />
+    <Compile Include="Logic\BaseManager.cs" />
+    <Compile Include="Logic\CategoryEntityManager.cs" />
+    <Compile Include="Logic\CategoryManager.cs" />
+    <Compile Include="Logic\EmploymentChangeTypeHelper.cs" />
+    <Compile Include="Logic\EnterpriseTree.cs" />
+    <Compile Include="Logic\EntityCheckManager.cs" />
+    <Compile Include="Logic\EnumChangeValueType.cs" />
+    <Compile Include="Logic\EnumEmploymentChangeType.cs" />
+    <Compile Include="Logic\EnumObjectRelationType.cs" />
+    <Compile Include="Logic\EnumBusinessCase.cs" />
+    <Compile Include="Logic\EquipmentDefinitionOwnerManager.cs" />
+    <Compile Include="Logic\EquipmentDefinitionPriceManager.cs" />
+    <Compile Include="Logic\GroupManager.cs" />
+    <Compile Include="Logic\Interface\IGroupManager.cs" />
+    <Compile Include="Logic\Interface\IBaseManager.cs" />
+    <Compile Include="Logic\Interface\IProcessEntityManager.cs" />
+    <Compile Include="Logic\OffboardingManager.cs" />
+    <Compile Include="Logic\OrgUnitTree.cs" />
+    <Compile Include="Logic\ProcessEntityManager.cs" />
+    <Compile Include="Logic\SecurityManager.cs" />
+    <Compile Include="Report\EDPReport.cs" />
+    <Compile Include="Report\EquipmentReport.cs" />
+    <Compile Include="Report\EquipmentReportFull.cs" />
+    <Compile Include="Report\OrgUnitLevels.cs" />
+    <Compile Include="Service References\ServiceReferenceProcessEngine\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\Configuration.cs" />
+    <Compile Include="DB\EMDDB_Helper.cs" />
+    <Compile Include="DB\EMD_Entities_BugFix.cs" />
+    <Compile Include="Entities\EMDDistributionGroup.cs" />
+    <Compile Include="Entities\EMDEquipmentInstance.cs" />
+    <Compile Include="Entities\EMDObjectContainerContent.cs" />
+    <Compile Include="Entities\EMDObjectFlag.cs" />
+    <Compile Include="Entities\EMDPackageInstance.cs" />
+    <Compile Include="Entities\EMDPersonTranslation.cs" />
+    <Compile Include="Entities\EMDProcessMapping.cs" />
+    <Compile Include="Entities\EMDSecurityAction.cs" />
+    <Compile Include="Entities\EMDUser.cs" />
+    <Compile Include="Entities\EMDUserDomain.cs" />
+    <Compile Include="Entities\EnumEmploymentTypeCategory.cs" />
+    <Compile Include="Entities\EnumObjectFlagType.cs" />
+    <Compile Include="Entities\EnumUserStatus.cs" />
+    <Compile Include="Entities\EnumUserType.cs" />
+    <Compile Include="Entities\Handler\DistributionGroupHandler.cs" />
+    <Compile Include="Entities\Handler\FilterRuleHandler.cs" />
+    <Compile Include="Entities\Handler\BaseContainerHandler.cs" />
+    <Compile Include="Entities\EMDBaseContainer.cs" />
+    <Compile Include="Entities\EMDAccess.cs" />
+    <Compile Include="Entities\Handler\AccessHandler.cs" />
+    <Compile Include="Entities\EMDAccount.cs" />
+    <Compile Include="Entities\EMDAccountGroup.cs" />
+    <Compile Include="Entities\Handler\AccountGroupHandler.cs" />
+    <Compile Include="Entities\Handler\AccountHandler.cs" />
+    <Compile Include="Entities\EMDComponentVersion.cs" />
+    <Compile Include="Entities\Handler\ComponentVersionHandler.cs" />
+    <Compile Include="Entities\EMDContact.cs" />
+    <Compile Include="Entities\Handler\ContactHandler.cs" />
+    <Compile Include="Entities\EMDContactType.cs" />
+    <Compile Include="Entities\Handler\ContactTypeHandler.cs" />
+    <Compile Include="Entities\EMDCountry.cs" />
+    <Compile Include="Entities\Handler\CountryHandler.cs" />
+    <Compile Include="Entities\EMDFilterRule.cs" />
+    <Compile Include="Entities\EMDObject.cs" />
+    <Compile Include="Entities\Handler\EMDBaseObjectHandler.cs" />
+    <Compile Include="Entities\Handler\EMDObjectHandler.cs" />
+    <Compile Include="Entities\EMDEmployment.cs" />
+    <Compile Include="Entities\EMDEmploymentAccount.cs" />
+    <Compile Include="Entities\EMDObjectRelationType.cs" />
+    <Compile Include="Entities\Handler\EmploymentAccountHandler.cs" />
+    <Compile Include="Entities\Handler\EmploymentHandler.cs" />
+    <Compile Include="Entities\EMDEmploymentType.cs" />
+    <Compile Include="Entities\Handler\EmploymentTypeHandler.cs" />
+    <Compile Include="Entities\EMDEnterprise.cs" />
+    <Compile Include="Entities\Handler\EnterpriseHandler.cs" />
+    <Compile Include="Entities\EMDEnterpriseLocation.cs" />
+    <Compile Include="Entities\Handler\EnterpriseLocationHandler.cs" />
+    <Compile Include="Entities\EMDEquipmentDefinition.cs" />
+    <Compile Include="Entities\Handler\EquipmentDefinitionHandler.cs" />
+    <Compile Include="Entities\EMDGroup.cs" />
+    <Compile Include="Entities\Handler\GroupHandler.cs" />
+    <Compile Include="Entities\EMDGroupMember.cs" />
+    <Compile Include="Entities\Handler\GroupMemberHandler.cs" />
+    <Compile Include="Entities\Handler\ProcessMappingHandler.cs" />
+    <Compile Include="Entities\Handler\SecurityActionHandler.cs" />
+    <Compile Include="Entities\Handler\UserDomainHandler.cs" />
+    <Compile Include="Entities\Handler\UserHandler.cs" />
+    <Compile Include="Entities\IEMDObject.cs" />
+    <Compile Include="Entities\Handler\IEMDBaseObjectHandler.cs" />
+    <Compile Include="Entities\EMDLocation.cs" />
+    <Compile Include="Entities\Handler\IFilterRuleHandler.cs" />
+    <Compile Include="Entities\Handler\LocationHandler.cs" />
+    <Compile Include="Entities\EMDObjectContainer.cs" />
+    <Compile Include="Entities\Handler\ObjectContainerContentHandler.cs" />
+    <Compile Include="Entities\Handler\ObjectContainerHandler.cs" />
+    <Compile Include="Entities\EMDObjectRelation.cs" />
+    <Compile Include="Entities\Handler\ObjectFlagHandler.cs" />
+    <Compile Include="Entities\Handler\ObjectRelationTypeHandler.cs" />
+    <Compile Include="Entities\Handler\ObjectRelationHandler.cs" />
+    <Compile Include="Entities\EMDOrgUnit.cs" />
+    <Compile Include="Entities\Handler\OrgUnitHandler.cs" />
+    <Compile Include="Entities\EMDOrgUnitRole.cs" />
+    <Compile Include="Entities\Handler\OrgUnitRoleHandler.cs" />
+    <Compile Include="Entities\EMDPerson.cs" />
+    <Compile Include="Entities\Handler\PersonHandler.cs" />
+    <Compile Include="Entities\EMDPersonPortrait.cs" />
+    <Compile Include="Entities\Handler\PersonPortraitHandler.cs" />
+    <Compile Include="Entities\EMDRole.cs" />
+    <Compile Include="Entities\Handler\PersonTranslationHandler.cs" />
+    <Compile Include="Entities\Handler\RoleHandler.cs" />
+    <Compile Include="Entities\EMDTaskItem.cs" />
+    <Compile Include="Entities\Handler\TaskItemHandler.cs" />
+    <Compile Include="Entities\IProcessMapping.cs" />
+    <Compile Include="Entities\NewEquipmentInfo.cs" />
+    <Compile Include="Entities\ObjectRelationTypeList.cs" />
+    <Compile Include="Framework\CoreTransaction.cs" />
+    <Compile Include="Framework\EDPSecurityHandler.cs" />
+    <Compile Include="Framework\SecurityPermission.cs" />
+    <Compile Include="Framework\SecurityUser.cs" />
+    <Compile Include="Framework\EntityQuery.cs" />
+    <Compile Include="Framework\EntityPrefix.cs" />
+    <Compile Include="Framework\EDPSecurityErrorCodeHandler.cs" />
+    <Compile Include="Framework\Exceptions\EntityNotFoundException.cs" />
+    <Compile Include="Framework\Exceptions\NotInitializedException.cs" />
+    <Compile Include="Framework\Exceptions\RelatedEntitiesException.cs" />
+    <Compile Include="Framework\Exceptions\UserException.cs" />
+    <Compile Include="Framework\SecurityException.cs" />
+    <Compile Include="Framework\SecurityUserParameterFlags.cs" />
+    <Compile Include="Framework\TransactionHandler.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Logic\AccountManager.cs" />
+    <Compile Include="Logic\ContactManager.cs" />
+    <Compile Include="Logic\CountryManager.cs" />
+    <Compile Include="Logic\EmploymentManager.cs" />
+    <Compile Include="Logic\EmploymentProcessStatus.cs" />
+    <Compile Include="Logic\EnterpriseLocationManager.cs" />
+    <Compile Include="Logic\EnterpriseLocationProcessStatus.cs" />
+    <Compile Include="Logic\EnterpriseManager.cs" />
+    <Compile Include="Logic\EquipmentManager.cs" />
+    <Compile Include="Logic\Filter\BaseFilterAction.cs" />
+    <Compile Include="Logic\Filter\ColumnRuleSet.cs" />
+    <Compile Include="Logic\Filter\EnumFilterCriteria.cs" />
+    <Compile Include="Logic\Filter\FilterCriteria.cs" />
+    <Compile Include="Logic\Filter\FilterManager.cs" />
+    <Compile Include="Logic\Filter\FilterRuleSubSetForCriteria.cs" />
+    <Compile Include="Logic\Filter\RowRuleSet.cs" />
+    <Compile Include="Logic\Interface\ICountryManagercs.cs" />
+    <Compile Include="Logic\Interface\IEnterpriseManager.cs" />
+    <Compile Include="Logic\Interface\ILocationManager.cs" />
+    <Compile Include="Logic\Interface\IOrgUnitManager.cs" />
+    <Compile Include="Logic\Interface\IAccountManager.cs" />
+    <Compile Include="Logic\Interface\IOrgUnitRoleManager.cs" />
+    <Compile Include="Logic\Interface\IPersonManager.cs" />
+    <Compile Include="Logic\Interface\IRoleManager.cs" />
+    <Compile Include="Logic\Interface\ISecurityActionManager.cs" />
+    <Compile Include="Logic\Interface\IUserDomainManager.cs" />
+    <Compile Include="Logic\Interface\IUserManager.cs" />
+    <Compile Include="Logic\Interface\IUserHandler.cs" />
+    <Compile Include="Logic\LocationManager.cs" />
+    <Compile Include="Logic\Manager.cs" />
+    <Compile Include="Logic\Mockup\MockupUserManager.cs" />
+    <Compile Include="Logic\ObjectFlagManager.cs" />
+    <Compile Include="Logic\ObjectRelationManager.cs" />
+    <Compile Include="Logic\OnboardingManager.cs" />
+    <Compile Include="Logic\OrgUnitManager.cs" />
+    <Compile Include="Logic\OrgUnitRoleManager.cs" />
+    <Compile Include="Logic\OrgUnitRoleSearch.cs" />
+    <Compile Include="Logic\OrgUnitRoleSearchLINQ.cs" />
+    <Compile Include="Logic\PackageManager.cs" />
+    <Compile Include="Logic\EquipmentStatusLogic.cs" />
+    <Compile Include="Logic\PersonManager.cs" />
+    <Compile Include="Logic\ProcessMappingManager.cs" />
+    <Compile Include="Logic\ProcessStatusLogic.cs" />
+    <Compile Include="Logic\RoleManager.cs" />
+    <Compile Include="Logic\SecurityActionManager.cs" />
+    <Compile Include="Logic\TaskItemManager.cs" />
+    <Compile Include="Logic\UserDomainManager.cs" />
+    <Compile Include="Logic\UserManager.cs" />
+    <Compile Include="Logic\UserProcessStatus.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\DatabasePaging.cs" />
+    <Compile Include="Utils\DateTimeHelper.cs" />
+    <Compile Include="Utils\EMDGuid.cs" />
+    <Compile Include="Utils\EnterpriseTreeBuilder.cs" />
+    <Compile Include="Utils\EntityTree.cs" />
+    <Compile Include="Utils\EnumExtensions.cs" />
+    <Compile Include="Utils\EnumMonitoringStatus.cs" />
+    <Compile Include="Utils\LinqHelper.cs" />
+    <Compile Include="Utils\Monitoring.cs" />
+    <Compile Include="Utils\MonitoringResult.cs" />
+    <Compile Include="Utils\PropertyCopierProvider.cs" />
+    <Compile Include="Utils\StringHelper.cs" />
+    <Compile Include="Utils\TextAndNamingHelper.cs" />
+    <Compile Include="Utils\TupleUtils.cs" />
+    <Compile Include="Utils\WorkflowMessageHelper.cs" />
+    <Compile Include="WF\Message\EmplChangeWorkflowMessage.cs" />
+    <Compile Include="WF\Message\EmplCheckWorkflowMessage.cs" />
+    <Compile Include="WF\Message\IEmploymentInfos.cs" />
+    <Compile Include="WF\Message\ObreChangeWorkflowMessage.cs" />
+    <Compile Include="WF\Message\ObreRemoveWorkflowMessage.cs" />
+    <Compile Include="WF\Message\WorkflowBaseMessage.cs" />
+    <Compile Include="WF\Message\EmplAddWorkflowMessage.cs" />
+    <Compile Include="WF\Message\EnloAddWorkflowMessage.cs" />
+    <Compile Include="WF\Message\ObreAddWorkflowMessage.cs" />
+    <Compile Include="WF\Message\EmplRemoveWorkflowMessage.cs" />
+    <Compile Include="WF\Message\WorkflowAction.cs" />
+    <Compile Include="WF\WorkflowCallback.cs" />
+    <Compile Include="WF\WorkflowCallbackException.cs" />
+    <Compile Include="WF\WorkflowHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ClassDiagram2.cd" />
+    <None Include="DB\ClassDiagram.cd" />
+    <EntityDeploy Include="DB\EMD20DataModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>EMD20DataModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DB\EMD20DataModel.edmx.diagram">
+      <DependentUpon>EMD20DataModel.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Service References\ServiceReferenceProcessEngine\Kapsch.IS.EDP.Core.ServiceReferenceProcessEngine.ActivityItem.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReferenceProcessEngine\Kapsch.IS.EDP.Core.ServiceReferenceProcessEngine.ActivityResultMessageItem.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReferenceProcessEngine\Kapsch.IS.EDP.Core.ServiceReferenceProcessEngine.KeyValuePairItem.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReferenceProcessEngine\Kapsch.IS.EDP.Core.ServiceReferenceProcessEngine.WorkflowInstanceItem.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReferenceProcessEngine\Kapsch.IS.EDP.Core.ServiceReferenceProcessEngine.WorkflowInstanceStatusItem.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReferenceProcessEngine\Kapsch.IS.EDP.Core.ServiceReferenceProcessEngine.WorkflowItem.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReferenceProcessEngine\Service.wsdl" />
+    <None Include="Service References\ServiceReferenceProcessEngine\Service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiceReferenceProcessEngine\Service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiceReferenceProcessEngine\Service2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiceReferenceProcessEngine\Service3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiceReferenceProcessEngine\Service4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiceReferenceProcessEngine\Service5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServiceReferenceProcessEngine\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\ServiceReferenceProcessEngine\configuration.svcinfo" />
+    <None Include="Service References\ServiceReferenceProcessEngine\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\ServiceReferenceProcessEngine\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DB\EMD20DataModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EMD20DataModel.edmx</DependentUpon>
+      <LastGenOutput>EMD20DataModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DB\EMD20DataModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EMD20DataModel.edmx</DependentUpon>
+      <LastGenOutput>EMD20DataModel.cs</LastGenOutput>
+    </Content>
+    <None Include="Service References\ServiceReferenceProcessEngine\Service.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kapsch.IS.EDP.DataAccess\Kapsch.IS.EDP.DataAccess.csproj">
+      <Project>{a4294bb6-64aa-4dc3-a377-6649eb2bb1c7}</Project>
+      <Name>Kapsch.IS.EDP.DataAccess</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Documentation\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

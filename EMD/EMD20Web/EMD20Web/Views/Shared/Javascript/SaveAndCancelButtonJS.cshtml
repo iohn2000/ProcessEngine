@@ -1,0 +1,34 @@
+﻿<script type="text/javascript">
+    function onCancel(e) {
+        var controllerName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+        alert('Cancel ' + controllerName + 'What should i do?');
+    }
+
+    function onSave(e) {
+        var controllerName = '@ViewContext.RouteData.Values["Controller"].ToString()';
+        //alert('Save ' + controllerName);
+        var urlAction = '';
+        var locationPathname = location.pathname;
+        if ("/" + controllerName != locationPathname)
+        { urlAction = locationPathname + '/' + controllerName + "/Update"; }
+        else
+        { urlAction = locationPathname + "/Update"; }
+
+        alert('Save ' + controllerName);
+        
+        var dataValues = e;
+
+        $.ajax({
+            url: urlAction,
+            type: 'POST',
+            dataType: 'json',
+            data: dataValues,
+            success: function (response) {
+                alert(response.message);
+            },
+            error: function (response) {
+                alert('AJAX-Error' + response.message);
+            }
+        });
+    }
+</script>

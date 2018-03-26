@@ -1,0 +1,182 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.CategoryModel
+@using Kapsch.IS.EMD.EMD20Web.Models
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+@{
+    ViewBag.Title = "Edit Category";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/Category_Edit.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+<div id="formcontent">
+    @using (Ajax.BeginForm("Edit", "Category", null, new AjaxOptions
+    {
+        HttpMethod = "Post",
+        OnBegin = "formValidation.OnBegin(xhr)",
+        OnSuccess = "formValidation.OnSuccess(xhr)",
+        OnFailure = "formValidation.OnFailure(xhr)"
+    }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.Guid)
+        @Html.HiddenFor(model => model.Created)
+        @Html.HiddenFor(model => model.HistoryGuid)
+        @Html.HiddenFor(model => model.Modified)
+        @Html.HiddenFor(model => model.ValidFrom)
+        @Html.HiddenFor(model => model.ValidTo)
+        @Html.HiddenFor(model => model.ActiveFrom)
+        @Html.HiddenFor(model => model.ActiveTo)
+
+        <div id="formresults" class="infobox error" style="display:none"></div>
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="k-edit-form-container" style="float:left;">
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Name)
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Description)
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.CategoryType, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @(Html.Kendo().DropDownList()
+                            .OptionLabel("Please select")
+                            .Name("CategoryType")
+                            .DataTextField("Text")
+                            .DataValueField("Value")
+                            .Filter(FilterType.Contains)
+                            .IgnoreCase(true)
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
+                                {
+                                    read.Action("GetCategoryTypes", "Category");
+                                })
+                                .ServerFiltering(false);
+                            })
+                        )
+                        @Html.ValidationMessageFor(model => model.CategoryType, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                
+            </div>
+
+
+
+            <div style="clear:both;  "></div>
+
+            <div class="form-group" style="margin-left: 5px; margin-top: 30px; width: 100%">
+                <div style="width: 40%; float: left;">
+                    @(Html.Kendo().Grid(Model.AvailableEquipments)
+                            .Name("AvailableEquipments")
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .Sort(a => a.Add("Text"))
+                                .Events(events => events.Error("exceptionManager.Events.HandleError"))
+                                .ServerOperation(false)
+                             )
+                             .HtmlAttributes(new { @class = "k-grid-list k-grid-selectable", style = "height: 300px" })
+
+                             .Columns(columns =>
+                             {
+
+                                 columns.Bound(item => item.Text).Title("Available Equipments").Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter"))).Sortable(true);
+
+                             })
+                            .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+                             .Sortable(sortable => sortable.Enabled(true))
+                            .Pageable(p => p.Enabled(false))
+                            .Scrollable(s => s.Enabled(true))
+                                .Selectable(selectable => selectable
+                                .Mode(GridSelectionMode.Multiple)
+                            )
+
+                    )
+                </div>
+
+
+                <div style="float:left;  margin-left: 30px; margin-top: 30px">
+                    <button name="buttonToLeft" id="buttonToLeft" class="btn k-button kapsch-text-button" type="button" onclick="category.Events.OnClickRemoveEquipment()" style="margin: 0; height: 34px; padding: 7px"><i class="material-icons">arrow_back</i></button>
+                    <button name="buttonToRight" id="buttonToRight" class="btn k-button kapsch-text-button" type="button" onclick="category.Events.OnClickAddEquipment()" style="margin: 0; height: 34px; padding: 7px"><i class="material-icons">arrow_forward</i></button>
+                </div>
+
+                <div class="form-group1" style="float:left;  width: 40%; margin-left: 30px">
+                    @(Html.Kendo().Grid(Model.ConfiguredEquipments)
+                        .Name("ConfiguredEquipments")
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .ServerOperation(false)
+                            .Sort(a => a.Add("Text"))
+                            .Events(events => events.Error("exceptionManager.Events.HandleError"))
+                         )
+                         .HtmlAttributes(new { @class = "k-grid-list k-grid-selectable", style = "height: 300px" })
+                         .Columns(columns =>
+                         {
+
+                             columns.Bound(item => item.Text).Title("Configured Equipments").Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter"))).Sortable(true);
+
+                         })
+                        .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+                        .Sortable(sortable => sortable.Enabled(true))
+                        .Pageable(p => p.Enabled(false))
+                        .Scrollable(s => s.Enabled(true))
+                        .Selectable(selectable => selectable.Enabled(true).Mode(GridSelectionMode.Multiple))
+
+                    )
+                </div>
+
+            </div>
+
+            <div style="clear: both; width: 100%; "></div>
+            <div class="k-edit-form-container" style="float:left;">
+                <div class="form-group form-group-buttons">
+                    <label></label>
+                    <div class="col-md-10">
+                        <button type="button" value="Cancel" class="k-button kapsch-text-button" onclick="closeWindow();">Cancel</button>
+                        <input type="button" onclick="category.Communication.SaveConfiguredEquipments()" value="Save" class="btn k-button kapsch-text-button" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+</div>
+
+
+<script>
+    $(function () {
+        $("form").kendoValidator();
+    });
+
+    $(document).ready(function () {
+
+        @Html.Partial("ErrorHandling/ModalErrorWindowCheckForError")
+
+
+        $("#AvailableEquipments").dblclick(function () {
+            category.Functions.MoveSelectedItems("#AvailableEquipments", "#ConfiguredEquipments");
+        });
+
+        $("#ConfiguredEquipments").dblclick(function () {
+            category.Functions.MoveSelectedItems("#ConfiguredEquipments", "#AvailableEquipments");
+        });
+
+    });
+
+</script>

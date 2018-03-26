@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="ArrayOfWorkflowErrorItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="WorkflowErrorItem" nillable="true" type="tns:WorkflowErrorItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfWorkflowErrorItem" nillable="true" type="tns:ArrayOfWorkflowErrorItem" />
+  <xs:complexType name="WorkflowErrorItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="LineNumber" type="xs:int" />
+      <xs:element minOccurs="0" name="LinePosition" type="xs:int" />
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WorkflowErrorItem" nillable="true" type="tns:WorkflowErrorItem" />
+  <xs:complexType name="WorkflowMessageDataItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="WorkflowDefinitionID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WorkflowVariables" nillable="true" type="tns:ArrayOfWorkflowMessageVariableItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WorkflowMessageDataItem" nillable="true" type="tns:WorkflowMessageDataItem" />
+  <xs:complexType name="ArrayOfWorkflowMessageVariableItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="WorkflowMessageVariableItem" nillable="true" type="tns:WorkflowMessageVariableItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfWorkflowMessageVariableItem" nillable="true" type="tns:ArrayOfWorkflowMessageVariableItem" />
+  <xs:complexType name="WorkflowMessageVariableItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="VarName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="VarValue" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WorkflowMessageVariableItem" nillable="true" type="tns:WorkflowMessageVariableItem" />
+  <xs:complexType name="ArrayOfKeyValuePairItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="KeyValuePairItem" nillable="true" type="tns:KeyValuePairItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfKeyValuePairItem" nillable="true" type="tns:ArrayOfKeyValuePairItem" />
+  <xs:complexType name="KeyValuePairItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Key" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Value" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="KeyValuePairItem" nillable="true" type="tns:KeyValuePairItem" />
+</xs:schema>

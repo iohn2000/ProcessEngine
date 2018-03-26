@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="b5c22589-f416-440d-b920-8ab5e0f638b1" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://s900b112:7000/AuditLogWS_DEV/IAuditLogService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="IAuditLogService.disco" MetadataType="Disco" ID="eae4399e-66ec-42da-89a8-ce97f9b67deb" SourceId="1" SourceUrl="http://s900b112:7000/AuditLogWS_DEV/IAuditLogService.svc?disco" />
+    <MetadataFile FileName="IAuditLogService.xsd" MetadataType="Schema" ID="d8fd268e-bed8-4a5c-88cc-3ae7c15fefbd" SourceId="1" SourceUrl="http://s900b112:7000/AuditLogWS_DEV/IAuditLogService.svc?xsd=xsd0" />
+    <MetadataFile FileName="AuditLogService.wsdl" MetadataType="Wsdl" ID="fd055613-4187-4b6a-ad36-23b3552fa1ff" SourceId="1" SourceUrl="http://s900b112:7000/AuditLogWS_DEV/IAuditLogService.svc?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

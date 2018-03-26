@@ -1,0 +1,90 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.ManagePackageEquipmentModel
+
+@{
+    ViewBag.Title = "ViewManageEquipment";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/Package_ViewManageEquipment.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+<div id="formcontent1" style="float:left; width: 100%">
+        @Html.AntiForgeryToken()
+
+        <div id="formresults" class="infobox error" style="display:none"></div>
+
+        <div class="form-horizontal1">
+
+            <h4>Package: @Model.PackageName</h4>
+
+            <div class="k-edit-form-container1">
+
+
+
+
+                <div style="float:left;  margin-left: 30px; margin-top: 30px">
+              
+                </div>
+
+                <div class="form-group1" style="float:left;  width: 40%; margin-left: 30px">
+                    @(Html.Kendo().Grid(Model.ConfiguredEquipments)
+                        .Name("ConfiguredEquipmentsView")
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .ServerOperation(false)
+                            .Sort(a => a.Add("Text"))
+                            .Events(events => events.Error("exceptionManager.Events.HandleError"))
+                         )
+                         .HtmlAttributes(new { @class = "k-grid-list", style = "height: 500px" })
+                         .Columns(columns =>
+                         {
+
+                             columns.Bound(item => item.Text).Title("Configured Equipment").Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter"))).Sortable(true);
+
+                         })
+                        .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+                        .Sortable(sortable => sortable.Enabled(true))
+                        .Pageable(p => p.Enabled(false))
+                        .Scrollable(s => s.Enabled(true))
+                        
+
+                    )
+                </div>
+                <div style="clear: both; width: 100%; height: 20px"></div>
+
+                <div class="form-group form-group-buttons">
+                    <label></label>
+                    <div class="col-md-10">
+                        <button type="button" value="Close" class="k-button" onclick="closeWindow();">Close</button>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    equipmentMapping.Entities.PackageGuid = '@Model.PackageGuid';
+
+
+    $(document).ready(function () {
+
+        @Html.Partial("ErrorHandling/ModalErrorWindowCheckForError")
+
+
+        $("#AvailableEquipments").dblclick(function () {
+            equipmentMapping.Functions.MoveSelectedItems("#AvailableEquipments", "#ConfiguredEquipments");
+        });
+
+        $("#ConfiguredEquipments").dblclick(function () {
+            equipmentMapping.Functions.MoveSelectedItems("#ConfiguredEquipments", "#AvailableEquipments");
+        });
+
+    });
+
+
+</script>

@@ -1,2 +1,2 @@
 # ProcessEngine
-ProcessEngine, initialer checkin Stand Project Release 18
+ProcessEngine, initial checkin Stand Project Release 18

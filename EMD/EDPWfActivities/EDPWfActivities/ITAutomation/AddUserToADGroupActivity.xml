@@ -1,0 +1,11 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.ITAutomation.AddUserToADGroupActivity" instance=".AddUserToADGroupActivity">
+  <name>User - Add User To AD Group</name>
+  <properties>
+    <!-- -->
+    <property name="UserID" direction="input" dataType="stringType" />
+    <property name="ADGroup" direction="input" dataType="stringType" />
+    <property name="ScriptRunID" direction="output" dataType="stringType" />
+  </properties>
+  <transition to=".ITAutomationActivityWait"/>
+</activity>
+

@@ -1,0 +1,25 @@
+﻿@(
+    Html.Kendo().DropDownListFor(m => m)
+    .OptionLabel("Please select")
+    .Name("Enterprise")
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .HtmlAttributes(new { @style = "width:300px" })
+    .Filter(FilterType.Contains)
+    .IgnoreCase(true)
+    .DataSource(source =>
+    {
+        source.Read(read =>
+        {
+            read.Action("ReadForSelect", "Enterprise");
+        })
+        .ServerFiltering(false);
+    })
+    .Events(e => {
+        e.Change("onEnterpriseSelect");
+        //.Cascade("onEnterpriseCascade");
+    })
+)
+
+
+

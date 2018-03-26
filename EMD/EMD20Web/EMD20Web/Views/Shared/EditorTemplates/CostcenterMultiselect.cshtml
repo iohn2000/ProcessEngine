@@ -1,0 +1,16 @@
+﻿
+@(Html.Kendo().MultiSelect()
+                .Name("Account")
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .Filter(FilterType.Contains)
+                .Placeholder("Please select")
+                .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("ReadForSelect", "Account");
+                    })
+                    .ServerFiltering(true);
+                })
+)

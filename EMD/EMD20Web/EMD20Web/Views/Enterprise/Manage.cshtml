@@ -1,0 +1,99 @@
+﻿@using Kapsch.IS.EMD.EMD20Web.Models;
+
+@{
+    ViewBag.Title = "Enterprises";
+    ViewBag.Identifier = "EnterpriseManagement";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/Enterprise_Manage.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+@if (Model.CanView || Model.CanManage)
+{
+    @(Html.Kendo().Grid<EnterpriseModel>()
+            .Name("Grid").HtmlAttributes(new { @class = "k-grid-big" })
+
+            .Sortable()
+            .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+              .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(true)
+                .ButtonCount(5)
+                .PageSizes(new[] { 15, 50, 100 }))
+            .Scrollable(s => s.Enabled(true).Height("auto"))
+            .Columns(columns =>
+            {
+                columns.Bound(item => item.Guid).Title("")
+                .ClientTemplate(
+                                    "# if (CanManage == true) { #"
+                                    + "<a title='Edit' href='\\#' "
+                                    + "onclick='showInWindow(\""
+                                    + "/Enterprise/Edit/"
+                                    + "#= Guid #/true\",\"Edit Enterprise\");' "
+                                    + "data-id='#=Guid#'"
+                                    + ">"
+                                    + "<i class='material-icons'>edit</i>"
+                                    + "</a>"
+                                    + "<a title='Delete' href='\\#' "
+                                    + "onclick='enterprise.Functions.Delete(\"#=Guid#\",\"Enterprise\",\"#=NameLong#\");' "
+                                    + "data-id='#=Guid#'"
+                                    + ">"
+                                    + "<i class='material-icons'>delete</i>"
+                                    + "</a>"
+
+                                    + "# } else {#"
+
+                                    + "<a title='View' href='\\#' "
+                                    + "onclick='showInWindow(\""
+                                    + "View/"
+                                    + "#= Guid #/true\",\"View Enterprise\");' "
+                                    + "data-id='#=Guid#'"
+                                    + ">"
+                                    + "<i class='material-icons'>pageview</i>"
+                                    + "</a>"
+
+                                    + "#} #"
+                                  ).Width(60).Filterable(false);
+
+                columns.Bound(item => item.NameShort).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter"))).Width(200);
+                columns.Bound(item => item.NameLong).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter"))).Width(350);
+                columns.Bound(item => item.HasDistributionEmailAddress).Filterable(ftb => ftb.Cell(cell => cell.Operator("eq").SuggestionOperator(FilterType.Contains).ShowOperators(false)).Messages(m => m.IsFalse("no").IsTrue("yes"))).ClientTemplate("<input type='checkbox' disabled #= HasDistributionEmailAddress == true ? checked='checked' : '' # />").Width(140);
+                columns.Bound(item => item.E_ID_new).Filterable(ftb => ftb.Cell(cell => cell.Template("kendoHelper.IntegerFilter")));
+                columns.Bound(item => item.E_ID_new_Parent).Filterable(ftb => ftb.Cell(cell => cell.Template("kendoHelper.IntegerFilter")));
+                columns.Bound(item => item.E_ID_new_Root).Filterable(ftb => ftb.Cell(cell => cell.Template("kendoHelper.IntegerFilter")));
+                columns.Bound(item => item.E_ID).Filterable(ftb => ftb.Cell(cell => cell.Template("kendoHelper.IntegerFilter")));
+                columns.Bound(item => item.O_Name_Dis).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+                //columns.Bound(item => item.ActiveFromDateOnly).Format("{0:dd.MM.yyyy}").Width(200);
+
+            })
+
+        .Editable(editable => editable.Mode(GridEditMode.PopUp).DisplayDeleteConfirmation(false).Window(win => win.Width(700)))
+        .ToolBar(tb =>
+        {
+            if (Model.CanManage)
+            {
+                tb.Custom().Text("Add Enterprise").Url("#").HtmlAttributes(new { onclick = "showInWindow('/Enterprise/Create/true','Add Enterprise',false);", @class = "kapsch-text-button" });
+            }
+            //tb.Custom().Text("Clear Filter").Url("#").HtmlAttributes(new { onclick = "kendoHelper.Grid.ClearFilter('#Grid');", @class = "kapsch-text-button" });
+        })
+
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .ServerOperation(true)
+        .Sort(a => a.Add("NameShort").Ascending())
+        .PageSize(15)
+        .Model(model => model.Id(item => item.Guid))
+        .Read(read => read.Action("Read", "Enterprise"))
+        .Events(events => events.Error("exceptionManager.Events.HandleError"))
+        )
+    )
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var url = '@Request.Url';
+            kendoHelper.Grid.FilterGrid('#Grid', "Guid", "equals", url);
+        });
+    </script>
+}
+
+

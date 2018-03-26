@@ -1,0 +1,13 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.EntityCheck.EntityCheckActivity" instance=".EntityCheckActivity">
+  <name>EntityCheck Activity</name>
+  <description>
+    handle EntityCheck for Reset, Deletion and TaskItem-Update
+  </description>
+  <properties>
+    <property name = "EntityCheckGuid"  direction="input"  dataType="stringType" ></property>
+    <property name = "TaskItemGuid"  direction="input"  dataType="stringType" ></property>
+    <property name = "DoDeleteEntityCheck"  direction="input"  dataType="boolType" ></property>
+    <property name = "DoResetEntityCheck"  direction="input"  dataType="boolType" ></property>
+  </properties>
+  <transition to=".xx"/>
+</activity>

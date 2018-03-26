@@ -1,0 +1,178 @@
+﻿@using Kapsch.IS.EMD.EMD20Web.Models;
+@model IEnumerable<PackageModel>
+
+    <div>
+        <div style="padding: 15px;width: 992px;float:left;display:block;">
+            <script type="text/x-kendo-tmpl" id="template">
+                <div class="listitem">
+                    <h3 id="#:Guid#" style="color:#:Color#;">#:Name#</h3>
+                </div>
+            </script>
+
+            <p>Manage available equipments for: @Html.Raw(ViewData["BusinessRelationName"]) - (@Html.Raw(ViewData["ObjectContainerGuid"]))</p>
+
+            @(Html.Kendo().Button().Name("buttonSave").Content("Save").Events(ev => ev.Click("saveEquipments")))
+            @(Html.Kendo().Button().Name("buttonCancel").Content("Cancel").Events(ev => ev.Click("cancel")))
+
+            @(Html.Kendo().ListView<PackageModel>(Model)
+    .Name("EquipmentAll")
+    .TagName("div")
+    .ClientTemplateId("template")
+    .DataSource(dataSource =>
+    {
+        dataSource.Read(read => read.Action("ReadEquipmentDefinitionListNotInPackage", "EquipmentDefinition", new { BR_Guid = @Html.Raw(ViewData["BR_Guid"]) }));
+        //dataSource.Read(read => read.Action("Read", "Role"));
+        //dataSource.PageSize(12);
+    })
+    .Pageable(p => p.Enabled(false))
+    .Selectable(selectable => selectable.Enabled(true).Mode(ListViewSelectionMode.Multiple))
+            .HtmlAttributes(new { style = "float:left;width:300px;min-height:500px;" })
+            //.Events(events => events.Change("onChange").DataBound("onDataBound"))
+            )
+
+            @(Html.Kendo().Button().Name("buttonToLeft").Content("").HtmlAttributes(new { style = "position:relative;top:150px;margin-left:25px;", @class = "icon-caret-left kapsch-icon-button listview-move-arrow" }))
+            @(Html.Kendo().Button().Name("buttonToRight").Content("").HtmlAttributes(new { style = "position:relative;top:150px;", @class = "icon-caret-right kapsch-icon-button listview-move-arrow" }))
+
+            @(Html.Kendo().ListView<PackageModel>(Model)
+    .Name("EquipmentSelected")
+    .TagName("div")
+    .ClientTemplateId("template")
+    .DataSource(dataSource =>
+    {
+        dataSource.Read(read => read.Action("ReadEquipmentDefinitionListForPackage", "EquipmentDefinition",new { BR_Guid = @Html.Raw(ViewData["BR_Guid"]) }));
+        //dataSource.Read(read => read.Action("Read", "Role"));
+        //dataSource.PageSize(12);
+    })
+    .Pageable(p => p.Enabled(false))
+    .Selectable(selectable => selectable.Enabled(true).Mode(ListViewSelectionMode.Multiple))
+    .HtmlAttributes(new { style = "margin-left:400px;width:300px;min-height:500px;" })
+
+            //.Events(events => events.Change("onChange").DataBound("onDataBound"))
+            )
+
+        </div>
+
+
+        <script type="text/javascript">
+    $(document).ready(function () {
+
+        @Html.Partial("ErrorHandling/ModalErrorWindowCheckForError")
+
+        $("#buttonToRight").kendoButton({
+            click: moveSelectedItemsWithButtons
+        });
+
+        $("#buttonToLeft").kendoButton({
+            click: moveSelectedItemsWithButtons
+        });
+
+        $("#EquipmentAll").dblclick(function () {
+            moveSelectedItems("#EquipmentAll","#EquipmentSelected");
+        });
+
+        $("#EquipmentSelected").dblclick(function () {
+            moveSelectedItems("#EquipmentSelected", "#EquipmentAll");
+        });
+
+    });
+
+    function moveSelectedItemsWithButtons(e)
+    {
+        if (e.sender.element[0].id == "buttonToRight") {
+            var ListViewFrom = "#EquipmentAll";
+            var ListViewTo = "#EquipmentSelected";
+
+        }
+        else {
+            var ListViewFrom = "#EquipmentSelected";
+            var ListViewTo = "#EquipmentAll";
+
+        }
+        moveSelectedItems(ListViewFrom, ListViewTo);
+    }
+
+    function moveSelectedItems(ListViewFrom, ListViewTo)
+    {
+        var listView = $(ListViewFrom).data("kendoListView");
+        var listViewSelected = $(ListViewTo).data("kendoListView");
+
+        var listViewDataSource = listView.dataSource;
+        var listViewSelectedDataSource = listViewSelected.dataSource;
+
+        var y = $.map($(ListViewFrom).data('kendoListView').select(), function (item)
+        {
+            dataItem = listViewDataSource.getByUid($(item).attr("data-uid"));
+            listViewSelectedDataSource.add(dataItem.toJSON());
+            listViewDataSource.remove(dataItem);
+            //return ($(item).attr("data-uid"));
+        });
+
+        var lvItems = $(ListViewTo).children('.listitem');
+        lvItems.sort(SortByName);
+
+        var lvSorted = lvItems;
+        for (var i = lvItems.length, l = 0; i > l; i--) {
+            dataItem = listViewSelectedDataSource.getByUid(lvItems[i - 1].getAttribute('data-uid'));
+            listViewSelectedDataSource.remove(dataItem);
+            listViewSelectedDataSource.insert(0, dataItem.toJSON());
+        }
+    }
+
+    function SortByName(a, b) {
+        //var aName = a.children[0].getAttribute('id').toLowerCase();
+        //var bName = b.children[0].getAttribute('id').toLowerCase();
+        var aName = a.children[0].innerHTML.toLowerCase();
+        var bName = b.children[0].innerHTML.toLowerCase();
+        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+    }
+
+    //$("#buttonCancel").click(function () {
+    //    $(this).closest("[data-role=window]").kendoWindow("close");
+    //});
+
+    function saveEquipments() {
+        var listViewSelected = $("#EquipmentSelected").data("kendoListView");
+        var listViewSelectedDataSource = listViewSelected.dataSource.view();
+        //var items = listViewSelectedDataSource
+        var equipments = new Array();
+        for (var i = 0; i < listViewSelectedDataSource.length; i++) {
+            var dataitem = listViewSelectedDataSource[i];
+            equipments.push(dataitem.Guid);
+        }
+
+        var ocid= '@Html.Raw(ViewData["ObjectContainerGuid"])';
+
+        $.ajax({
+            url: "CreateObjectContainerEquipments",
+            type: 'Post',
+            data: {
+                OC_Guid:  ocid,
+                EQ_Guids: equipments
+            },
+            success: function (response) {
+                alert("Success");
+                //$("#winRoleEquipments").data("kendoWindow").close();
+
+            },
+            error: function (response) {
+                alert('AJAX-Error' + response);
+            }
+        });
+
+    }
+
+            function cancel() {
+                //var wind = $("#winRoleEquipments").data("kendoWindow");
+                //wind.destroy();
+            //var closeIcon = $('span.k-i-close');
+            //closeIcon.click();
+            //$("#winRoleEquipments").data("kendoWindow").close();
+                //$('#winRoleEquipments').hide();
+                $('#winRoleEquipments').parent().hide();
+                $('#winRoleEquipments').parent().prev().hide();
+    }
+    </script>
+
+    </div>
+
+

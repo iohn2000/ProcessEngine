@@ -1,0 +1,34 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.TaskDecision.TaskDecisionActivityWait" instance=".TaskDecisionActivityWait">
+  <name>Task Wait</name>
+  <linkedTo instance=".TaskDecisionActivity" />
+  
+  <properties>
+    <property name="pollingIntervalSeconds" direction="input"  dataType="intType"/>
+    <property name="timeOutIntervalDays"    direction="input"  dataType="intType" />
+    <!-- 
+      <TaskGuiResponse>
+        <Items>
+          <Item key="approvalDecision">approve</Item>
+        </Items>
+      </TaskGuiResponse>
+    -->
+    <property name="demoDecision"           direction="input"  dataType="stringType"/>
+    <property name="returnStatus"           direction="output" dataType="stringType"/>
+  </properties>
+  
+  <transition to="">
+    <condition>
+      <![CDATA["{{xx.Key_VariableName}}" = "decisionOption_1"]]>
+    </condition>
+  </transition>
+  <transition to="">
+    <condition>
+      <![CDATA["{{xx.Key_VariableName}}" = "decisionOption_2"]]>
+    </condition>
+  </transition>
+  <transition to="">
+    <condition>
+      <![CDATA["{{.returnStatus}}" = "timeout"]]>
+    </condition>
+  </transition>
+</activity>

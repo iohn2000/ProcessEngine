@@ -1,0 +1,5 @@
+﻿<activity nr="" id="Kapsch.IS.ProcessEngine.WFActivity.ANDGateway.ANDGatewayActivity" instance=".ANDGatewayActivity">
+  <name>AND Parallel Gateway</name>
+  <properties />
+  <transition to="" default="true" />
+</activity>

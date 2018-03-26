@@ -1,0 +1,76 @@
+﻿@using Kapsch.IS.EMD.EMD20Web.Models.Workflow;
+
+@{
+    ViewBag.Title = "Mappings";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/Workflow_Mapping.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+@{ Boolean CanEdit = true; }
+
+@(Html.Kendo().Grid<WorkflowActionModel>()
+        .Name("Grid").HtmlAttributes(new { @class = "k-grid-big" })
+        .ToolBar(tb =>
+        {
+            if (CanEdit)
+            {
+                tb.Custom().Text("Create Mapping").Url("#").HtmlAttributes(new { onclick = "showInWindow('AddMapping/true','Create Mapping');", @class = "kapsch-text-button" });
+            }
+        })
+        .Sortable(sortable => sortable
+            .AllowUnsort(true)
+            .SortMode(GridSortMode.MultipleColumn))
+        .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+        .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(true)
+            .ButtonCount(5)
+            .PageSizes(new[] { 10, 15, 50 }))
+        .Scrollable(s => s.Enabled(true).Height("auto"))
+        .Columns(columns =>
+        {
+            columns.Bound(item => item.Guid).Title("").Filterable(false).Width(70)
+                // .ClientTemplate(@"<a href=""#"" onclick='showInWindow(""Edit/#= IdWorkflow #"",""Edit Workflow"");' data-id=""#=IdWorkflow#"">Edit</a>");
+                .ClientTemplate("<a title='Edit' href='\\#' "
+                + "onclick='showInWindow(\""
+                + "EditMapping/"
+                + "#= Guid #/true\",\"Edit Mapping\");' "
+                + "data-id='#=Guid#'"
+                + ">"
+                + "<i class='material-icons'>edit</i>"
+                + "</a>"
+                + "<a title='Delete' href='\\#' "
+                + "onclick='workflowMapping.Functions.Delete(\"#=Guid#\",\"Workflow Mapping\",\"#=MappedObjectTypeName#\");' "
+                + "data-id='#=Guid#'"
+                + ">"
+                + "<i class='material-icons'>delete</i>"
+                + "</a>"
+                );
+
+
+            columns.Bound(item => item.MappedObjectTypeName).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+            columns.Bound(item => item.MappedObjectName).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+            columns.Bound(item => item.Method).Width(140).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+
+            columns.Bound(item => item.WorkflowName).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+            columns.Bound(item => item.CreatedDateOnly).Format("{0:dd.MM.yyyy}").Width(200);
+        })
+
+
+
+        .Editable(editable => editable.Mode(GridEditMode.PopUp).DisplayDeleteConfirmation(false).Window(win => win.Width(700)))
+
+        .DataSource(dataSource => dataSource
+        .Ajax().ServerOperation(true)
+        .Sort(a =>
+        {
+            a.Add("MappedObjectTypeName").Descending();
+            a.Add("CreatedDateOnly").Descending();
+        })
+    .PageSize(15)
+    .Model(model => model.Id(p => p.Guid))
+            .Read("ReadMappings", "Workflow")
+    .Events(events => events.Error("exceptionManager.Events.HandleError"))
+)
+)

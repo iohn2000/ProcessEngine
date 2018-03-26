@@ -1,0 +1,15 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.ProcessEntity.StoreProcessEntityDataActivity" instance=".StoreProcessEntityDataActivity">
+  <name>Store ProcessEntity Data</name>
+  <description>
+    Store specific WF data to ProcessEntity in EDP
+  </description>
+  <properties>
+    <property name="EntityGuid"  direction="input"  dataType="stringType" ></property>
+    <property name="WFResultMessages"  direction="input"  dataType="stringType" ></property>
+    <property name="RequestorEmplGuid"  direction="input"  dataType="stringType" ></property>
+    <property name="EffectedPersGuid"  direction="input"  dataType="stringType" ></property>
+    <property name="WFStartTime"  direction="input"  dataType="stringType" ></property>
+    <property name="WFTargetDate"  direction="input"  dataType="stringType" ></property>
+  </properties>
+  <transition to=".xx"/>
+</activity>

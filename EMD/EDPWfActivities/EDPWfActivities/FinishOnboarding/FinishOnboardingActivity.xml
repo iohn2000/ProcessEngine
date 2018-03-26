@@ -1,0 +1,17 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.FinishOnboarding.FinishOnboardingActivity" instance=".FinishOnboardingActivity">
+  <name>Onboarding Finish</name>
+  <properties>
+    <property name="RequestingPersonEmploymentGuid"  direction="input"   dataType="stringType" />
+    <property name="EffectedPersonEmploymentGuid"    direction="input"   dataType="stringType" />
+    <property name="EffectedAccountGuid"             direction="input"   dataType="stringType" />
+    <property name="EffectedOrgUnitGuid"             direction="input"   dataType="stringType" />
+    <property name="ContactsXdoc"                    direction="input"   dataType="stringType" />
+    <property name="EmailType"                       direction="input"   dataType="stringType" />
+    <property name="parentEnteGuid"                  direction="input"   dataType="stringType" />
+    <property name="TargetDate"                      direction="input"   dataType="stringType" />
+    
+    <property name="NeedPersNrTask"                  direction="output"  dataType="stringType" />
+    <property name="ReturnStatus"                    direction="output"  dataType="stringType" />
+  </properties>
+  <transition to=".XXX"/>
+</activity>

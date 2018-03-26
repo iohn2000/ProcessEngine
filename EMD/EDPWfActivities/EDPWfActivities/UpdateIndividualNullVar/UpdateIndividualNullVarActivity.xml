@@ -1,0 +1,10 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.UpdateIndividualNullVar.UpdateIndividualNullVarActivity" instance=".UpdateIndividualNullVarActivity">
+  <name>Variable add or update (null punkt)</name>
+  <properties>
+    <!-- name of 0. variable -->
+    <property name="nullVariableName"  direction="input"   dataType="stringType" />
+    <!-- value of 0. variable -->
+    <property name="nullVariableValue" direction="input"   dataType="stringType" />
+  </properties>
+  <transition to=".XXX"/>
+</activity>

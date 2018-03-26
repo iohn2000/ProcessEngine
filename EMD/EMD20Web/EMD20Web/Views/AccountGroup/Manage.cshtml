@@ -1,0 +1,91 @@
+﻿
+@using Kapsch.IS.EMD.EMD20Web.Models;
+@model Kapsch.IS.EMD.EMD20Web.Models.GroupAccountManagementModel
+@{
+    ViewBag.Title = "Costcenter Groups";
+    ViewBag.Identifier = "AccountGroupManagement";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/AccountGroup_Manage.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+
+@if (Model.CanView || Model.CanManage)
+{
+    @(Html.Kendo().Grid<GroupAccountManagementModel>()
+        .Name("Grid").HtmlAttributes(new { @class = "k-grid-big" })
+
+        .Sortable()
+        .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+          .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(true)
+            .ButtonCount(5)
+            .PageSizes(new[] { 15, 50, 100 }))
+        .Scrollable(s => s.Enabled(true).Height("auto"))
+        .Columns(columns =>
+        {
+            columns.Bound(item => item.Guid).Title("")
+            .ClientTemplate(
+
+
+                                 "<a title='Edit' href='\\#' "
+                                + "onclick='showInWindow(\""
+                                + "/AccountGroup/Edit/"
+                                + "#= Acgr_Guid #/true\",\"Edit costcenter group\");' "
+                                + "data-id='#=Acgr_Guid#'"
+                                + ">"
+                                + "<i class='material-icons'>edit</i>"
+                                + "</a>"
+                                + "<a title='Delete' href='\\#' "
+                                + "onclick='accountGroup.Functions.Delete(\"#=Acgr_Guid#\",\"Costcenter group\",\"#=Name# | #=EnterpriseName# | #=AccountName#\");' "
+                                + "data-id='#=Guid#'"
+                                + ">"
+                                + "<i class='material-icons'>delete</i>"
+                                + "</a>"
+
+
+                              ).Width(60).Filterable(false);
+
+
+            columns.Bound(item => item.Name).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+            columns.Bound(item => item.EnterpriseName).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+            columns.Bound(item => item.AccountName).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+
+
+        })
+
+        .Editable(editable => editable.Mode(GridEditMode.PopUp).DisplayDeleteConfirmation(false).Window(win => win.Width(700)))
+        //.ToolBar(tb => tb.Custom().Text("Add Country").Url("#").HtmlAttributes(new { onclick = "showInWindow('Create/true','Add Country',false);", @class = "kapsch-text-button" }))
+        .ToolBar(tb =>
+        {
+            if (Model.CanManage)
+            {
+                tb.Custom().Text("Add costcenter group").Url("#").HtmlAttributes(new { onclick = "showInWindow('/AccountGroup/Add/true','Add costcenter group',false);", @class = "kapsch-text-button" });
+            }
+            //tb.Custom().Text("Clear Filter").Url("#").HtmlAttributes(new { onclick = "kendoHelper.Grid.ClearFilter('#Grid');", @class = "kapsch-text-button" });
+        })
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .ServerOperation(true)
+            .Sort(a =>
+            {
+                a.Add("Name").Ascending();
+                a.Add("EnterpriseName").Ascending();
+                a.Add("AccountName").Ascending();
+
+            })
+            .PageSize(15)
+            .Model(model => model.Id(item => item.Guid))
+            .Read(read => read.Action("Read", "AccountGroup"))
+            .Events(events => events.Error("exceptionManager.Events.HandleError"))
+        )
+    )
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var url = '@Request.Url';
+            kendoHelper.Grid.FilterGrid('#Grid', "Guid", "equals", url);
+        });
+    </script>
+}

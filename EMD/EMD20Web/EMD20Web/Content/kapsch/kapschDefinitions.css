@@ -1,0 +1,33 @@
+﻿/*---- global variables ----*/
+/*--- colors ---*/
+/* Sizes */
+/* standard tags */
+html {
+  margin: 0;
+  padding: 0;
+  min-width: 1024px;
+}
+body {
+  font-family: Roboto, sans-serif;
+  margin: 0;
+  font-size: 14px;
+}
+/* --- Designclasses --- */
+.lightbox {
+  background-color: #afb0b3;
+  color: #5f6268;
+}
+.darkbox {
+  background-color: #5f6268;
+  color: #f1f1f1;
+}
+/* --- Colorclasses --- */
+.green {
+  color: #33cc66 !important;
+}
+.red {
+  color: #ff2d56 !important;
+}
+.dark {
+  color: #5f6268 !important;
+}

@@ -1,0 +1,60 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.EmploymentTabModel
+
+@(
+    Html.Kendo().DropDownList().Name("ddWinAddEquipment" + Model.EP_Guid)
+    .DataTextField("Name")
+    .DataValueField("BR_Guid")
+    .HtmlAttributes(new { style = "width: 100%" })
+    .BindTo((System.Collections.IEnumerable)ViewData["EquipmentsForEmploymentAvailableToAdd" + Model.EP_Guid])
+)
+
+<br /><br />
+
+
+@Html.Kendo().Button().Name("btnWinAddEquipment" + Model.EP_Guid).Content("Add Equipment")
+
+<script type="text/javascript">
+    var btnWinAddPackage = '#btnWinAddEquipment'+'@Model.EP_Guid';
+    $(btnWinAddPackage).click(function (e) {
+      e.preventDefault();
+      
+      var ep_guid = '@Model.EP_Guid';
+      var dropdownlistId = '#ddWinAddEquipment'+'@Model.EP_Guid';
+
+        alert("Equipment Add To Implement - " + dropdownlistId );
+        var dropdownlistEQ = $(dropdownlistId).data("kendoDropDownList");
+        if (dropdownlistEQ == null)
+        {
+            alert('x');
+        }
+        else {
+            alert('y');
+        }
+        
+        var dropdownlistValue = dropdownlistEQ.value();
+        alert(dropdownlistValue);
+
+        
+
+      $.ajax({
+          url: "/Equipment/CreateEquipmentForEmployment",
+          type: 'Post',
+          data: {
+              EP_Guid: ep_guid,
+              BR_Guid: dropdownlistValue
+          },
+          success: function (response) {
+              alert("Success");
+              //$("#winRoleEquipments").data("kendoWindow").close();
+
+          },
+          error: function (response) {
+              alert('AJAX-Error' + response);
+          }
+      });
+
+
+    });
+
+
+</script>

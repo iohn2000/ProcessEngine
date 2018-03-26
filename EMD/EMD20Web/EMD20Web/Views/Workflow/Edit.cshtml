@@ -1,0 +1,127 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.WorkflowModel
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+@{
+    ViewBag.Title = "Edit Workflow";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/Workflow_Edit.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+    <div id="formcontent">
+
+
+        @using (Ajax.BeginForm("Edit", "Workflow", null, new AjaxOptions
+        {
+            HttpMethod = "Post",
+            OnBegin = "formValidation.OnBegin(xhr)",
+            OnSuccess = string.IsNullOrEmpty(Model.IdWorkflow) ? "formValidation.OnSuccess(xhr)" : "workflow.Functions.OnWorkflowDefinitionSaveSuccess(xhr)",
+            OnFailure = "formValidation.OnFailure(xhr)"
+        }))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(model => model.IdWorkflow);
+            @Html.HiddenFor(model => model.Definition);
+            @Html.HiddenFor(model => model.ActiveProcesses);
+            @Html.HiddenFor(model => model.Version);
+            @Html.HiddenFor(model => model.CheckedOutBy);
+            @Html.HiddenFor(model => model.Created);
+
+            if (Model.IdWorkflow != null)
+            {
+                <div class="form-group form-group-inline">
+                    <label>Version:</label><div id="workflow-version">@Model.Version</div>
+                </div>
+                <div class="form-group form-group-inline">
+                    <label>Checked Out by:</label><div id="workflow-checkoutname">@Model.CheckedOutBy</div>
+                </div>
+
+                <div style="margin-top: 10px">
+                    <button id="button-checkout" type="button" class="k-button kapsch-text-button" @(Model.IsCheckedOut ? "disabled" : "") onclick="workflow.Communication.Checkout('@Model.IdWorkflow')">Checkout</button>
+                    <button id="button-checkin" type="button" class="k-button kapsch-text-button" @(Model.CheckedOutByUserId != Model.OwnUserGuid ? "disabled" : "") onclick="workflow.Communication.Checkin('@Model.IdWorkflow')">Checkin</button>
+                    <button id="button-undocheckout" type="button" class="k-button kapsch-text-button" @(Model.CheckedOutByUserId != Model.OwnUserGuid ? "disabled" : "") onclick="workflow.Communication.UndoCheckout('@Model.IdWorkflow')">Undo Checkout</button>
+                </div>
+
+                <hr style="margin-bottom: 20px; margin-top: 20px" />
+
+            }
+
+
+            <div id="formresults" class="infobox error" style="display:none"></div>
+
+            <div class="form-horizontal">
+
+
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="k-edit-form-container" style="float:left;">
+                    <div class="form-group">
+                        @Html.LabelForRequired(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelForRequired(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control k-textbox" })
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        @Html.LabelForRequired(model => model.ValidFrom, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.ValidFrom, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ValidFrom, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelForRequired(model => model.ValidTo, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.ValidTo, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ValidTo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-buttons">
+                        <label></label>
+                        <div class="col-md-10">
+                            <input id="button-save" type="submit" value="Save" class="btn k-button kapsch-text-button" @(Model.CheckedOutByUserId != Model.OwnUserGuid ? "disabled" : "") />
+                            <button type="button" value="Cancel" class="k-button kapsch-text-button" onclick="closeWindow();">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+
+
+    <script>
+    $(function () {
+        $("form").kendoValidator();
+    });
+    workflow.Entities.Username = '@Html.Raw(Model.OwnUsername)';
+    $(document).ready(function (e) {
+        try {
+            workflow.Entities.IdWorkflow = '@Model.IdWorkflow';
+            workflow.Entities.isCheckedOut = @Model.IsCheckedOut.ToString().ToLower();
+
+            workflow.Helper.UpdateCheckoutState(@Model.IsCheckedOut.ToString().ToLower(), '@Model.CheckedOutBy', '@Model.Version');
+            
+        }
+        catch (ex) {
+            alertify.error('XML error!!'+ex.toString());
+        }
+    });
+
+    </script>
+
+
+

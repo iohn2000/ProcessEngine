@@ -1,0 +1,20 @@
+﻿<activity nr="" id="Kapsch.IS.ProcessEngine.WFActivity.SubWorkflow.SubWorkflowActivity" instance=".SubWorkflowActivity">
+  <name>Call a SubWorkflow</name>
+  <properties>
+    <property name="subWorfklowDefinitionID"  direction="input" dataType="stringType" />
+    <property name="parentWorfklowInstanceID"  direction="input" dataType="stringType" />
+    
+    <!-- subworkflow properties must match all 0.Variables from subworkflow -->
+    <!-- they are the subworkflow variables-->
+    <!-- property name="example01" direction="subworkflow" dataType="stringType"/ -->
+    
+    <!-- list of variables from subworkflow to return to parent         -->
+    <!-- semicolon (;) separated                                        -->
+    <!-- e.g. 0.NavisionTicketNumber;0.something : always 0. Variables  -->
+    <!-- subworkflow variables will be added as activity variables with accouding number of activity -->
+    <property name="returnVariables"  direction="input" dataType="stringType" />
+
+    <property name="ReturnStatus" direction="output" dataType="stringType"/>
+  </properties>
+  <transition to="" />
+</activity>

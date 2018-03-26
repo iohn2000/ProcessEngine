@@ -1,0 +1,30 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.TaskDecision.ApprovalTaskDecisionActivity" instance=".ApprovalTaskDecisionActivity">
+  <name>Task Type Approval Create</name>
+  <properties>
+    <!-- -->
+    <property name="taskTitle"                direction="input"  dataType="stringType" />
+    <property name="effectedPerson_EmplGUID"  direction="input"  dataType="stringType" />
+    <property name="requestor_EmplGUID"       direction="input"  dataType="stringType" />
+    <property name="approver_EmplGUIDs"       direction="input"  dataType="stringType" />
+    <property name="toDo"                     direction="input"  dataType="stringType" />
+    <!--
+    <Taskfields>
+      <Field id="approvalDecision" type="dropdown" name="Decision" description="Please make a decision:">
+        <option value="approve">Approve</option>
+        <option value="decline">Decline</option>
+      </Field>
+    </Taskfields>
+    -->
+    <property name="decisionOptions"          direction="input"  dataType="stringType" />
+    <property name="taskInformation"          direction="input"  dataType="stringType" />
+    <property name="dueDate"                  direction="input"  dataType="stringType" />
+    <property name="nextReminder"             direction="input"  dataType="stringType" />
+    <property name="isBulk"                   direction="input"  dataType="boolType" />
+    <property name="approver_EmplGUIDs"       direction="input"  dataType="stringType" />
+    <property name="emailBody"                direction="input"  dataType="stringType" />
+    <property name="demoRecipient"            direction="input"   dataType="stringType"/>
+    <property name="isBodyHtml"               direction="input"   dataType="stringType" />
+  </properties>
+  <transition to=".TaskDecisionActivityWait"/>
+</activity>
+

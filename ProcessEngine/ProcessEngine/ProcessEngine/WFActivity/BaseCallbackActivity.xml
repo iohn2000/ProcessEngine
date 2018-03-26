@@ -1,0 +1,10 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.BaseCallbackActivity" instance=".BaseCallbackActivity">
+  <name>BaseCallbackActivity</name>
+  <description>
+    base class, implement your specific class
+  </description>
+  <properties>
+    <property name = "ClientReferenceID"  direction="input"  dataType="stringType" ></property>
+  </properties>
+  <transition to=".xx"/>
+</activity>

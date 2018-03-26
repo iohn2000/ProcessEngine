@@ -1,0 +1,38 @@
+﻿@using Kapsch.IS.EMD.EMD20Web.Models.Onboarding
+@model OnboardingModel
+
+<div class="k-edit-form-container" style="padding-top:30px;width:800px;float:left;">
+
+    @Html.HiddenFor(model => model.EquipmentDefinitionModelList)
+
+
+    @for (int i = 0; i < Model.EquipmentDefinitionModelList.Count; i++)
+    {
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Room">@Model.EquipmentDefinitionModelList[i].Name</label>
+            <div class="col-md-10">
+                (@Model.EquipmentDefinitionModelList[i].PackageName)
+                @*@Html.HiddenFor(m => m.EquipmentDefinitionModelList[i].Guid)
+                @Html.HiddenFor(m => m.EquipmentDefinitionModelList[i].Q_ID)
+                @Html.HiddenFor(m => m.EquipmentDefinitionModelList[i].Name)
+                @Html.HiddenFor(m => m.EquipmentDefinitionModelList[i].Description)
+                @Html.HiddenFor(m => m.EquipmentDefinitionModelList[i].Config)
+                @Html.HiddenFor(m => m.EquipmentDefinitionModelList[i].PackageName)*@
+                
+                @Html.HiddenFor(m => m.EquipmentDefinitionModelList[i].PackageGuid)    
+                @Html.HiddenFor(m => m.EquipmentDefinitionModelList[i].IsSelected)
+
+                     
+
+                @*<label style="text-align:left">@Html.CheckBoxFor(x => @Model.EquipmentDefinitionModelList[i].IsSelected , htmlAttributes: new { @class = "control-label col-md-2" }) (@Model.EquipmentDefinitionModelList[i].PackageName)</label>*@
+      
+            </div>
+        </div>
+    }
+
+
+
+    
+
+
+</div>

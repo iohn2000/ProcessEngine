@@ -1,0 +1,184 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.Workflow.WorkflowActionModel
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+@{
+    ViewBag.Title = "Edit Mapping";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/WorkflowMapping_Edit.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+@if (Model.CanManage)
+{
+    <div id="formcontent">
+
+
+        @using (Ajax.BeginForm("EditMapping", "Workflow", null, new AjaxOptions
+        {
+            HttpMethod = "Post",
+            OnBegin = "formValidation.OnBegin(xhr)",
+            OnSuccess = "formValidation.OnSuccess(xhr)",
+            OnFailure = "formValidation.OnFailure(xhr)"
+        }))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(model => model.Guid);
+            @Html.HiddenFor(model => model.HistoryGuid);
+            @Html.HiddenFor(model => model.TypePrefix);
+            @Html.HiddenFor(model => model.EntityGuid);
+            @Html.HiddenFor(model => model.WorkflowID);
+            @Html.HiddenFor(model => model.WorkflowVariables);
+
+            @Html.HiddenFor(model => model.ValidFrom);
+            @Html.HiddenFor(model => model.ValidTo);
+            @Html.HiddenFor(model => model.Created);
+            @Html.HiddenFor(model => model.Modified);
+            @Html.HiddenFor(model => model.ActiveFrom);
+            @Html.HiddenFor(model => model.ActiveTo);
+            @Html.HiddenFor(model => model.WorkflowName);
+            @Html.HiddenFor(model => model.MappedObjectTypeName);
+            @Html.HiddenFor(model => model.MappedObjectName);
+
+
+
+            <div id="formresults" class="infobox error" style="display:none"></div>
+
+            <div class="form-horizontal">
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+                <div class="k-edit-form-container" style="float:left;">
+
+
+                    <div class="form-group">
+                        @Html.LabelForRequired(model => model.PrefixUI, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @(Html.Kendo().DropDownList().OptionLabel("Please select")
+                                    .Name("PrefixUI")
+                                     .BindTo(Model.AvailableMappingEntities)
+                                    .DataTextField("EntityName")
+                                    .DataValueField("EntityPrefix")
+                                    .Value(Model.PrefixUI)
+                                    .Filter(FilterType.Contains)
+                                    .Events(ev => ev.Select("workflowMapping.Events.OnAvailableEntitiesSelect").DataBound("workflowMapping.Events.OnAvailableEntitiesDataBound"))
+                            )
+                            @Html.ValidationMessageFor(model => model.PrefixUI, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                    <div id="FormGroupMappingEntities" class="form-group">
+                        @Html.LabelForRequired(model => model.EntityMappingGuid, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @(Html.Kendo().DropDownList().OptionLabel("Please select")
+                                .Name("EntityMappingGuid")
+                                .DataTextField("Text")
+                                .DataValueField("Value")                                
+                                .Value(Model.EntityMappingGuid)
+                                .Filter(FilterType.Contains)
+                                .AutoBind(true)
+                                .DataSource(source =>
+                                {
+                                    source.ServerFiltering(false).Read(read =>
+                                    {
+                                        read.Action("ReadMappingEntities", "Workflow").Data("workflowMapping.Functions.ReadMappingEntityParameter");
+                                    });
+
+                                })
+                            )
+
+                            @Html.ValidationMessageFor(model => model.EntityGuid, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelForRequired(model => model.Method, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @(Html.Kendo().DropDownList().OptionLabel("Please select")
+                                .Name("Method")
+                                //.BindTo(Model.AvailableMethods)
+                                .DataTextField("MethodName")
+                                .DataValueField("MethodValue")
+                                .Value(Model.MethodMappingModel == null ? "" : Model.MethodMappingModel.MethodValue.ToString())
+                                .Filter(FilterType.Contains)
+                                .AutoBind(true)
+                                .DataSource(source =>
+                                {
+                                    source.ServerFiltering(false).Read(read =>
+                                    {
+                                        read.Action("ReadMethods", "Workflow").Data("workflowMapping.Functions.ReadMappingEntityParameter");
+                                    });
+
+                                })
+                            )
+
+                            @Html.ValidationMessageFor(model => model.Method, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelForRequired(model => model.WorkflowGuid, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @(Html.Kendo().DropDownList().OptionLabel("Please select")
+                    .Name("WorkflowGuid")
+                    //.BindTo(Model.AvailableMethods)
+                    .DataTextField("Text")
+                    .DataValueField("Value")
+                    .Value(Model.WorkflowGuid)
+                    .Filter(FilterType.Contains)                   
+                
+                                .DataSource(source =>
+                                 {
+                                     source.ServerFiltering(false).Read(read =>
+                                     {
+                                         read.Action("GetWorkflows", "Workflow");
+                                     });
+
+                                 })
+                            )
+
+                            @Html.ValidationMessageFor(model => model.WorkflowGuid, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label></label>
+                        <div class="col-md-10">
+                            <div class="col-header">Filterrules</div>
+                        </div>
+                    </div>
+
+                    @Html.Partial("Controls/_PartialRuleFilterView", Model.RuleFilterModel)
+
+                    <div class="form-group form-group-buttons">
+                        <label></label>
+                        <div class="col-md-10">
+                            <button type="button" value="Cancel" class="k-button" onclick="closeWindow(true);">Cancel</button>
+                            <input type="submit" value="Save" class="btn k-button kapsch-text-button" />
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+
+
+    <script>
+        var validator;
+        $(function () {
+            validator = $("form").kendoValidator().data("kendoValidator");
+        });
+
+        $.validator.setDefaults({
+            ignore: []
+        });
+
+    </script>
+
+}
+

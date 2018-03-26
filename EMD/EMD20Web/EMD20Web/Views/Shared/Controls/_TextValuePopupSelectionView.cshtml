@@ -1,0 +1,176 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.Shared.SelectionViewModel
+@using Kapsch.IS.EMD.EMD20Web.Models
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+
+<script>
+    var @Model.JavaScriptIdPopupDiv = null;
+
+    function @Model.JavaScriptMethodNameSelectedItem (e){
+        console.log(e);
+        $('#@(Model.JavaScriptOkButtonId)').prop('disabled',false);
+    }
+
+    @*function @Model.JavaScriptMethodNameReadOnly (e){
+        console.log(e);
+        $('#@Model.Identifier').parent().children("button[type='button']:first").hide();
+    }*@
+
+    function @Model.JavaScriptMethodNameOkButtonClicked (e){
+
+        var grid = $("#@Model.Identifier").data("kendoGrid");
+        var selectedItem = grid.dataItem(grid.select());
+
+        console.log(selectedItem);
+
+
+        $('#@Model.JavaScriptIdLabel').val(selectedItem.Text);
+        $('#@Model.ReferencePropertyName').val(selectedItem.Value);
+
+        @if (!string.IsNullOrWhiteSpace(Model.SelectionEvent))
+        {
+
+            @Html.Raw(Model.SelectionEvent);
+        }
+
+        kendoHelper.CloseWindow(e);
+    }
+
+    function @Model.JavaScriptMethodNameDeleteButtonClicked (e){
+
+        var grid = $("#@Model.Identifier").data("kendoGrid");
+        var selectedItem = grid.dataItem(grid.select());
+
+        console.log(selectedItem);
+
+
+        $('#@Model.JavaScriptIdLabel').val('');
+        $('#@Model.ReferencePropertyName').val('');
+
+        @if (!string.IsNullOrWhiteSpace(Model.SelectionEvent))
+        {
+            @Html.Raw(Model.SelectionEvent);
+        }
+
+        kendoHelper.CloseWindow(e);
+    }
+
+    function @Model.JavaScriptMethodNameOpenPopup (e){
+        var grid = $("#@Model.Identifier").data("kendoGrid");
+        grid.dataSource.read();
+
+        @(Model.JavaScriptIdPopupDiv).open();
+
+        @*myWindow.kendoWindow({
+            width: "600px",
+            title:  "@Html.Raw(string.Format("Select {0}", Model.ObjectLabel))",
+            visible: false
+
+        }).data("kendoWindow").center().open();*@
+    }
+
+
+</script>
+
+
+<div style="width:@(Model.ParentFormControlWidth); padding:0">
+    <!-- render the hidden form fields in case we need it  -->
+    <!-- Important!!! : set the SelectionViewModel Properties in underlying objects always to new(), because in error the view is newly rendered and throws exceptions  -->
+    @*<input id="@(Model.PropertyName).PropertyName" name="@(Model.PropertyName).PropertyName" type="hidden" value="@Model.PropertyName">
+        <input id="@(Model.PropertyName).ReferencePropertyName" name="@(Model.PropertyName).ReferencePropertyName" type="hidden" value="@Model.ReferencePropertyName">
+        <input id="@(Model.PropertyName).ObjectLabel" name="@(Model.PropertyName).ObjectLabel" type="hidden" value="@Model.ObjectLabel">
+        <input id="@(Model.PropertyName).ObjectText" name="@(Model.ObjectText).ObjectValue" type="hidden" value="@Model.ObjectText">
+        <input id="@(Model.PropertyName).TargetControllerMethodName" name="@(Model.PropertyName).TargetControllerMethodName" type="hidden" value="@Model.TargetControllerMethodName">
+        <input id="@(Model.PropertyName).TargetControllerName" name="@(Model.PropertyName).TargetControllerName" type="hidden" value="@Model.TargetControllerName">*@
+
+    <input id="@Model.ReferencePropertyName" data-val="true" data-val-required="The @(Model.ObjectLabel) field is required." name="@Model.ReferencePropertyName" type="hidden" value="@Model.ObjectValue">
+    <div style="float:left; width: auto"> @Html.TextBoxFor(model => model.ObjectText, new { @id = Model.JavaScriptIdLabel, @text = Model.ObjectText, @class = "k-textbox k-valid", @disabled = "disabled", @style = "width: 315px; background-color: #FFF; color: #5f6268" })</div>
+    @if (Model.IsDisabled)
+    {
+        <button disabled="disabled" style="float: right; margin: 0; height: 34px; padding: 7px " name="open" type="button" class="btn k-button kapsch-text-button" onclick="@(Model.JavaScriptMethodNameOpenPopup)()"><i class='material-icons'>mode_edit</i></button>
+    }
+    else
+    {
+        <button style="float: right; margin: 0; height: 34px; padding: 7px " name="open" type="button" class="btn k-button kapsch-text-button" onclick="@(Model.JavaScriptMethodNameOpenPopup)()"><i class='material-icons'>mode_edit</i></button>
+    }
+</div>
+<div id="@Model.JavaScriptIdPopupDiv" style="display:none">
+    
+    @*@Html.LabelForRequired(model => model.ObjectLabel, htmlAttributes: new { @class = "control-label col-md-2" })*@
+    
+    <div style="width: 100%;">
+
+            @(
+                        Html.Kendo().Grid<TextValueModel>()
+                        .Name(Model.Identifier)
+                        .AutoBind(false)
+                        .DataSource(dataSource => dataSource
+                            .Ajax().ServerOperation(false)
+                            .Read(read =>
+                            {
+                                read.Action(Model.TargetControllerMethodName, Model.TargetControllerName).Data(Model.TargetOptionalMethodParameters);
+                            })
+                            .Sort(a => a.Add("Text"))
+                            .Events(events => events.Error("exceptionManager.Events.HandleError"))
+                         )
+                        .HtmlAttributes(new { @class = "k-grid-list k-grid-selectable", style = Model.RenderGridStyle()})
+
+        .Columns(columns =>
+        {
+            if (string.IsNullOrWhiteSpace(Model.ClientTemplate))
+            {
+                columns.Bound(item => item.Text).Title(Model.ObjectLabel).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Delay(800).Template("kendoHelper.DisableAutocompleteFilter")));
+            }
+            else
+            {
+                columns.Bound(item => item.Text).Title(Model.ObjectLabel).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Delay(800).Template("kendoHelper.DisableAutocompleteFilter"))).ClientTemplate(Model.ClientTemplate);
+            }
+        })
+        .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+        .Sortable(sortable => sortable.Enabled(true))
+        .Pageable(p => p.Enabled(false))
+        .Scrollable(s => s.Enabled(true))
+        .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+        .Events(a => a.Change(Model.JavaScriptMethodNameSelectedItem))
+            )
+
+
+        <div class="form-group form-group-buttons">
+            @{
+                if (!Model.HideDeleteButton)
+                {
+                    <div style="float:left">
+                        <button type="button" value="Delete" class="k-button kapsch-text-button k-button-red" onclick="@(Model.JavaScriptMethodNameDeleteButtonClicked)(this);" style="margin-right: 20px">Delete</button>
+                    </div>
+                }
+            }
+            <div style="float:right">
+                <button type="button" value="Cancel" class="k-button kapsch-text-button" onclick="kendoHelper.CloseWindow(this);">Cancel</button>
+                <button id="@Model.JavaScriptOkButtonId" type="button" disabled="disabled" value="Select" class="k-button kapsch-text-button" onclick="@(Model.JavaScriptMethodNameOkButtonClicked)(this);">Select</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function() {
+        var grid = $("#@Model.Identifier").data("kendoGrid");
+        grid.element.on("dblclick", "tbody>tr>td:not(.k-edit-cell)", "dblclick", function (e) {
+            //myGrid.editCell($(this));
+
+            // console.log(e);
+            $('#@(Model.JavaScriptOkButtonId)').click();
+        });
+
+
+        var myWindow = $("#@Model.JavaScriptIdPopupDiv");
+        @(Model.JavaScriptIdPopupDiv)  =    myWindow.kendoWindow({
+            width: "@(Model.ControlWidth)",
+            height: "@(Model.ControlHeight)",
+            title:  "@Html.Raw(string.Format("Select {0}", Model.ObjectLabel))",
+            visible: false,
+            modal: true
+
+        }).data("kendoWindow").center();
+    });
+</script>

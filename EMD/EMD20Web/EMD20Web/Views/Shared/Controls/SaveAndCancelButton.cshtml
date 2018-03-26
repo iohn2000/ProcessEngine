@@ -1,0 +1,8 @@
+﻿
+
+<div style="clear:both;">
+    <button class="k-button" type="submit" data-role="button" data-role="button" value="Create" onclick="onSave(this)">Save</button>
+    <button class="k-button" type="button" data-role="button" data-role="button" onclick="onCancel();">Cancel</button>
+    @*@(Html.Kendo().Button().Name("Save").Content("Save").HtmlAttributes(new { type = "button", style = "" }).Events(ev => ev.Click("onSave")))
+    @(Html.Kendo().Button().Name("Cancel").Content("Cancel").HtmlAttributes(new { type = "button", style = "" }).Events(ev => ev.Click("onCancel")))*@
+</div>

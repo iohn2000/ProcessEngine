@@ -1,0 +1,131 @@
+﻿
+@using Kapsch.IS.EMD.EMD20Web.Models;
+
+@{
+    ViewBag.Title = "Cost centers";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/Costcenter_Manage.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+@if (Model.CanView || Model.CanManage)
+{
+@*<div class="form-horizontal">
+        <div class="form-group">
+            Filter for Enterprise:
+            <div class="col-md-10">
+                @(
+                    Html.Kendo().DropDownListFor(m => m)
+                    .OptionLabel("Please select")
+                    .Name("SelectedEnterprise")
+                                .DataTextField("Text")
+                        .DataValueField("Value")
+                    .HtmlAttributes(new { @style = "width:500px" })
+                    .Filter(FilterType.Contains)
+                    .IgnoreCase(true)
+                    .AutoBind(true)
+                    .Events(ev => ev.Change("costcenter.Events.OnComboBoxEnterpriseSelect"))
+                    .DataSource(source =>
+                    {
+                        source.Read(read =>
+                        {
+                            read.Action("ReadForSelect", "Enterprise");
+                        })
+                        .ServerFiltering(false);
+                    })
+                )
+            </div>
+        </div>
+    </div>*@
+
+    <div id="itemcontainer">
+        @(Html.Kendo().Grid<AccountModel>()
+    .Name("Grid").HtmlAttributes(new { @class = "k-grid-big" })
+        .ToolBar(tb =>
+        {
+            if (Model.CanManage)
+            {
+                tb.Custom().Text("Add Costcenter").Url("#").HtmlAttributes(new { onclick = "showInWindow('Add/true','Add Costcenter');", @class = "kapsch-text-button" });
+            }
+
+            if (Model.IsAdmin)
+            {
+                tb.Custom().Text("Cleanup Relations (Admin)").Url("#").HtmlAttributes(new { Title = "This is a long running process and locks the database. ONLY for old Data-Cleanup. Deletion of Accounts works already.", onclick = "costcenter.Functions.CleanupCostcenters(this);", @id = "btnCleanup", @class = "kapsch-text-button" });
+            }
+        })
+    .Sortable()
+    .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+    .Pageable(pageable => pageable
+        .Refresh(true)
+        .PageSizes(true)
+        .ButtonCount(5)
+        .PageSizes(new[] { 15, 50, 100 }))
+    .Scrollable(s => s.Enabled(true).Height("auto"))
+    .Columns(columns =>
+    {
+        columns.Bound(item => item.Guid).Title("").Filterable(false).Width(60)
+        .ClientTemplate("# if (CanManage == true) { #"
+
+                                + "<a title='Edit' href='\\#' "
+                                + "onclick='showInWindow(\""
+                                + "Edit/"
+                                + "#= Guid #/true\",\"Edit Costcenter\");' "
+                                + "data-id='#=Guid#'"
+                                + ">"
+                                + "<i class='material-icons'>edit</i>"
+                                + "</a>"
+                                + "<a title='Delete' href='\\#' "
+                                + "onclick='costcenter.Functions.Delete(\"#=Guid#\",\"Costcenter\",\"#=Name#\");' "
+                                + "data-id='#=Guid#'"
+                                + ">"
+                                + "<i class='material-icons'>delete</i>"
+                                + "</a>"
+
+                                + "# } else {#"
+
+                                + "<a title='View' href='\\#' "
+                                + "onclick='showInWindow(\""
+                                + "View/"
+                                + "#= Guid #/true\",\"View Costcenter\");' "
+                                + "data-id='#=Guid#'"
+                                + ">"
+                                + "<i class='material-icons'>pageview</i>"
+                                + "</a>"
+
+                                + "#} #"
+                          );
+
+        columns.Bound(item => item.EnterpriseDisplayName).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+        columns.Bound(item => item.Name).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+        columns.Bound(item => item.KstID).Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+        columns.Bound(item => item.ResponsibleName).Filterable(false);
+        columns.Bound(item => item.AssistanceGroups).Filterable(false);
+        //columns.Bound(item => item.ActiveFromDateOnly).Format("{0:dd.MM.yyyy}").Width(200);
+
+    })
+    .DataSource(dataSource => dataSource
+        .Ajax().ServerOperation(true)
+        .Sort(a => {
+            a.Add("EnterpriseDisplayName").Ascending();
+            a.Add("Name").Ascending();
+        })
+        .PageSize(15)
+        .Read(read => read.Action("Read", "CostCenter"))
+        .Events(events => events.Error("exceptionManager.Events.HandleError"))
+    )
+        )
+    </div>
+
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        var url = '@Request.Url';
+        kendoHelper.Grid.FilterGrid('#Grid', "Guid", "equals", url);
+    });
+    </script>
+}
+
+
+
+
+

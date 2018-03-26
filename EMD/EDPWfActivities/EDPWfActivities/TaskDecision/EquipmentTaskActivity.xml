@@ -1,0 +1,34 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.TaskDecision.EquipmentTaskActivity" instance=".EquipmentTaskActivity">
+  <name>Equipment Task Create</name>
+  <properties>
+    <!-- -->
+    <property name="taskTitle"                  direction="input"  dataType="stringType" />
+    <property name="effectedPerson_EmplGUID"    direction="input"  dataType="stringType" />
+    <property name="requestingPerson_EmplGUID"  direction="input"  dataType="stringType" />
+    <property name="taskreceiver_EmplGUID"      direction="input"  dataType="stringType" />
+    <property name="toDo"                       direction="input"  dataType="stringType" />
+    <property name="obre"                       direction="input"  dataType="stringType" />
+    <!-- config that defines what to do on this task. at the moment its a coma separated list with options 
+      <Taskfields>
+        <Field id="approvalDecision" type="dropdown" name="Decision" description="Please make a decision:">
+          <option value="approve">approve</option>
+          <option value="decline">decline</option>
+        </Field>
+      </Taskfields> 
+    -->
+    <property name="decisionOptions"           direction="input"  dataType="stringType" />
+    
+    <property name="taskInformation"           direction="input"  dataType="stringType" />
+    <property name="dueDate"                   direction="input"  dataType="stringType" />
+    <property name="nextReminder"              direction="input"  dataType="stringType" />
+    <property name="isBulk"                    direction="input"  dataType="boolType" />
+    <property name="taskMailTemplate"          direction="input"  dataType="stringType" />
+    <property name="demoRecipient"             direction="input"   dataType="stringType"/>
+    <property name="isBodyHtml"                direction="input"   dataType="stringType" />
+    <!-- can be True or False; if False no task has been created and also no dynamic worfklow variables -->
+    <property name="hasDynamicFieldsSelected"  direction="output"  dataType="stringType" />
+    
+  </properties>
+  <transition to=".EquipmentTaskActivityWait"/>
+</activity>
+

@@ -1,0 +1,83 @@
+﻿@(
+    Html.Kendo().DropDownListFor(m => m)
+    .OptionLabel("Please select")
+    .Name("Costcenter")
+    .DataTextField("Text")
+    //.DataTextField("KstID")
+    .DataValueField("Value")
+    .HtmlAttributes(new { @style = "width:500px" })
+    .Filter(FilterType.Contains)
+    .IgnoreCase(true)
+    .CascadeFrom("Enterprise")
+    .AutoBind(false)
+    .Enable(false)
+    .Events(ev => { ev.Filtering("onCostcenterFiltering"); })
+    .DataSource(source =>
+    {
+        source.Read(read =>
+        {
+            read.Action("ReadForSelectForEnterprise", "Account").Data("filterForEnterprise");
+        })
+        .ServerFiltering(true);
+    })
+)
+
+<script>
+    function filterForEnterprise() {
+        //alert("costcenter val: " + $("#Costcenter").data("kendoDropDownList").text());
+                return {
+                    ente_guid: $("#Enterprise").val()
+                };
+            }
+
+            //function onEnterpriseCascade(e) {
+            //    $("#Costcenter").data("kendoDropDownList").dataSource.read();
+    //}
+
+    function onCostcenterFiltering(e) {
+        //alert("filterval: " + e.filter.value);
+
+        var ddbox = $("#Costcenter").data("kendoDropDownList");
+
+        var myEnte = filterForEnterprise();
+
+        var dataSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: "/Account/ReadForSelectForEnterprise",
+                    type: "GET",
+                    dataType: "json",
+                    contentType: "application/json",
+                    //data: JSON.stringify({ ente_guid: myEnte, text: e.filter.value })
+                    data: { ente_guid: myEnte, text: e.filter.value }
+                },
+                requestEnd: function () {
+                    alert('Ende Ajax');
+                }
+            },
+            filter: { logic: "and", filters: [{ field: "KstIDAndName", operator: "contains", value: "no" }] }
+        });
+
+        dataSource.read();
+
+        ddbox.dataSource = dataSource;
+
+        //$.ajax({
+        //    url: "/Account/ReadForSelectForEnterprise",
+        //    type: "POST",
+        //    dataType: "json",
+        //    contentType: "application/json",
+        //    data: JSON.stringify({ ente_guid: filterForEnterprise(), text: e.filter.value }),
+        //    success: function (response) {
+        //        alert('success');
+        //    },
+        //    error: function (response) {
+        //        alert('AJAX-Error' + response.error);
+        //    }
+
+        //})
+
+        //ddbox.dataSource().read();
+        //ddbox.bind("filtering", combobox_filtering);
+    }
+</script>

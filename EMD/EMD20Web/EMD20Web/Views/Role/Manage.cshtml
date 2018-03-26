@@ -1,0 +1,104 @@
+﻿@using Kapsch.IS.EMD.EMD20Web.Models;
+
+@{
+    ViewBag.Title = "Orgunit roles";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/Role_Manage.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+@if (Model.CanView || Model.CanManage)
+{
+    @(Html.Kendo().Grid<RoleModel>()
+    .Name("Grid").HtmlAttributes(new { @class = "k-grid-big" })
+    .Sortable()
+    .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+    .Pageable(pageable => pageable
+        .Refresh(true)
+        .PageSizes(true)
+        .ButtonCount(5)
+        .PageSizes(new[] { 15, 50, 100 }))
+    .Scrollable(s => s.Enabled(true).Height("auto"))
+    .Columns(columns =>
+    {
+        columns.Bound(item => item.Guid).Title("")
+        .ClientTemplate(
+                            "# if (CanManage == true) { #"
+
+                            + "<a title='Edit' href='\\#' "
+                            + "onclick='showInWindow(\""
+                            + "Edit/"
+                            + "#= Guid #/true\",\"Edit Role\");' "
+                            + "data-id='#=Guid#'"
+                            + ">"
+                            + "<i class='material-icons'>edit</i>"
+                            + "</a>"
+                            + "<a title='Delete' href='\\#' "
+                            + "onclick='role.Functions.Delete(\"#=Guid#\",\"Role\",\"#=Name#\");' "
+                            + "data-id='#=Guid#'"
+                            + ">"
+                            + "<i class='material-icons'>delete</i>"
+                            + "</a>"
+
+                            + "# } else {#"
+
+                            + "<a title='View' href='\\#' "
+                            + "onclick='showInWindow(\""
+                            + "View/"
+                            + "#= Guid #/true\",\"View Role\");' "
+                            + "data-id='#=Guid#'"
+                            + ">"
+                            + "<i class='material-icons'>pageview</i>"
+                            + "</a>"
+
+                            + "#} #"
+                          ).Width(60).Filterable(false);
+
+        columns.Bound(item => item.Name).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+        columns.Bound(item => item.R_ID).Filterable(ftb => ftb.Cell(cell => cell.Template("kendoHelper.IntegerFilter"))).Width(250);
+        columns.Bound(item => item.ID_Parent).Filterable(ftb => ftb.Cell(cell => cell.Template("kendoHelper.IntegerFilter"))).Width(250);
+        //columns.ForeignKey(item => item.Guid_Root, (List<TextValueModel>)ViewData["OrgUnitNames"], "Value", "Text").Width(200);
+        //columns.ForeignKey(item => item.Guid_Parent, (List<TextValueModel>)ViewData["OrgUnitNames"], "Value", "Text").Width(200);
+        //columns.Bound(item => item.Name_Parent).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+        //columns.Bound(item => item.Name_Root).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+        //columns.Bound(item => item.Guid_Root).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+        //columns.Bound(item => item.Guid_Parent).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+        columns.Bound(item => item.IsSecurity).Filterable(ftb => ftb.Cell(cell => cell.Operator("eq").SuggestionOperator(FilterType.Contains).ShowOperators(false)).Messages(m => m.IsFalse("no").IsTrue("yes"))).ClientTemplate("<input type='checkbox' disabled #= IsSecurity == true ? checked='checked' : '' # />").Width(140);
+
+
+        //columns.Bound(item => item.Key1).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false)));
+        //columns.Bound(item => item.Key2).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false)));
+        //columns.Bound(item => item.Key3).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false)));
+        columns.Bound(item => item.ActiveFromDateOnly).Format("{0:dd.MM.yyyy}").Width(200);
+    })
+
+    .Editable(editable => editable.Mode(GridEditMode.PopUp).DisplayDeleteConfirmation(false).Window(win => win.Width(700)))
+    .ToolBar(tb =>
+    {
+        if (Model.CanManage)
+        {
+            tb.Custom().Text("Add Role").Url("#").HtmlAttributes(new { onclick = "showInWindow('Create/true','Add Role',false);", @class = "kapsch-text-button" });
+        }
+        //tb.Custom().Text("Clear Filter").Url("#").HtmlAttributes(new { onclick = "kendoHelper.Grid.ClearFilter('#Grid');", @class = "kapsch-text-button" });
+    })
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .ServerOperation(true)
+        .Sort(a => { a.Add("Name").Ascending(); })
+        .PageSize(15)
+        .Model(model => model.Id(item => item.Guid))
+        .Read(read => read.Action("Read", "Role"))
+        .Events(events => events.Error("exceptionManager.Events.HandleError"))
+    )
+    )
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var url = '@Request.Url';
+            kendoHelper.Grid.FilterGrid('#Grid', "Guid", "equals", url);
+        });
+
+        
+    </script>
+}
+

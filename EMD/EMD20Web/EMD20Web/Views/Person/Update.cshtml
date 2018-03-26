@@ -1,0 +1,473 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.PersonModel
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+@{
+    ViewBag.Title = "Update";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/Person_Create%20.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+<style>
+    /*File Upload Start*/
+    .file-icon {
+        display: inline-block;
+        float: left;
+        width: 48px;
+        height: 48px;
+        margin-left: 10px;
+        margin-top: 13.5px;
+    }
+
+    .img-file {
+        background-image: url(/content/web/upload/jpg.png);
+    }
+
+    .doc-file {
+        background-image: url(/content/web/upload/doc.png);
+    }
+
+    .pdf-file {
+        background-image: url(/content/web/upload/pdf.png);
+    }
+
+    .xls-file {
+        background-image: url(/content/web/upload/xls.png);
+    }
+
+    .zip-file {
+        background-image: url(/content/web/upload/zip.png);
+    }
+
+    .default-file {
+        background-image: url(/content/web/upload/default.png);
+    }
+
+    #example .file-heading {
+        font-size: 1.1em;
+        display: inline-block;
+        float: left;
+        width: 450px;
+        margin: 0 0 0 20px;
+        height: 25px;
+        -ms-text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    #example .file-name-heading {
+        font-weight: bold;
+    }
+
+    #example .file-size-heading {
+        font-weight: normal;
+        font-style: italic;
+    }
+
+    li.k-file .file-wrapper .k-upload-action {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    li.k-file div.file-wrapper {
+        position: relative;
+        height: 25px;
+    }
+    /*File Upload END*/
+
+    .k-upload {
+        width: 500px;
+    }
+</style>
+
+
+<script type="text/javascript">
+    //File Upload
+    function addExtensionClass(extension) {
+        switch (extension) {
+            case '.jpg':
+            case '.img':
+            case '.png':
+            case '.gif':
+                return "img-file";
+            case '.doc':
+            case '.docx':
+                return "doc-file";
+            case '.xls':
+            case '.xlsx':
+                return "xls-file";
+            case '.pdf':
+                return "pdf-file";
+            case '.zip':
+            case '.rar':
+                return "zip-file";
+            default:
+                return "default-file";
+        }
+    }
+</script>
+<div id="formcontent">
+
+    @*<div class="form-horizontal">
+            <div class="k-edit-form-container" style="float:left;">
+                <div class="form-group">
+                    Upload Image (You can only upload <strong>JPG</strong> files.)
+                    <div class="col-md-10">
+
+                        @(Html.Kendo().Upload()
+                            .Name("imageFiles")
+                            .HtmlAttributes(new { @class = "PersonProfileImageUpload" })
+                            .Multiple(false)
+                            .Async(a => a
+                                .Save("UploadPersonImage", "PersonProfile")
+                                .Remove("Remove", "PersonProfile")
+                                .AutoUpload(true)
+                            )
+                            .Messages(m => m.StatusFailed("Error uploading file"))
+                            .Validation(validation => validation.AllowedExtensions(new string[] { ".jpg" }))
+                        )
+
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+    @using (Ajax.BeginForm("DoUpdate", "Person", null, new AjaxOptions
+    {
+        HttpMethod = "Post",
+        OnBegin = "formValidation.OnBegin(xhr)",
+        OnSuccess = "person.Events.OnSuccess(xhr)",
+        OnFailure = "formValidation.OnFailure(xhr)"
+    }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.Guid)
+        @Html.HiddenFor(model => model.HistoryGuid)
+        @Html.HiddenFor(model => model.Created)
+        @Html.HiddenFor(model => model.Modified)
+        @Html.HiddenFor(model => model.P_ID)
+        @Html.HiddenFor(model => model.Synonyms)
+
+        @Html.HiddenFor(model => model.C128_DegreePrefix)
+        @Html.HiddenFor(model => model.C128_DegreeSuffix)
+        @Html.HiddenFor(model => model.UserID)
+        @Html.HiddenFor(model => model.USER_GUID)
+        @Html.HiddenFor(model => model.MainMail)
+        @Html.HiddenFor(model => model.UnixID)
+
+        @Html.HiddenFor(model => model.Language)
+
+
+        @Html.HiddenFor(model => model.AD_Picture_UpdDT)
+        @Html.HiddenFor(model => model.ValidFrom)
+        @Html.HiddenFor(model => model.ValidTo)
+        @Html.HiddenFor(model => model.ActiveFrom)
+        @Html.HiddenFor(model => model.ActiveTo)
+
+        <div id="formresults" class="infobox error" style="display:none"></div>
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="k-edit-form-container" style="float:left;">
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.FamilyName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @{
+                            if (Model.CanManagePersonMainData)
+                            {
+                                @Html.EditorFor(model => model.FamilyName, new { htmlAttributes = new { @class = "form-control" } })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.FamilyName, new { @readonly = "readonly", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                            }
+                        }
+                        @Html.ValidationMessageFor(model => model.FamilyName, "", new { @class = "text-danger" })
+                    </div>
+                    @if (!Model.CanManagePersonMainData && Model.IsInDpw)
+                    {
+                    <div>
+                        <div style="float:left; padding: 3px; width: auto"><i class="material-icons" data-role="tooltip">info</i></div>
+                        <div style="float:left; width: 250px; display:inline">Only Persons with no DPW employments can be edited!</div>
+                    </div>
+                    }
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.C128_FamilyName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @{
+                            if (Model.IsAdmin)
+                            {
+                                @Html.EditorFor(model => model.C128_FamilyName, new { htmlAttributes = new { @class = "form-control" } })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.C128_FamilyName, new { @readonly = "readonly", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                            }
+                        }
+                        @Html.ValidationMessageFor(model => model.C128_FamilyName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Display_FamilyName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @{
+                            if (Model.CanManagePersonMainData)
+                            {
+                                @Html.EditorFor(model => model.Display_FamilyName, new { htmlAttributes = new { @class = "form-control" } })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.Display_FamilyName, new { @readonly = "readonly", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                            }
+                        }
+
+                        @Html.ValidationMessageFor(model => model.Display_FamilyName, "", new { @class = "text-danger" })
+                    </div>
+                    @if (!Model.CanManagePersonMainData && Model.IsInDpw)
+                    {
+                        <div>
+                            <div style="float:left; padding: 3px; width: auto"><i class="material-icons" data-role="tooltip">info</i></div>
+                            <div style="float:left; width: 250px; display:inline">Only Persons with no DPW employments can be edited!</div>
+                        </div>
+                    }
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @{
+                            if (Model.CanManagePersonMainData)
+                            {
+                                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.FirstName, new { @readonly = "readonly", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                            }
+                        }
+
+                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                    </div>
+                    @if (!Model.CanManagePersonMainData && Model.IsInDpw)
+                    {
+                        <div>
+                            <div style="float:left; padding: 3px; width: auto"><i class="material-icons" data-role="tooltip">info</i></div>
+                            <div style="float:left; width: 250px; display:inline">Only Persons with no DPW employments can be edited!</div>
+                        </div>
+                    }
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.C128_FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @{
+                            if (Model.IsAdmin)
+                            {
+                                @Html.EditorFor(model => model.C128_FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.C128_FirstName, new { @readonly = "readonly", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                            }
+                        }
+
+                        @Html.ValidationMessageFor(model => model.C128_FirstName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Display_FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @{
+                            if (Model.CanManagePersonMainData)
+                            {
+                                @Html.EditorFor(model => model.Display_FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.Display_FirstName, new { @readonly = "readonly", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                            }
+                        }
+
+                        @Html.ValidationMessageFor(model => model.Display_FirstName, "", new { @class = "text-danger" })
+                    </div>
+                    @if (!Model.CanManagePersonMainData && Model.IsInDpw)
+                    {
+                        <div>
+                            <div style="float:left; padding: 3px; width: auto"><i class="material-icons" data-role="tooltip">info</i></div>
+                            <div style="float:left; width: 250px; display:inline">Only Persons with no DPW employments can be edited!</div>
+                        </div>
+                    }
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.DegreePrefix, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @{
+                            if (Model.CanManagePersonMainData)
+                            {
+                                @Html.EditorFor(model => model.DegreePrefix, new { htmlAttributes = new { @class = "form-control" } })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.DegreePrefix, new { @readonly = "readonly", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                            }
+                        }
+
+                        @Html.ValidationMessageFor(model => model.DegreePrefix, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.DegreeSuffix, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @{
+                            if (Model.CanManagePersonMainData)
+                            {
+                                @Html.EditorFor(model => model.DegreeSuffix, new { htmlAttributes = new { @class = "form-control" } })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.DegreeSuffix, new { @readonly = "readonly", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                            }
+                        }
+
+                        @Html.ValidationMessageFor(model => model.DegreeSuffix, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Sex, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @{
+                            if (!Model.CanManageGender)
+                            {
+                                @Html.HiddenFor(model => model.Sex)
+                                @Html.TextBoxFor(model => model.SexDisplay, new { @readonly = "readonly", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                            }
+                            else
+                            {
+                                @(Html.Kendo().DropDownListFor(m => m.Sex)
+                                        .Name("Sex")
+                                        .DataTextField("Name")
+                                        .DataValueField("Key")
+                                        .Filter(FilterType.Contains)
+                                        .OptionLabel("Please select")
+                                        //.HtmlAttributes(new { @readonly = "readonly" })
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("readGenderListForSelect", "Person");
+                                            });
+                                        }).Enable(Model.CanManageGender)
+                                )
+                            }
+                        }
+
+                        @Html.ValidationMessageFor(model => model.Sex, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.IsVisibleInPhonebook, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @if (Model.CanManagePersonVisible)
+                        {
+                            @Html.CheckBoxFor(model => model.IsVisibleInPhonebook, new { @class = "form-control" })
+                        }
+                        else
+                        {
+                            @Html.HiddenFor(model => model.IsVisibleInPhonebook)
+                            @Html.CheckBoxFor(model => model.IsVisibleInPhonebook, new { @class = "form-control", @disabled = "disabled" })
+                        }
+                        @Html.ValidationMessageFor(model => model.IsVisibleInPhonebook, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.IsPictureVisible, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @if (Model.CanManagePictureVisiblePhonebook)
+                        {
+                            @Html.CheckBoxFor(model => model.IsPictureVisible, new { @class = "form-control" })
+                        }
+                        else
+                        {
+                            @Html.HiddenFor(model => model.IsPictureVisible)
+                            @Html.CheckBoxFor(model => model.IsPictureVisible, new { @class = "form-control", @disabled = "disabled" })
+                        }
+                        @Html.ValidationMessageFor(model => model.IsPictureVisible, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.IsPictureVisibleInAD, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @if (Model.CanManagePictureVisibleAD)
+                        {
+                            @Html.CheckBoxFor(model => model.IsPictureVisibleInAD, new { @class = "form-control" })
+                        }
+                        else
+                        {
+                            @Html.HiddenFor(model => model.IsPictureVisibleInAD)
+                            @Html.CheckBoxFor(model => model.IsPictureVisibleInAD, new { @class = "form-control", @disabled = "disabled" })
+
+                        }
+                        @Html.ValidationMessageFor(model => model.IsPictureVisibleInAD, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+
+                @*<div class="kapsch-label-full">Update picture in Active Directory:</div>
+                    <div class="kapsch-label-full">
+
+                    </div>*@
+
+
+                <div class="form-group form-group-buttons">
+                    <label></label>
+                    <div class="col-md-10">
+                        <button type="button" value="Cancel" class="k-button kapsch-text-button" onclick="closeWindow();">Cancel</button>
+                        @{
+                            if (Model.CanSave)
+                            {
+                                <input type="submit" value="Save" class="btn k-button kapsch-text-button" />
+                            }
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+                            }
+</div>
+
+<script>
+    $(function () {
+        $("form").kendoValidator();
+    });
+
+     @if (Model.IsAdmin)
+     {
+         <text>
+            $('#FamilyName').keyup(function() {
+        person.Functions.FillInReducedString($(this).val(), "C128_FamilyName");
+    });
+
+            $('#FirstName').keyup(function() {
+                     person.Functions.FillInReducedString($(this).val(), "C128_FirstName");
+    });
+        </text>
+     }
+
+</script>

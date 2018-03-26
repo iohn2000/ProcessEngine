@@ -1,0 +1,89 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.PackageModel
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+
+@{
+    ViewBag.Title = "Create Package";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/Package_Create.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+
+<div id="formcontent">
+    @using (Ajax.BeginForm("DoCreate", "Package", null, new AjaxOptions
+    {
+        HttpMethod = "Post",
+        OnBegin = "formValidation.OnBegin(xhr)",
+        OnSuccess = "formValidation.OnSuccess(xhr)",
+        OnFailure = "formValidation.OnFailure(xhr)"
+    }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div id="formresults" class="infobox error" style="display:none"></div>
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="k-edit-form-container" style="float:left;">
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label></label>
+                    <div class="col-md-10">
+                        <div class="col-header">Filterrules</div>
+                    </div>
+                </div>
+
+                @Html.Partial("Controls/_PartialRuleFilterView", Model.RuleFilterModel)
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Flags, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div>
+                            @Html.CheckBoxFor(model => model.Base)
+                            @Html.DisplayNameFor(model => model.Base)
+                        </div>
+                        <div>
+                            @Html.CheckBoxFor(model => model.Access)
+                            @Html.DisplayNameFor(model => model.Access)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group form-group-buttons">
+                    <label></label>
+                    <div class="col-md-10">
+                        <button type="button" value="Cancel" class="k-button kapsch-text-button" onclick="closeWindow();">Cancel</button>
+                        <input type="submit" value="Save" class="btn k-button kapsch-text-button" />
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    }
+</div>
+
+<script>
+    $(function () {
+        $("form").kendoValidator();
+    });
+</script>

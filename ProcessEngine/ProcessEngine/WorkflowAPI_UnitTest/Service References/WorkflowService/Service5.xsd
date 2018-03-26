@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Kapsch.IS.ProcessEngine.Shared.Enums" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Kapsch.IS.ProcessEngine.Shared.Enums" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="EnumActivityType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Default" />
+      <xs:enumeration value="Subworkflow" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="EnumActivityType" nillable="true" type="tns:EnumActivityType" />
+  <xs:simpleType name="EnumWorkflowInstanceStatus">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NotStarted" />
+      <xs:enumeration value="Executing" />
+      <xs:enumeration value="Sleeping" />
+      <xs:enumeration value="Error" />
+      <xs:enumeration value="Aborted" />
+      <xs:enumeration value="Paused" />
+      <xs:enumeration value="Resumed" />
+      <xs:enumeration value="Finish" />
+      <xs:enumeration value="Reset" />
+      <xs:enumeration value="Undefined" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="EnumWorkflowInstanceStatus" nillable="true" type="tns:EnumWorkflowInstanceStatus" />
+</xs:schema>

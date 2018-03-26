@@ -1,0 +1,11 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.Timer.TimerActivity" instance=".TimerActivity">
+  <name>Timer: wait for date/time</name>
+  <description>
+  </description>
+  <properties>
+    <property name="startDate"  direction="input"  dataType="stringType" />
+    <property name="offsetInDays"  direction="input"  dataType="stringType" />
+    <property name="isExecuted"  direction="both"  dataType="stringType" />
+  </properties>
+  <transition to="" />
+</activity>

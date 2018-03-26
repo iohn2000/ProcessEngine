@@ -1,0 +1,7 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.RemoveOnboarding" instance=".RemoveOnboarding">
+  <name>Onboarding Remove</name>
+  <properties>
+    <property name="EffectedPersonEmploymentGuid"    direction="input"   dataType="stringType" />
+    <property name="ReturnStatus"                    direction="output"  dataType="stringType" />
+  </properties>
+</activity>

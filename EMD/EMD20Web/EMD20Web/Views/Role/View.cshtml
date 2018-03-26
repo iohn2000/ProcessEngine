@@ -1,0 +1,99 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.RoleModel
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+@{
+    ViewBag.Title = "View Orgunit role";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/Role_View.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+<div id="formcontent" style="width: 720px;">
+        @Html.AntiForgeryToken()
+
+        <div id="formresults" class="infobox error" style="display:none"></div>
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="k-edit-form-container" style="float:left;">
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Name, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.R_ID, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.R_ID, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Key1, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Key1, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Key2, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Key2, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Key3, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Key3, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Guid_Parent, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                @(Html.Kendo().DropDownListFor(m => m)
+                .OptionLabel("Please select")
+                .Name("Guid_Parent")
+                .DataTextField("Name")
+                .DataValueField("Guid")
+                .HtmlAttributes(new { disabled = "disabled", @style = "width:300px" })
+                .Filter(FilterType.Contains)
+                .IgnoreCase(true)
+                .BindTo(Model.AvailableRoles)
+                        )
+                    </div>
+                </div>
+
+                @*<div class="form-group">
+                    @Html.LabelForRequired(model => model.Guid_Root, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @(Html.Kendo().DropDownListFor(m => m)
+                .OptionLabel("Please select")
+                .Name("Guid_Root")
+                .DataTextField("Name")
+                .DataValueField("Guid")
+                .HtmlAttributes(new { disabled = "disabled", @style = "width:300px" })
+                .Filter(FilterType.Contains)
+                .IgnoreCase(true)
+                .BindTo(Model.AvailableRoles)
+                        )
+                    </div>
+                </div>*@
+
+                <div class="form-group form-group-buttons">
+                    <label></label>
+                    <div class="col-md-10">
+                        <button type="button" value="Close" class="k-button" onclick="closeWindow();">Close</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+</div>
+
+<div style="width:900px;height:800px;float:left;border:none; margin-left: 30px;">
+    @Html.Partial("Controls/_RoleMap", Model.roleModelList)
+</div>

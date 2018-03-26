@@ -1,0 +1,21 @@
+﻿<activity nr="" id="Kapsch.IS.ProcessEngine.WFActivity.EvaluationDecision.EvaluationDecisionActivity" instance=".EvaluationDecisionActivity">
+  <name>Evaluation Decision</name>
+
+  <properties>
+    <property name="condition"  direction="input"  dataType="stringType" />
+    <property name="demoResult" direction="input"  dataType="stringType" />
+    <property name="result"    direction="output" dataType="stringType" />
+  </properties>
+
+  <transition to="" default="true">
+    <condition>
+      <![CDATA[{{result}} = "true"]]>
+    </condition>
+  </transition>
+
+  <transition to="">
+    <condition>
+      <![CDATA[{{result}} = "false"]]>
+    </condition>
+  </transition>
+</activity>

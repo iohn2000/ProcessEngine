@@ -1,0 +1,51 @@
+﻿@using Kapsch.IS.EMD.EMD20Web.Models;
+@model Kapsch.IS.EMD.EMD20Web.Models.Workflow.AcitivityManageModel
+@{
+    ViewBag.Title = "Workflow Messages";
+    ViewBag.TooltipUrl = "http://" + Request.Url.Authority + "/Quickinfo/ProcessEntity_Manage.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+<div style="margin-left: 10px;" class="form-group form-group-inline">
+    <h3>General workflow information:</h3>
+    <h3 style="font-weight: normal">@Model.Title</h3>
+    <h3>Activity Messages:</h3>
+</div>
+
+@(Html.Kendo().Grid<Kapsch.IS.EMD.EMD20Web.Models.Workflow.ActivityResultMessageModel>()
+        .Name("ProcessEntityGrid").HtmlAttributes(new { @class = "k-grid-big" })
+
+        .Sortable()
+        .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+        //.Pageable(pageable => pageable
+        //.Refresh(true)
+        //.PageSizes(true)
+        //.ButtonCount(5)
+        //.PageSizes(new[] { 15, 50, 100 })
+        //)
+        .Scrollable(s => s.Enabled(true).Height("auto"))
+
+        .Columns(columns =>
+        {
+            columns.Bound(item => item.Created).Filterable(false).Format("{0:dd.MM.yyyy hh:mm}").Width(150);
+            columns.Bound(item => item.Text).Filterable(false);
+            columns.Bound(item => item.ActivityInstance).Filterable(false).Width(250);
+
+        })
+        .NoRecords("No workflow messages found")
+
+.DataSource(dataSource => dataSource
+    .Ajax()
+    .ServerOperation(true)
+
+    //.PageSize(15)
+    // .Model(model => model.Id(item => item.ActivityInstance))
+    .Read(read => read.Action("ReadInstances", "ProcessEntity", new { guidEntity = Model.EntityGuid }))
+    .Events(events => events.Error("exceptionManager.Events.HandleError")
+
+    )
+)
+)
+
+

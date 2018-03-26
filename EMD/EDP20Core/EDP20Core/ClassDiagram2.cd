@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Kapsch.IS.EDP.Core.Entities.ContentTemplateHandler">
+    <Position X="0.5" Y="5.25" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAACAAAgIAAAAAAAAAAAAAAAAAQIAAAAAAAAkAA=</HashCode>
+      <FileName>Entities\ContentTemplateHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Kapsch.IS.EDP.Core.Entities.EMDHistorizableObjectHandler">
+    <Position X="5.25" Y="4.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>IEAAAQAAAAAgAAACMAAAABAAAAAAAgAAAAAABAAAAAA=</HashCode>
+      <FileName>Entities\EMDHistorizableObjectHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Kapsch.IS.EDP.Core.Entities.EMDBaseObjectHandler">
+    <Position X="8.75" Y="5.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAIAAAIAAAAAAAAAAAAgAAAAAABAAAAAA=</HashCode>
+      <FileName>Entities\EMDBaseObjectHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Kapsch.IS.EDP.Core.Entities.EMDContentTemplate">
+    <Position X="0.5" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAIAAACAQAAAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\ContentTemplate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Kapsch.IS.EDP.Core.Entities.EMDHistorizableObject">
+    <Position X="5" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAQAAAAAAAACYAAAQAAIACAAACAAAAAAAAA=</HashCode>
+      <FileName>Entities\EMDHistorizableObject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Kapsch.IS.EDP.Core.Entities.EMDObject">
+    <Position X="8.75" Y="0.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAABAAAAACAAAABAQQAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\EMDObject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

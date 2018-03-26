@@ -1,0 +1,63 @@
+﻿<workflow id="SubWorkflow_SimpleEmail" name="show case demo sub workflows" status="new">
+
+  <variables>
+    
+    <variable name="0.EqName"             direction="both"  dataType="stringType"></variable>
+    <variable name="0.ObreID"             direction="both"  dataType="stringType"></variable>
+    <variable name="0.EffectedPerson"     direction="both"  dataType="stringType"></variable>
+    <variable name="0.RequestorPerson"    direction="both"  dataType="stringType"></variable>
+    <variable name="0.Approver"           direction="both"  dataType="stringType">wolfgang.stagl@kapsch.net</variable><!-- default value if not value given -->
+
+    <variable name="1.logText" direction="input" dataType="stringType">Start Worflow with SubWorkflow</variable>
+
+    <variable name="2.EqName"                  direction="both"  dataType="stringType">{{0.EqName}}</variable>
+    <variable name="2.ObreID"                  direction="both"  dataType="stringType">{{0.ObreID}}</variable>
+    <variable name="2.EffectedPerson"          direction="both"  dataType="stringType">{{0.EffectedPerson}}</variable>
+    <variable name="2.RequestorPerson"         direction="both"  dataType="stringType">{{0.RequestorPerson}}</variable>
+    <variable name="2.Approver"                direction="both"  dataType="stringType">{{0.Approver}}</variable>
+    <variable name="2.subWorkflowDefinitionID" direction="input" dataType="stringType">SimpleEmail</variable>
+    
+    <variable name="3.logText" direction="input" dataType="stringType">After SubWorkflow Activity</variable>
+  </variables>
+
+  <activities>
+    <!-- ================== START =================== -->
+    <activity nr="0" id="start" instance="start" >
+      <name>SubWorkflow Simple with Email</name>
+      <transition to="1.AuditLogActivity"/>
+    </activity>
+
+    <activity nr="1" id="Kapsch.IS.ProcessEngine.WFActivity.AuditLogActivity" instance="1.AuditLogActivity">
+      <name></name>
+      <properties>
+        <property name="logText" direction="input" dataType="stringType"></property>
+      </properties>
+      <transition to="2.SubWorkflowActivity"/>
+    </activity>
+
+
+    <!-- ================== call sub workflow =================== -->
+    <activity nr="2" id="Kapsch.IS.ProcessEngine.WFActivity.SubWorkflowActivity" instance="2.SubWorkflowActivity">
+      <name>simple sub wf call to send email</name>
+      <properties>
+        <property name="subWorkflowDefinitionID" direction="input" dataType="stringType"></property>
+        <property name="EqName"                  direction="both"  dataType="stringType"></property>
+        <property name="ObreID"                  direction="both"  dataType="stringType"></property>
+        <property name="EffectedPerson"          direction="both"  dataType="stringType"></property>
+        <property name="RequestorPerson"         direction="both"  dataType="stringType"></property>
+        <property name="Approver"                direction="both"  dataType="stringType">wolfgang.stagl@kapsch.net</property>
+        <!-- default value if not value given -->
+      </properties>
+      <transition to="3.AuditLogActivity"/>
+    </activity>
+
+    <activity nr="3" id="Kapsch.IS.ProcessEngine.WFActivity.AuditLogActivity" instance="3.AuditLogActivity">
+      <name></name>
+      <properties>
+        <property name="logText" direction="input" dataType="stringType"></property>
+      </properties>
+    </activity>
+    
+  </activities>
+
+</workflow>

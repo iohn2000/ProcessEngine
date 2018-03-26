@@ -1,0 +1,73 @@
+﻿@using Kapsch.IS.EMD.EMD20Web.Models;
+@{
+    ViewBag.Title = "Package Management";
+}
+
+<h2>Role-Management</h2>
+
+<div id="itemcontainer">
+@(Html.Kendo().Grid<PackageModel>()
+.Name("Grid")
+.Columns(columns =>
+{
+    columns.Command(command => { command.Edit().Text(" ").CancelText("Cancel").UpdateText("Update").HtmlAttributes(new { @class = "icon-edit kapsch-icon-button green", @style = "" });  }).Width(70).Title("Actions"); //.Click("showContextMenu")
+    columns.Command(command => { command.Custom("ManageEquipments").Text("manage equipmens").Click("showEquipmentWindow"); }).Width(400).Title("Process");
+    columns.Bound(item => item.Name).Width(150).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")));
+    columns.Bound(item => item.Description).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")));
+    //columns.Bound(item => item.Company).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains")));
+    //columns.Bound(item => item.Location).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains")));
+    columns.Bound(item => item.Flags).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains")));
+    //columns.ForeignKey(item => item.Gender, (List<GenderModel>)ViewData["GenderNames"], "Key", "Name").EditorTemplateName("NullableDropDown").Width(200);
+    
+
+})
+.ToolBar(tb => tb.Create().Text("Add Package"))
+.Editable(editable => editable.Mode(GridEditMode.PopUp).DisplayDeleteConfirmation(false).Window(win => win.Width(700)))
+.Pageable(pageable => pageable
+    .Refresh(true)
+    .PageSizes(true)
+    .ButtonCount(5)
+    .PageSizes(new[] { 15, 50, 100 }))
+//.Events(ev => ev.DataBound("dataBound"))
+//.Events(ev => ev.Edit("onEdit"))
+//.Events(ev => ev.Cancel("onCancel"))
+//.Events(ev => ev.Remove("onDestroy"))
+
+.Sortable()
+.Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+
+.DataSource(dataSource => dataSource
+    .Ajax()
+    .PageSize(100000)
+    .Model(model => model.Id(p => p.Guid))
+    .Create("Create", "RoleManagement")
+    .Read("Read", "RoleManagement")
+    .Update("Update", "RoleManagement")
+    .Events(events => events.Error("exceptionManager.Events.HandleError"))
+    )
+
+    )
+</div>
+
+
+<script>
+    function showEquipmentWindow(e)
+    {
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+        $("#winRoleEquipments").remove();
+
+        $("<div id='winRoleEquipments' />").appendTo(document.body).kendoWindow({
+            draggable: true, resizable: true, width: "90%",
+            height: "600px", title: "Package Equipment",
+            scrollable: false,
+            content: '/RoleManagement/RoleEquipment?OC_Guid=' + dataItem.Guid, modal: true, actions: ["Close"]
+        });
+
+        $("#winRoleEquipments").data("kendoWindow").center().open();
+
+
+    }
+
+</script>

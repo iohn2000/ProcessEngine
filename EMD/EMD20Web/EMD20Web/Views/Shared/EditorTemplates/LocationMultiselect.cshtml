@@ -1,0 +1,15 @@
+﻿@(Html.Kendo().MultiSelect()
+                .Name("Locations")
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .Filter(FilterType.Contains)
+                .Placeholder("Please select")
+                .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("ReadForSelect", "Location");
+                    })
+                    .ServerFiltering(false);
+                })
+)

@@ -1,0 +1,10 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.ITAutomation.RemoveUserFromAD" instance=".RemoveUserFromAD">
+  <name>User - Remove User From AD</name>
+  <properties>
+    <!-- -->
+    <property name="UserID" direction="input" dataType="stringType" />    
+    <property name="ScriptRunID" direction="output" dataType="stringType" />
+  </properties>
+  <transition to=".ITAutomationActivityWait"/>
+</activity>
+

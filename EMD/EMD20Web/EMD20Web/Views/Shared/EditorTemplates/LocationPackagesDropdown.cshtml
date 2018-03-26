@@ -1,0 +1,31 @@
+﻿@{ Boolean CascadeFromEnterprise = Convert.ToBoolean(ViewData["CascadeFromLocation"]); }
+
+<script>
+        function filterForLocation() {
+                return {
+                    loca_guid: $("#Location").val()
+                };
+            }
+</script>
+@(
+        Html.Kendo().DropDownListFor(m => m)
+        .OptionLabel("Please select")
+        .Name("LocationPackages")
+        .DataTextField("Text")
+        .DataValueField("Value")
+        .HtmlAttributes(new { @style = "width:500px" })
+        .Filter(FilterType.Contains)
+        .IgnoreCase(true)
+        .CascadeFrom("Location")
+        .AutoBind(false)
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("ReadForSelectForLocationPackages", "Package").Data("filterForLocation");
+            })
+            .ServerFiltering(false);
+        })
+)
+
+

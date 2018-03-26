@@ -1,0 +1,10 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.SetEnterpriseLocationStatus.SetEnterpriseLocationStatusActivity" instance=".SetEnterpriseLocationStatusActivity">
+  <name>EnterpriseLocation Status Set</name>
+  <properties>
+    <property name="enloGuid"         direction="input"   dataType="stringType" />
+    <property name="status"           direction="input"   dataType="stringType" />
+    <property name="returnStatus"     direction="output"  dataType="stringType" />
+  </properties>
+  <transition to=".XXX"/>
+</activity>
+

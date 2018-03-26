@@ -1,0 +1,9 @@
+﻿
+<div class="windowMetaDataTooltip" initialized="false" tooltip="@Html.Raw(ViewBag.Tooltip)" tooltipUrl="@Html.Raw(ViewBag.TooltipUrl)" tooltipWidth="@(ViewBag.TooltipWidth == null ? 800 : Html.Raw(ViewBag.TooltipWidth))" tooltipHeight="@(ViewBag.TooltipHeight == null ? 500 : Html.Raw(ViewBag.TooltipHeight))"></div>
+
+<script>
+    $(document).ready(function (e) {
+        helper.Functions.InitialzePopupTooltips();
+    });
+
+</script>

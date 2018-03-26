@@ -1,0 +1,161 @@
+﻿@using Kapsch.IS.EMD.EMD20Web.Models;
+@model Kapsch.IS.EMD.EMD20Web.Models.PackageModel
+@Html.Partial("~/Views/Shared/Javascript/_nullableDropDownJS.cshtml")
+
+@{
+    ViewBag.Title = "Packages";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/Package_Manage.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+@if (Model.CanView || Model.CanManage)
+{
+    bool showViewEquipment = false;
+    if (Model.CanView && !Model.CanManage)
+    {
+        showViewEquipment = true;
+    }
+
+    <div id="itemcontainer">
+
+        @(Html.Kendo().Grid<PackageModel>()
+            .Name("Grid").HtmlAttributes(new { @class = "k-grid-big" })
+            .Scrollable(s => s.Enabled(true).Height("auto"))
+            .ToolBar(tb =>
+            {
+            if (Model.CanManage)
+            {
+                // tb.Custom().Text("Add Package").Url("#").HtmlAttributes(new { onclick = "showInWindow('" + Url.Action("Create", "Package") + "/true','Add Package');", @class = "kapsch-text-button" });
+                tb.Template(@<text>
+        <div class="toolbar">
+
+            <div class="row">
+                <a class="kapsch-text-button k-button k-button-icontext " href="#" onclick="showInWindow('/Package/Create/true','Add Package');"><span></span>Add Package</a>
+                @*<input class="k-textbox" id="RuleFilter" name="RuleFilter">
+                <button class="kapsch-text-button k-button" id="CreateFilter" onclick="showInWindow('CreateRuleFilter/true','Create Filter');" data-role="button" role="button" aria-disabled="false" tabindex="0">Create Rule Filter</button>*@
+            </div>
+        </div>
+                </text>);
+            }
+            else
+            {
+                tb.Template(@<text>
+        <div class="toolbar">
+
+            <div class="row">
+
+                <input class="k-textbox" id="RuleFilter" name="RuleFilter">
+                <button class="kapsch-text-button k-button" id="CreateFilter" onclick="showInWindow('CreateRuleFilter/true','Create Filter');" data-role="button" role="button" aria-disabled="false" tabindex="0">Create Rule Filter</button>
+            </div>
+        </div>
+                </text>);
+                }
+
+            })
+    .Columns(columns =>
+    {
+        columns.Bound(item => item.Guid).Title("").Filterable(false).Width(60)
+      .HtmlAttributes(new { @class = "tt_surname", @title = "#=Name#" })
+      .ClientTemplate(
+                        "# if (CanManage == true) { #"
+
+                        + "<a title='Edit' href='\\#' "
+                        + "onclick='showInWindow(\""
+                        + "Edit/"
+                        + "#= Guid #/true\",\"Edit Package\");' "
+                        + "data-id='#=Guid#'"
+                        + ">"
+                        + "<i class='material-icons'>edit</i>"
+                        + "</a>"
+                        + "<a title='Delete' href='\\#' "
+                        + "onclick='packageManagement.Functions.Delete(\"#=Guid#\",\"Package\",\"#=Name#\",\"UserModel\");' "
+                        + "data-id='#=Guid#'"
+                        + ">"
+                        + "<i class='material-icons'>delete</i>"
+                        + "</a>"
+
+                        + "# } else {#"
+
+                        + "<a title='View' href='\\#' "
+                        + "onclick='showInWindow(\""
+                        + "View/"
+                        + "#= Guid #/true\",\"View Package\");' "
+                        + "data-id='#=Guid#'"
+                        + ">"
+                        + "<i class='material-icons'>pageview</i>"
+                        + "</a>"
+
+                        + "#} #"
+                    );
+
+
+        columns.Bound(item => item.Name).Filterable(ftr => ftr.Operators(ops => ops.ForString(str => str.Clear().Contains("Contains"))).Cell(cell => cell.Template("kendoHelper.DisableAutocompleteFilter"))).Width(400)
+          .HtmlAttributes(new { @class = "tt_surname", @title = "#=Name#" });
+        columns.Bound(item => item.Description).Filterable(ftr => ftr.Operators(ops => ops.ForString(str => str.Clear().Contains("Contains"))).Cell(cell => cell.Template("kendoHelper.DisableAutocompleteFilter")));
+      //  columns.Bound(item => item.Rule).Filterable(false);
+       // columns.Bound(item => item.FlagsStr);
+        columns.Bound(item => item.ActiveFromDateOnly).Format("{0:dd.MM.yyyy}").Width(200);
+        columns.Command(command =>
+        {
+            command.Custom("ManageEquipment").Text("Manage Equipment").HtmlAttributes(new { @class = "kapsch-grid-button", @style = "" }).SendDataKeys(true).Click("manageEquipment");
+
+        }
+        ).Visible(Model.CanManage).Width(270);
+        columns.Command(command =>
+        {
+            command.Custom("ViewEquipment").Text("View Equipment").HtmlAttributes(new { @class = "kapsch-grid-button", @style = "" }).SendDataKeys(true).Click("viewEquipment");
+
+        }
+        ).Visible(showViewEquipment).Width(270);
+
+    })
+
+    .Editable(editable => editable.Mode(GridEditMode.PopUp).DisplayDeleteConfirmation(false).Window(win => win.Width(700)))
+        .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(true)
+            .ButtonCount(5)
+            .PageSizes(new[] { 10, 15, 50 }))
+
+    .Sortable()
+    .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true).Operators(ops => ops.ForString(str => str.Clear().Contains("Contains"))))
+    .DataSource(dataSource => dataSource
+        .Ajax().ServerOperation(true)
+        .Sort(a => { a.Add("Name").Ascending(); })
+        .Read("Read", "Package")
+        .PageSize(15)
+        .Model(model => model.Id(p => p.Guid))
+        .Events(events => events.Error("exceptionManager.Events.HandleError"))
+    )
+        )
+    </div>
+
+    <script type="text/javascript">
+
+    function manageEquipment(e) {
+        e.preventDefault();
+        var tr = $(e.target).closest("tr");
+        var data = this.dataItem(tr);
+        showInWindow('/Package/ManageEquipment/' + data.Guid + '/true', 'Manage Equipment');
+    }
+
+    function viewEquipment(e) {
+        e.preventDefault();
+        var tr = $(e.target).closest("tr");
+        var data = this.dataItem(tr);
+        showInWindow('/Package/ViewManageEquipment/' + data.Guid + '/true', 'View Equipment');
+    }
+
+
+    function requestStart(e) {
+        e.options.data = {
+            guid: e.target.data("id")
+        }
+    }
+    </script>
+
+
+    <script src="~/Scripts/Views/Shared/formValidation.js" type="text/javascript"></script>
+}
+

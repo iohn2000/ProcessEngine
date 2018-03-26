@@ -1,0 +1,151 @@
+﻿@using Kapsch.IS.EMD.EMD20Web.HelperExtensions;
+@using Kapsch.IS.EDP.Core.Framework;
+@{
+    //initialize some common needed Variables
+    var cont = (Kapsch.IS.EMD.EMD20Web.Controllers.BaseController)ViewContext.Controller;
+    Kapsch.IS.EDP.Core.Framework.SecurityUser secUser = Kapsch.IS.EDP.Core.Framework.SecurityUser.NewSecurityUser(cont.UserName);
+    bool isAdmin = secUser.IsAdmin;
+    string databaseNameClass = Configuration.DATABASENAME == "ISEmployeeMetaData" ? string.Empty : "dbNameGreen";
+}
+<header>
+
+    <div id="header-content" class="darkbox">
+        <div class="content-wrapper flex-box-toright">
+            @if (Kapsch.IS.EDP.Core.Utils.Configuration.ISTESTSYSTEM)
+            {
+                <div class="testsystem-div">@Kapsch.IS.EDP.Core.Utils.Configuration.TESTSYSTEMNAME</div>
+            }
+            <div class="responsivelink">
+                Close
+            </div>
+
+
+            <div class="top">
+                <div class="breadcrumb">
+                    <span id="edp-version" style="cursor: default">@System.Configuration.ConfigurationManager.AppSettings["EMD20Web.Version"] | Version: @(Configuration.WEBVERSION) (@(Configuration.WEBVERSIONDATE))</span>
+                    @if (isAdmin)
+                    {
+                        <span>| Core Version: @(Configuration.COREVERSION) | </span><span class="@databaseNameClass">DB: @(Configuration.DATABASENAME)</span>
+                    }
+                </div>
+                <div class="pagetitle">
+                    @ViewBag.Title
+                    <span class="info-tooltip" style="display: none">
+                        <i id="kendoTooltip" style="" class="material-icons">info</i>
+                    </span>
+                </div>
+            </div>
+            <div class="top-right" style="cursor: pointer">
+                <div class="logoarea">
+                    <div class="applogo">
+                        <a href="#" target="_blank"><img src="~/Content/kapsch/Kapsch-Logo_Claim_WhiteYellow.png" /></a>
+                        <!--not shown for EDP since Applogo is Kapsch Logo-->
+                        <!-- <a href="#" target="_blank"><img width="81" src="~/Content/kapsch/Kapsch-Logo_sRGB_71mm_whiteyellow.png" /></a> -->
+                    </div>
+                    <div class="logo">
+                        @*<a href="#" target="_blank"><img src="~/Content/kapsch/Kapsch-Logo_Claim_WhiteYellow.png" width="70"/></a>*@
+                    </div>
+                </div>
+                @{bool isImpersonated = System.Web.HttpContext.Current.Session[Kapsch.IS.EMD.EMD20Web.Controllers.BaseController.IMPERSONATION_SESSION_USER] != null; }
+                <div class="credentialbox @(isImpersonated ? "impersonated" : string.Empty)" onclick="exceptionManager.Functions.OpenErrorListView()">
+
+
+                    @Html.Raw(ViewData["HeaderFirstname"]) @Html.Raw(ViewData["HeaderSurname"]) | @Html.Raw(ViewData["HeaderEDPRole"])
+
+                </div>
+                <div class="adminbutton">
+                    @if (System.Web.HttpContext.Current.Session[Kapsch.IS.EMD.EMD20Web.Controllers.BaseController.IMPERSONATION_SESSION_USER] != null)
+        {
+            <button class="kapsch-text-button k-button small impersonate-logout" onclick="user.Communication.LogoutImpersonatedUser()">Logout</button>
+}
+
+
+                    @if (secUser.IsAdmin)
+        {
+            <button class="kapsch-text-button k-button small" onclick="user.Communication.DeleteCache()">Delete Cache</button>
+}
+                </div>
+            </div>
+            @{
+                Kapsch.IS.EDP.Core.Framework.SecurityUserParameterFlags Flags = new Kapsch.IS.EDP.Core.Framework.SecurityUserParameterFlags(checkPlainPermisson: true);
+                bool showAdvancedSearch = secUser.hasPermission(SecurityPermission.AdvancedSearch_View, Flags);
+                bool showManagePerson = secUser.hasPermission(SecurityPermission.PersonManagement_View, Flags);
+                bool showManagePackage = secUser.hasPermission(SecurityPermission.PackageManagement_View, Flags);
+                bool showManageOrgunit = secUser.hasPermission(SecurityPermission.OrgUnitManager_View, Flags);
+                bool showManageOrgunitSecurity = secUser.IsAdmin;
+                bool showManageOrgunitRoles = secUser.hasPermission(SecurityPermission.OrgUnitRoleManager_View, Flags);
+                bool showManageRoles = secUser.hasPermission(SecurityPermission.RoleManager_View, Flags);
+                bool showManageCostcenter = secUser.hasPermission(SecurityPermission.CostCenterManager_View, Flags);
+                bool showManageEnterprise = secUser.hasPermission(SecurityPermission.EnterpriseManager_View, Flags);
+                bool showManageEnterpriseLocation = secUser.hasPermission(SecurityPermission.EnterpriseLocationManager_View, Flags);
+                bool showManageLocation = secUser.hasPermission(SecurityPermission.LocationManager_View, Flags);
+                bool showManageEquipmentDefinition = secUser.hasPermission(SecurityPermission.EquipmentDefinitionManager_View, Flags) || secUser.hasPermission(SecurityPermission.EquipmentDefinitionManager_Extended_View_Manage, Flags);
+                bool showManageCountry = secUser.hasPermission(SecurityPermission.CountryManager_View, Flags);
+                bool showManageWorkflow = secUser.hasPermission(SecurityPermission.WorkflowManagement_View_Manage, Flags);
+                bool showAccountGroup = secUser.hasPermission(SecurityPermission.AccountGroup_View_Manage, Flags);
+                bool showManageCategory = secUser.hasPermission(SecurityPermission.CategoryManagement_View, Flags);
+                bool showOrganisationUnitManagementMenuEntry = false;
+                if (showManageOrgunit || showManageOrgunitRoles || showManageRoles)
+                { showOrganisationUnitManagementMenuEntry = true; }
+
+                bool showEmploymentMenu = false;
+                if (showManagePerson || showManagePackage)
+                { showEmploymentMenu = true; }
+
+            }
+            @(Html.Kendo().Menu()
+            .Name("main-menu")
+            .Animation(false)
+            .Items(items =>
+            {
+                items.Add().Text("SEARCH")
+                    .Items(children =>
+                    {
+                        children.Add().Text("Search").Url("~/Home");
+                        children.Add().Text("Advanced Search").Url("~/AdvancedSearch").Visible(showAdvancedSearch);
+                    });
+                items.Add().Text("EMPLOYMENT").Visible(showEmploymentMenu)
+                    .Items(children =>
+                    {
+                        children.Add().Text("Persons").Url("~/Person").Visible(showManagePerson);
+                        children.Add().Text("Packages").Url("~/Package/Manage").Visible(showManagePackage);
+                    });
+                items.Add().Text("ORGANISATION")
+                    .Items(children =>
+                    {
+                        children.Add().Text("Organisation Unit Management").HtmlAttributes(new { style = "cursor: default", @class = "menu-item-header" }).Visible(showOrganisationUnitManagementMenuEntry);
+                        children.Add().Text("Orgunit Roles").Url("~/Role/Manage").HtmlAttributes(new { style = "margin-left: 10px;" }).Visible(showManageRoles);
+                        children.Add().Text("Orgunit Employees").Url("~/OrgUnitRole/Manage").HtmlAttributes(new { style = "margin-left: 10px;" }).Visible(showManageOrgunitRoles);
+                        children.Add().Text("Orgunits").Url("~/OrgUnit/Manage").HtmlAttributes(new { style = "margin-left: 10px;" }).Visible(showManageOrgunit);
+                        children.Add().Text("Orgunits (Security)").Url("~/OrgUnit/ManageSecurity").HtmlAttributes(new { style = "margin-left: 10px;" }).Visible(showManageOrgunitSecurity);
+
+                        children.Add().Text("Cost centers").Url("~/Costcenter/Manage").Visible(showManageCostcenter);
+                        children.Add().Text("Cost center groups").Url("~/AccountGroup/Manage").Visible(showAccountGroup);
+
+                        children.Add().Text("Tasks").Url("~/TaskManagement/Manage").HtmlAttributes(new { datatext = "test" });
+                        children.Add().Text("Equipment definitions").Url("~/EquipmentDefinition/Manage").Visible(showManageEquipmentDefinition);
+                        children.Add().Text("Enterprises").Url("~/Enterprise/Manage").Visible(showManageEnterprise);
+                        children.Add().Text("Enterprise-Locations").Url("~/EnterpriseLocation/Manage").Visible(true);
+                        children.Add().Text("Locations").Url("~/Location/Manage").Visible(showManageLocation);
+                        children.Add().Text("Countries").Url("~/Country/Manage").Visible(showManageCountry);
+                        children.Add().Text("Category").Url("~/Category/Manage").Visible(showManageCategory);
+
+                    });
+                items.Add().Text("WORKFLOW").Visible(showManageWorkflow)
+                  .Items(children =>
+                  {
+                      children.Add().Text("Management").Url("~/Workflow/Manage").Visible(showManageWorkflow);
+                      children.Add().Text("Mappings").Url("~/Workflow/Mapping").Visible(showManageWorkflow);
+                      children.Add().Text("Instances").Url("~/Workflow/WorkflowInstances").Visible(showManageWorkflow);
+                  });
+            })
+            )
+        </div>
+    </div>
+
+
+</header>
+
+<script>
+    exceptionManager.Statics.UserName = '@System.Web.Mvc.Html.HtmlHelperExtensions.ExtractUserName(HttpContext.Current.User.Identity.Name)';
+</script>

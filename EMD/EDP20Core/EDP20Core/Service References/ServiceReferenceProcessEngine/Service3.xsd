@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Kapsch.IS.ProcessEngine.Webservice.FaultContracts" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Kapsch.IS.ProcessEngine.Webservice.FaultContracts" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://gis-dev-processengine.kapsch.co.at/Webservice/Service.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Kapsch.IS.ProcessEngine.Webservice.Entities" />
+  <xs:complexType name="FcWorkflowException">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:FcBaseException">
+        <xs:sequence>
+          <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Kapsch.IS.ProcessEngine.Webservice.Entities" minOccurs="0" name="ErrorItems" nillable="true" type="q1:ArrayOfWorkflowErrorItem" />
+          <xs:element minOccurs="0" name="ErrorType" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="FcWorkflowException" nillable="true" type="tns:FcWorkflowException" />
+  <xs:complexType name="FcBaseException">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="LineNumberEnd" type="xs:int" />
+      <xs:element minOccurs="0" name="LineNumberStart" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FcBaseException" nillable="true" type="tns:FcBaseException" />
+  <xs:complexType name="FcActivityException">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:FcBaseException">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ErrorType" type="xs:int" />
+          <xs:element minOccurs="0" name="IdActivityInstance" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="FcActivityException" nillable="true" type="tns:FcActivityException" />
+  <xs:complexType name="FcVariableException">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:FcBaseException">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ErrorType" type="xs:int" />
+          <xs:element minOccurs="0" name="Id" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="FcVariableException" nillable="true" type="tns:FcVariableException" />
+  <xs:complexType name="FcPermissionException">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="IsCheckedOutByAnotherUser" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNotCheckedOut" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FcPermissionException" nillable="true" type="tns:FcPermissionException" />
+  <xs:complexType name="FcDefaultException">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:FcBaseException">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ErrorType" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="FcDefaultException" nillable="true" type="tns:FcDefaultException" />
+</xs:schema>

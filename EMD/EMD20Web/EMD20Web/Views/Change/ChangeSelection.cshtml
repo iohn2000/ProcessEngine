@@ -1,0 +1,385 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.Change.ChangeEmploymentModel
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+@{
+    ViewData["EnterpriseGuid"] = Model.SourceEnterpriseGuid;
+}
+
+@if (Model.ShowEquipmentApprovement)
+{
+    <div class="form-group">
+        @Html.LabelForRequired(model => model.ApproveEquipmentMove, htmlAttributes: new { @class = "control-label col-md-2" })
+
+        <div class="col-md-10">
+
+            @Html.HiddenFor(model => model.ApproveEquipmentMove)
+
+            <input id="TempApproveEquipmentMove" type="checkbox" onchange="changeEmployment.Events.OnChangeOrgUnitApproveEquipmentMove(this);" />
+        </div>
+
+    </div>
+}
+
+<!-- ENTERPRISE SELECTION -->
+@if (Model.SelectedChangeType == Kapsch.IS.EMD.EMD20Web.Models.Change.EnumChangeType.Enterprise)
+{
+    <div class="form-group">
+        @Html.LabelForRequired(model => model.GuidTargetEnte, htmlAttributes: new { @class = "control-label col-md-2" })
+
+        <div class="col-md-10">
+            @(
+        Html.Kendo().DropDownListFor(m => m)
+        .OptionLabel("Please select")
+        .Name("GuidTargetEnte")
+        .DataTextField("Text")
+        .DataValueField("Value")
+        .HtmlAttributes(new { @style = "width:100%" })
+        .Filter(FilterType.Contains)
+        .IgnoreCase(true)
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("ReadForChangeEmployment", "Enterprise").Data("changeEmployment.Data.TargetEnterpriseParameters");
+            })
+            .ServerFiltering(false);
+        })
+        .Events(b => b.Change("changeEmployment.Events.OnChangeEnterprise"))
+            )
+
+            @Html.ValidationMessageFor(model => model.GuidTargetEnte, "", new { @class = "text-danger" })
+        </div>
+    </div>
+}
+else
+{
+    @Html.HiddenFor(model => model.GuidTargetEnte)
+}
+
+<!-- EMPLOYMENT TYPE SELECTION -->
+@if (Model.SelectedChangeType == Kapsch.IS.EMD.EMD20Web.Models.Change.EnumChangeType.Enterprise || Model.SelectedChangeType == Kapsch.IS.EMD.EMD20Web.Models.Change.EnumChangeType.EmploymentType)
+{
+    <div class="form-group">
+        @Html.LabelForRequired(model => model.GuidEmploymentType, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @(
+        Html.Kendo().DropDownListFor(m => m)
+        .OptionLabel("Please select")
+        .Name("GuidEmploymentType")
+        .DataTextField("Text")
+        .DataValueField("Value")
+        .HtmlAttributes(new { @style = "width:100%" })
+        .Filter(FilterType.Contains)
+        .IgnoreCase(true)
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("ReadForSelect", "EmploymentType");
+            })
+            .ServerFiltering(false);
+        })
+        .Events(b => b.Change("changeEmployment.Events.OnChangeEmploymentType").DataBound("changeEmployment.Events.OnDataBoundEmploymentType"))
+            )
+            @Html.ValidationMessageFor(model => model.GuidEmploymentType, "", new { @class = "text-danger" })
+        </div>
+    </div>
+}
+else
+{
+    @Html.HiddenFor(model => model.GuidEmploymentType)
+}
+
+<!-- EMAIL TYPE -->
+@if (Model.SelectedChangeType == Kapsch.IS.EMD.EMD20Web.Models.Change.EnumChangeType.Enterprise || Model.SelectedChangeType == Kapsch.IS.EMD.EMD20Web.Models.Change.EnumChangeType.EmploymentType)
+{
+    <div class="form-group" id="group-emailtype" style="display: none">
+        @Html.LabelForRequired(model => model.EMailType, htmlAttributes: new { @class = "control-label col-md-2" })
+
+        <div class="col-md-10">
+            @(Html.Kendo().DropDownList().OptionLabel("Please select")
+        .Name("EMailType")
+        .BindTo(new List<SelectListItem>
+            () { new SelectListItem() { Text = "intern", Value = "intern" }, new SelectListItem() { Text = "extern", Value = "extern" } })
+            .HtmlAttributes(new
+            {
+                style = "width:100%"
+                //data_validmask_msg = "Field required!"
+                //required = "required"
+            }))
+            @Html.ValidationMessageFor(model => model.EMailType, "", new { @class = "text-danger" })
+        </div>
+
+    </div>
+}
+
+<!-- COST CENTER SELECTION -->
+@if (Model.SelectedChangeType == Kapsch.IS.EMD.EMD20Web.Models.Change.EnumChangeType.Organisation || Model.SelectedChangeType == Kapsch.IS.EMD.EMD20Web.Models.Change.EnumChangeType.Enterprise)
+{
+
+    <div class="form-group">
+        @Html.LabelForRequired(model => model.GuidCostcenter, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @(
+        Html.Kendo().DropDownListFor(m => m)
+        .OptionLabel("Please select")
+        .Name("GuidCostcenter")
+        .DataTextField("Text")
+        .DataValueField("Value")
+        .HtmlAttributes(new { @style = "width:100%" })
+        .Filter(FilterType.Contains)
+        .IgnoreCase(true)
+        .AutoBind(true)
+        //.CascadeFrom("Enterprise")
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("ReadForSelectForEnterprise", "Account").Data("changeEmployment.Data.CostCenterParameters");
+                // read.Action("ReadForSelect", "Account");
+            })
+            .ServerFiltering(false);
+        })
+        .Events(b => b.Change("changeEmployment.Events.OnChangeCostCenter"))
+            )
+            @Html.ValidationMessageFor(model => model.GuidCostcenter, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Cost Center Responsible", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input id="costcenter-responsible" class="k-textbox k-valid" disabled value="@Model.CostCenterResponsibleName" />
+        </div>
+    </div>
+}
+else
+{
+    @Html.HiddenFor(model => model.GuidCostcenter)
+}
+
+<!-- ORG UNIT SELECTION -->
+@if (Model.SelectedChangeType == Kapsch.IS.EMD.EMD20Web.Models.Change.EnumChangeType.Organisation || Model.SelectedChangeType == Kapsch.IS.EMD.EMD20Web.Models.Change.EnumChangeType.Enterprise)
+{
+    <div class="form-group">
+        @Html.LabelForRequired(model => model.GuidOrgUnit, htmlAttributes: new { @class = "control-label col-md-2" })
+
+        <div class="col-md-10">
+            @(
+        Html.Kendo().DropDownListFor(m => m)
+        .OptionLabel("Please select")
+        .Name("GuidOrgUnit")
+        .DataTextField("Text")
+        .DataValueField("Value")
+        .HtmlAttributes(new { @style = "width:100%" })
+        .Filter(FilterType.Contains)
+        .IgnoreCase(true)
+        .AutoBind(true)
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("ReadForSelectForEnterprise", "OrgUnit").Data("changeEmployment.Data.OrgUnitParameters");
+            })
+            .ServerFiltering(false);
+        })
+        .Events(b => b.Change("changeEmployment.Events.OnChangeOrgUnit"))
+            )
+            @Html.ValidationMessageFor(model => model.GuidOrgUnit, "", new { @class = "text-danger" })
+        </div>
+    </div>
+}
+else
+{
+    @Html.HiddenFor(model => model.GuidOrgUnit)
+}
+
+<!-- MOVE ALL ROLES SELECTION -->
+@if (Model.SelectedChangeType == Kapsch.IS.EMD.EMD20Web.Models.Change.EnumChangeType.Organisation || Model.SelectedChangeType == Kapsch.IS.EMD.EMD20Web.Models.Change.EnumChangeType.Enterprise)
+{
+    <div class="form-group">
+        @Html.LabelForRequired(model => model.MoveAllRoles, htmlAttributes: new { @class = "control-label col-md-2" })
+
+        <div class="col-md-10">
+            @Html.HiddenFor(model => model.MoveAllRoles)
+
+            <input id="TempMoveAllRoles" type="checkbox" onchange="changeEmployment.Events.OnMoveAllRolesChanged(this);" />
+            @*@Html.CheckBoxFor(model => model.MoveAllRoles)*@
+        </div>
+
+    </div>
+}
+
+
+<!-- SPONSOR SELECTION -->
+@if (Model.SelectedChangeType == Kapsch.IS.EMD.EMD20Web.Models.Change.EnumChangeType.EmploymentType || Model.SelectedChangeType == Kapsch.IS.EMD.EMD20Web.Models.Change.EnumChangeType.Enterprise)
+{
+    <div id="group-sponsor" style="display: none" class="form-group">
+        @Html.LabelForRequired(model => model.GuidSponsorEmployment, htmlAttributes: new { @class = "control-label col-md-2" })
+
+        <div class="col-md-10">
+            @Html.Partial("Controls/_TextValuePopupSelectionView", Model.SponsorSelection)
+            @Html.ValidationMessageFor(model => model.GuidSponsorEmployment, "", new { @class = "text-danger" })
+        </div>
+    </div>
+}
+else
+{
+    @Html.HiddenFor(model => model.GuidSponsorEmployment)
+
+    <script>
+        $(document).ready(function () {
+            $('#GuidSponsorEmployment').removeAttr('data-val-required');
+        });
+    </script>
+}
+
+<!-- LOCATION SELECTION -->
+@if (Model.SelectedChangeType == Kapsch.IS.EMD.EMD20Web.Models.Change.EnumChangeType.Enterprise || Model.SelectedChangeType == Kapsch.IS.EMD.EMD20Web.Models.Change.EnumChangeType.Organisation)
+{
+    <div class="form-group">
+        @Html.LabelForRequired(model => model.GuidLocation, htmlAttributes: new { @class = "control-label col-md-2" })
+
+        <div class="col-md-10">
+            @(
+        Html.Kendo().DropDownListFor(m => m)
+        .OptionLabel("Please select")
+        .Name("GuidLocation")
+        .DataTextField("Text")
+        .DataValueField("Value")
+        .HtmlAttributes(new { @style = "width:100%" })
+        .Filter(FilterType.Contains)
+        .IgnoreCase(true)
+        .AutoBind(true)
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("ReadForSelectForEnterprise", "Location").Data("changeEmployment.Data.LocationParameters");
+            })
+            .ServerFiltering(false);
+        })
+        .Events(b => b.Change("changeEmployment.Events.OnChangeLocation"))
+            )
+            @Html.ValidationMessageFor(model => model.GuidLocation, "", new { @class = "text-danger" })
+        </div>
+    </div>
+}
+else
+{
+    @Html.HiddenFor(model => model.GuidLocation)
+}
+
+<!-- PERSONAL NUMBER SELECTION -->
+@if (Model.SelectedChangeType == Kapsch.IS.EMD.EMD20Web.Models.Change.EnumChangeType.Enterprise || Model.SelectedChangeType == Kapsch.IS.EMD.EMD20Web.Models.Change.EnumChangeType.EmploymentType)
+{
+    @*<div id="group-personalnumber" class="form-group" @(Model.SelectedChangeType= =Kapsch.IS.EMD.EMD20Web.Models.Change.EnumChangeType.CostCenter ? "style=display:none" : "style=visibility:visible" )>
+    *@
+    <div id="group-personalnumber" class="form-group" style="display:none">
+        @Html.LabelForRequired(model => model.PersonalNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @*@Html.EditorFor(model => model.PersonalNumber, new { htmlAttributes = new { @class = "form-control" } })*@
+            @Html.EditorFor(model => model.PersonalNumber, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PersonalNumber, "", new { @class = "text-danger" })
+        </div>
+    </div>
+}
+else
+{
+    @Html.HiddenFor(model => model.PersonalNumber)
+}
+
+
+@if (Model.SelectedChangeType == Kapsch.IS.EMD.EMD20Web.Models.Change.EnumChangeType.Enterprise)
+{
+    <div id="group-additionaldata" style="display:none">
+        <div class="form-group">
+            @Html.LabelForRequired(model => model.PersonnelRequisitionNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PersonnelRequisitionNumber, new { htmlAttributes = new { @class = "form-control", onLeave = "changeEmployment.Functions.ActivateAddEquipmentIfFinished();" } })
+                @Html.ValidationMessageFor(model => model.PersonnelRequisitionNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelForRequired(model => model.NoApprovalNeeded, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NoApprovalNeeded, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NoApprovalNeeded, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelForRequired(model => model.NoApprovalNeededReason, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NoApprovalNeededReason, new { htmlAttributes = new { @class = "form-control", onLeave = "changeEmployment.Functions.ActivateAddEquipmentIfFinished();" } })
+                @Html.ValidationMessageFor(model => model.NoApprovalNeededReason, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelForRequired(model => model.Simcard, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @(
+                Html.Kendo().DropDownListFor(m => m)
+                .Name("Simcard")
+                .OptionLabel("Please select")
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .HtmlAttributes(new { @style = "width:300px" })
+                .BindTo(new List<SelectListItem>
+                    () { new SelectListItem() { Text = "Yes", Value = "true" }, new SelectListItem() { Text = "No", Value = "false" } })
+                    .Events(b => b.Change("changeEmployment.Events.OnChangeSimCard"))
+                )
+                @Html.ValidationMessageFor(model => model.Simcard, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelForRequired(model => model.Datacard, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @(
+                Html.Kendo().DropDownListFor(m => m)
+                .Name("Datacard")
+                .OptionLabel("Please select")
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .HtmlAttributes(new { @style = "width:300px" })
+                .BindTo(new List<SelectListItem>
+                    () { new SelectListItem() { Text = "Yes", Value = "true" }, new SelectListItem() { Text = "No", Value = "false" } })
+                    .Events(b => b.Change("changeEmployment.Events.OnChangeDataCard"))
+                )
+                @Html.ValidationMessageFor(model => model.Datacard, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+}
+
+
+<!-- Leave From -->
+@if (Model.SelectedChangeType == Kapsch.IS.EMD.EMD20Web.Models.Change.EnumChangeType.EmploymentType)
+{
+    <div class="form-group">
+        @Html.LabelForRequired(model => model.LeaveFrom, htmlAttributes: new { @class = "control-label col-md-2" })
+
+        <div class="col-md-10">
+            @(Html.Kendo().DatePicker()
+            .Name("LeaveFrom")
+            .Format("dd.MM.yyyy")
+                .Events(b => b.Change("changeEmployment.Events.OnChangeLeaveFromDate"))
+            )
+            @Html.ValidationMessageFor(model => model.LeaveFrom, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelForRequired(model => model.LeaveTo, htmlAttributes: new { @class = "control-label col-md-2" })
+
+        <div class="col-md-10">
+            @(Html.Kendo().DatePicker()
+            .Name("LeaveTo")
+            .Format("dd.MM.yyyy")
+                .Events(b => b.Change("changeEmployment.Events.OnChangeLeaveToDate"))
+            )
+            @Html.ValidationMessageFor(model => model.LeaveTo, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+}

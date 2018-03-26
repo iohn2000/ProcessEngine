@@ -1,0 +1,37 @@
+﻿<div style="width: 400px">
+    <h4>Select User to forward selected tasks</h4>
+
+
+    @(
+                Html.Kendo().DropDownListFor(m => m)
+                .OptionLabel("Please select")
+                .Name("ForwardToPerson")
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .HtmlAttributes(new { @style = "width:300px" })
+                .Filter(FilterType.Contains)
+                .IgnoreCase(true)
+                .AutoBind(true)
+                .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("ReadTasksForSelect", "TaskManagement");
+                    })
+                    .ServerFiltering(false);
+
+                })
+    )
+
+
+
+    <div class="form-group form-group-buttons">
+        <button type="button" value="Cancel" class="k-button kapsch-text-button" onclick="kendoHelper.CloseWindow(this);">Cancel</button>
+        <button type="button" class="k-button kapsch-text-button" onclick="taskManagement.Events.OnButtonForwardTasksClick(this);">Forward tasks</button>
+    </div>
+</div>
+
+<script>
+
+
+</script>

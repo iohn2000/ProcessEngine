@@ -1,0 +1,29 @@
+﻿10) worflow definiton (xml) für parent und subworflow in die datenbank (Worflow.WorflowDefinitions Tabelle) stellen
+
+20) mapping msgqueue package <--> workflow (2x)
+    \\s900b110\d$\EDP20\WF_QueueManagerService\EQ_WF_Mapping.xml
+	Mapping für Parent Workflow : 
+	<MapItem workflowDefinitionID="SubWorkflow_SimpleEmail"> <!-- test für subworkflow -->
+        <Method>SubWorkflow_SimpleEmail_method</Method>
+    </MapItem> 
+    Kein Mapping notwendig für subworkflow da dieser bereits im paretn workflow definiert ist.
+
+30) QueueManager : db connection string anpassen (EMDTESTxx)
+35) queue manager auf s900b110 starten
+
+40) RabbitMQ auf s900b110 starten
+	http://s900b110:15672/#/ User: WFAdmin Password: beldene
+
+50) DB Conn String für WF-Runner anpassen (EMDTESTxx)
+52) create xml for workflow message
+    adapt new PERS_GUID for email test
+
+55) WF-Runnr gui starten (to call RunEngine)
+	51) deployment new version (seperated Activity DLL) 
+	    a) copy all from WFRunner to s900b110/../ProcessRunner (this does not include any activity DLLs)
+		b) copy ProcessEngine-Activity DLLs to configured folder (e.g.: s900b110/../WFActivities) (auch alle Abhängigkeiten)
+		c) copy EDP related Activity DLLs to configured folder (e.g.: s900b110/../WFActivities) (auch alle Abhängigkeiten)
+		Activity DLLs folder beinhaltet daher auch alle Abhängigkeiten die die DLL benötigen (teilweise doppelt weil auch in process engine folder)
+
+60) simulate core calls (MsgQueueProducer) that create a MsqQueue package via WF-Runner
+

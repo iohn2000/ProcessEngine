@@ -1,0 +1,182 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.EmploymentTabModel
+@using Kapsch.IS.EMD.EMD20Web.Models;
+
+@{
+    Layout = null;
+}
+
+<script type="text/javascript">
+    function removePackageFromEmployment(e) {
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        alert(dataItem.Guid);
+        $.ajax({
+            url: "/Employment/RemovePackageFromEmployment",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify({ empl_guid: '@Model.EP_Guid', pack_guid: dataItem.Guid }),
+            success: function (response) {
+                alert("Success");
+            },
+            error: function (response) {
+                alert('AJAX-Error' + response.error);
+            }
+
+        })
+    }
+
+    function removeEquipmentFromEmployment(e) {
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        alert(dataItem.ObjectRelationGuid);
+        $.ajax({
+            url: "/Employment/RemoveEquipmentInstanceFromEmployment",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify({ empl_guid: '@Model.EP_Guid', obre_guid: dataItem.ObjectRelationGuid }),
+            success: function (response) {
+                alert("Success");
+            },
+            error: function (response) {
+                alert('AJAX-Error' + response.error);
+            }
+
+        })
+    }
+
+    function getSelectedObjectRelationGuid(e) {
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        alert(dataItem.Guid);
+    }
+
+    var btnAddPackage = '#btnAddPackage' + '@Model.EP_Guid';
+    var btnAddEquipment = '#btnAddEquipment' + '@Model.EP_Guid';
+    $(btnAddPackage).click(function (e) {
+      e.preventDefault();
+      showInWindow("/Person/ProfilePackageAddPackageToEmployment/" + '@Model.EP_Guid', "Add Package to Employment");
+      //$("#winAddPackage").data("kendoWindow").center().open();
+    });
+
+    $(btnAddEquipment).click(function (e) {
+        e.preventDefault();
+        showInWindow("/Person/ProfilePackageAddEquipment/" + '@Model.EP_Guid', "Add Package to Employment");
+        //$("#winAddEquipment").data("kendoWindow").center().open();
+    });
+
+</script>
+
+<br /><br />
+
+<div class="kapsch-label-full">
+    @(Html.Kendo().Grid<PackageModel>()
+    .Name(ViewData["ProfilePackageGridId"].ToString())
+    .Columns(columns =>
+    {
+        //columns.Bound(item => item.Guid).Title("Guid").Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains")));
+        columns.Bound(item => item.Name).Title("Name").Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains")));
+        columns.Bound(item => item.Description).Title("Description").Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains")));
+        columns.Bound(item => item.Guid).Title("Guid").Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains")));
+        //columns.Bound(item => item.Company).Title("Company").Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains")));
+        //columns.Bound(item => item.ET_Name).Title("Employmenttype").Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains")));
+        //columns.Bound(item => item.Location).Title("Location").Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains")));
+        //columns.Bound(item => item.AC_KstId).Title("Costcenter").Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains")));
+        columns.Command(command => { command.Custom("RemovePackage").Text("remove from employment").Click("removePackageFromEmployment"); }).Width(400).Title("Action");
+    })
+    .Editable(e => e.Mode(GridEditMode.PopUp)) //.TemplateName("PersonProfileAddPackagePopUp"))
+    .Sortable()
+    .ToolBar(t =>
+    {
+
+        t.Custom().Text("Add Package").Name("AddPackage").HtmlAttributes(new { id = "btnAddPackage" + Model.EP_Guid });
+    }
+
+        )
+
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .PageSize(100000)
+        .Model(model => model.Id(m => m.Guid))
+        .Read("ReadConfiguredListOfPackagesForEmployment", "Employment", new { ep_guid = Model.EP_Guid })
+        //.Destroy(d => d.Action("RemovePackageFromEmployment", "Employment", new { ep_guid = Model.EP_Guid }).Data("getSelectedObjectRelationGuid"))
+        //.Destroy(d => d.Action("RemovePackageFromEmployment", "Employment", new { ep_guid = Model.EP_Guid }))
+        //.Destroy("RemovePackageFromEmployment","Employment", new { ep_guid = Model.EP_Guid, pack_guid = getSelectedObjectRelationGuid })
+        //.Create("AddPackageToEmployment", "Package")
+        )
+
+    )
+</div>
+
+<div class="kapsch-label-full">
+    @(Html.Kendo().Grid<Kapsch.IS.EDP.Core.Entities.EMDEquipmentInstance>()
+    .Name(ViewData["ProfileEquipmentGridId"].ToString())
+    .Columns(columns =>
+    {
+        columns.Bound(item => item.ObjectRelationGuid).Title("Guid").Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains")));
+        columns.Bound(item => item.EquipmentName).Title("Equipment").Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains")));
+        columns.Bound(item => item.PackageName).Title("Package").Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains")));
+        columns.Bound(item => item.Status).Title("Status").Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains")));
+        columns.Command(command => { command.Custom("RemoveEquipment").Text("remove from employment").Click("removeEquipmentFromEmployment"); }).Width(400).Title("Action");
+    })
+    //.Scrollable(scr => scr.Height(80))
+    .Sortable()
+    .ToolBar(t =>
+    {
+
+    t.Custom().Text("Add Equipment").Name("AddEquipment").HtmlAttributes(new { id = "btnAddEquipment" + Model.EP_Guid });
+    })
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .PageSize(100000)
+        .Model(model => model.Id(m => m.ObjectRelationGuid))
+        .Read("ReadConfiguredListOfEquipmentIntancesForEmployment", "Employment", new { empl_guid = Model.EP_Guid })
+        
+        )
+
+    )
+</div>
+
+@*@(Html.Kendo().Window()
+        .Name("winAddPackage")
+        .Title("Add Package")
+        .Iframe(true)
+        .Draggable()
+        //.Events(ev => ev.Close("onClose"))
+        .Resizable()
+        .Visible(false)
+        .Modal(true)
+        .Width(900)
+        //.HtmlAttributes(new { Style = "width:90%"})
+        .Iframe(false)
+        //.Content(@Html.Partial("ProfilePackageAddPackage", Model).ToHtmlString())
+        .LoadContentFrom("ProfilePackageAddPackage","Person",Model)
+)
+
+
+@(Html.Kendo().Window()
+        .Name("winAddEquipment")
+        .Title("Add Equipment")
+        .Iframe(true)
+        .Draggable()
+        //.Events(ev => ev.Close("onClose"))
+        .Resizable()
+        .Visible(false)
+        .Modal(true)
+        .Width(900)
+        //.HtmlAttributes(new { Style = "width:90%"})
+        .Iframe(false)
+        //.Content(@Html.Partial("ProfilePackageAddPackage", Model).ToHtmlString())
+        .LoadContentFrom("ProfilePackageAddEquipment", "Person", Model)
+)*@
+
+<script type="text/javascript">
+      $("#btnAddPackage").click(function (e) {
+      e.preventDefault();
+      //alert("Package Added To Implement");
+      
+
+  });
+
+</script>

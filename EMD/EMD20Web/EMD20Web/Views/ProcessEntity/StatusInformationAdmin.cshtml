@@ -1,0 +1,56 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.ProcessEntityModel
+@using Kapsch.IS.EMD.EMD20Web.Models;
+
+
+@{
+    ViewBag.Title = "Workflow messages";
+}
+
+
+
+<h2>Workflow Status:</h2>
+
+@if (Model != null)
+{
+    if (Model.HasInfo)
+    {
+        <div class="info"><label>WF messages:</label><span class="info-value"><a href="javascript:showInWindow('/ProcessEntity/Manage/@Model.WFI_ID/true','Workflow messages');" style="color: blue"><span class="info-value">show</span></a></span></div>
+        <div class="info">@Html.LabelFor(model => model.RequestorEmplFullName):<span class="info-value">@Model.RequestorEmplFullName</span></div>
+        <div class="info">@Html.LabelFor(model => model.RequestorEmplGuid):<span class="info-value">@Model.RequestorEmplGuid</span></div>
+        <div class="info">@Html.LabelFor(model => model.RequestingDate):<span class="info-value">@Model.RequestingDate</span></div>
+        <div class="info">@Html.LabelFor(model => model.WFTargetDate):<span class="info-value">@Model.WFTargetDate</span></div>
+
+        <div class="info"  style="padding-top: 10px">@Html.LabelFor(model => model.Guid):<span class="info-value">@Model.Guid</span></div>
+        <div class="info">@Html.LabelFor(model => model.EntityGuid):<span class="info-value">@Model.EntityGuid</span></div>
+        <div class="info">@Html.LabelFor(model => model.WFD_ID):<span class="info-value">@Model.WFD_ID</span></div>
+        <div class="info">@Html.LabelFor(model => model.WFD_Name):<span class="info-value">@Model.WFD_Name</span></div>
+
+        @*<div class="info">
+            @Html.LabelFor(model => model.WFResultMessages):
+            @if (Model.IsPartialView)
+            {
+                <a href="/ProcessEntity/StatusInformation/@Model.EntityGuid" target="_blank" style="color: blue"><span class="info-value">@Model.WFResultMessagesShort</span></a>
+            }
+            else
+            {
+                <span class="info-value">@Model.WFResultMessages</span>
+            }
+        </div>*@
+
+        <div class="info">@Html.LabelFor(model => model.Status):<span class="info-value">@Model.Status</span></div>   
+        <div class="info">@Html.LabelFor(model => model.EffectedPersGuid):<span class="info-value">@Model.EffectedPersGuid</span></div>
+        <div class="info">@Html.LabelFor(model => model.WFStartTime):<span class="info-value">@Model.WFStartTime</span></div>        
+        <div class="info">@Html.LabelFor(model => model.Modified):<span class="info-value">@Model.Modified</span></div>
+    }
+    else
+    {
+        <div>Couldn't find any information for @Model.EntityGuid</div>
+    }
+}
+else
+{
+    <div>Couldn't find any information</div>
+}
+
+
+

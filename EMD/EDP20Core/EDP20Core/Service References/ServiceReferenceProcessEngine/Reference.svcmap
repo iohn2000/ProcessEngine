@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="38a1aecb-50b1-4d78-9197-5526431a9913" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://gis-dev-processengine.kapsch.co.at/Webservice/Service.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="Service.xsd" MetadataType="Schema" ID="1c29809a-6cf8-466a-8bb8-e5ea35f8869c" SourceId="1" SourceUrl="http://gis-dev-processengine.kapsch.co.at/Webservice/Service.svc?xsd=xsd1" />
+    <MetadataFile FileName="Service1.xsd" MetadataType="Schema" ID="814801d7-418b-4d28-b55d-78f340fc93d6" SourceId="1" SourceUrl="http://gis-dev-processengine.kapsch.co.at/Webservice/Service.svc?xsd=xsd2" />
+    <MetadataFile FileName="Service2.xsd" MetadataType="Schema" ID="6f6d2454-2f50-4c27-bdaa-9c7c9c8bf7fa" SourceId="1" SourceUrl="http://gis-dev-processengine.kapsch.co.at/Webservice/Service.svc?xsd=xsd3" />
+    <MetadataFile FileName="Service3.xsd" MetadataType="Schema" ID="149b3fe8-9628-4431-b836-ff9180c8e50e" SourceId="1" SourceUrl="http://gis-dev-processengine.kapsch.co.at/Webservice/Service.svc?xsd=xsd4" />
+    <MetadataFile FileName="Service4.xsd" MetadataType="Schema" ID="415533f4-6ed3-4469-b663-3b722397af08" SourceId="1" SourceUrl="http://gis-dev-processengine.kapsch.co.at/Webservice/Service.svc?xsd=xsd5" />
+    <MetadataFile FileName="Service.wsdl" MetadataType="Wsdl" ID="dae80586-226d-4c5d-aa53-2b8c3014301a" SourceId="1" SourceUrl="http://gis-dev-processengine.kapsch.co.at/Webservice/Service.svc?wsdl" />
+    <MetadataFile FileName="Service.disco" MetadataType="Disco" ID="3b75ec7e-9ac1-48db-8e56-90534946a636" SourceId="1" SourceUrl="http://gis-dev-processengine.kapsch.co.at/Webservice/Service.svc?disco" />
+    <MetadataFile FileName="Service5.xsd" MetadataType="Schema" ID="c0647274-8a1d-4a6f-9818-ab4a86b6f770" SourceId="1" SourceUrl="http://gis-dev-processengine.kapsch.co.at/Webservice/Service.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

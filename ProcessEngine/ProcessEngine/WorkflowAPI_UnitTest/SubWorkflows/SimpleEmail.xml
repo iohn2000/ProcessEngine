@@ -1,0 +1,69 @@
+﻿<workflow id="SimpleEmail" name="show case subworkflows" status="new">
+  
+  <variables>
+    <variable name="0.EqName"          direction="both"  dataType="stringType"></variable>
+    <variable name="0.ObreID"          direction="both"  dataType="stringType"></variable>
+    <variable name="0.EffectedPerson"  direction="both"  dataType="stringType"></variable>
+    <variable name="0.RequestorPerson" direction="both"  dataType="stringType"></variable>
+    <variable name="0.Approver"        direction="both"  dataType="stringType">wolfgang.stagl@kapsch.net</variable> <!-- default value if not value given -->
+
+    <variable name="1.logText" direction="input" dataType="stringType">Inside SubWorkflow Simple Email</variable>
+
+    <variable name="2.recipient"          direction="input"  dataType="stringType">{{0.RequestorPerson}}</variable>
+    <variable name="2.subject"            direction="input"  dataType="stringType">"Equipment Request Received for : " + {{0.EqName}}</variable>
+    <variable name="2.emailBody"          direction="input"  dataType="stringType">requestMailTemplate.html</variable>
+    <variable name="2.sender"             direction="input"  dataType="stringType">workflow_system@kapsch.net</variable>
+    <variable name="2.CC"                 direction="input"  dataType="stringType"></variable>
+    <variable name="2.BCC"                direction="input"  dataType="stringType"></variable>
+    <variable name="2.Attachments_URLs"   direction="input"  dataType="stringType"></variable>
+    <variable name="2.isBodyHtml"         direction="input"  dataType="stringType">true</variable>
+    <variable name="2.demoRecipient"      direction="input"   dataType="stringType">johannes.fleck@gmail.com</variable>
+    <variable name="2.emailReturnStatus"  direction="output"  dataType="stringType"></variable>
+
+    <variable name="3.logText" direction="input" dataType="stringType">After Email Activity inside subworkflow</variable>
+  </variables>
+  
+  <activities>
+    <!-- ================== START =================== -->
+    <activity nr="0" id="start" instance="start" >
+      <name>Start Add EQ No Approval</name>
+      <transition to="1.AuditLogActivity"/>
+    </activity>
+
+    <activity nr="1" id="Kapsch.IS.ProcessEngine.WFActivity.AuditLogActivity" instance="1.AuditLogActivity">
+      <name></name>
+      <properties>
+        <property name="logText" direction="input" dataType="stringType"></property>
+      </properties>
+      <transition to="2.EmailActivity"/>
+    </activity>
+
+
+    <!-- ================== E-Mail Request Received =================== -->
+    <activity nr="2" id="Kapsch.IS.EDP.WFActivity.EmailActivity" instance="2.EmailActivity">
+      <name>test email</name>
+      <properties>
+        <property name="recipient"         direction="input"   dataType="stringType" />
+        <property name="subject"           direction="input"   dataType="stringType" />
+        <property name="emailBody"         direction="input"   dataType="stringType" />
+        <property name="sender"            direction="input"   dataType="stringType" />
+        <property name="CC"                direction="input"   dataType="stringType" />
+        <property name="BCC"               direction="input"   dataType="stringType" />
+        <property name="Attachments_URLs"  direction="input"   dataType="stringType" />
+        <property name="isBodyHtml"        direction="input"   dataType="stringType" />
+        <property name="demoRecipient"     direction="input"   dataType="stringType" />
+        <property name="emailReturnStatus" direction="output"  dataType="stringType" />
+      </properties>
+      <transition to="3.AuditLogActivity"/>
+    </activity>
+  </activities>
+
+  <activity nr="3" id="Kapsch.IS.ProcessEngine.WFActivity.AuditLogActivity" instance="3.AuditLogActivity">
+    <name></name>
+    <properties>
+      <property name="logText" direction="input" dataType="stringType"></property>
+    </properties>
+  </activity>
+
+
+</workflow>

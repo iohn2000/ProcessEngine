@@ -1,0 +1,78 @@
+﻿/*---- global variables ----*/
+/*--- colors ---*/
+@color-keycolor: rgba(255,205,0,1);
+@color-keycolorlight: rgba(255,229,123,1);
+@color-darkgray: #5f6268;
+@color-gray: #87898d;
+@color-lightgray: #afb0b3;
+@color-windowgray: #f1f1f1;
+
+@color-green: rgba(51,204,102,1);
+@color-red: rgba(255,45,86,1);
+@color-white: #fff;
+
+
+@color-typography: @color-darkgray;
+@color-elements: @color-darkgray;
+@color-disabledelements: @color-darkgray;
+@color-primbutnhover: rgba(255,220,79,1);
+@color-errormsg: rgba(255,45,86,1);
+@color-aprovalmsg: rgba(51,204,102,1);
+@color-primbtnclicked: rgba(255,229,123,1);
+@color-redbackground: rgba(255,45,86,1);
+@color-inversetext: rgba(241,241,241,1);
+@color-buttonborder: @color-darkgray;
+
+
+@color-grid-border: #dadadc;
+@color-grid-header-background: white;
+@color-grid-content-background: white;
+@color-grid-alternativerow-background: white;
+
+
+/* Sizes */
+@fontsize-body: 14px;
+@fontsize-grid: @fontsize-body;
+@fontsize-small: 12px;
+@fontsize-title: 1.2em;
+@fontsize-menu: 15px;
+@fontsize-menu-item: 14px;
+
+
+/* standard tags */
+html {
+    margin: 0;
+    padding: 0;
+    min-width: 1024px;
+}
+
+body {
+    font-family: Roboto, sans-serif;
+    margin: 0;
+    font-size: @fontsize-body;
+}
+
+/* --- Designclasses --- */
+
+.lightbox {
+    background-color: @color-lightgray;
+    color: @color-typography;
+}
+
+.darkbox {
+    background-color: @color-elements;
+    color: @color-inversetext;
+}
+
+/* --- Colorclasses --- */
+.green {
+    color: @color-green !important;
+}
+
+.red {
+    color: @color-red !important;
+}
+
+.dark {
+    color: @color-typography !important;
+}

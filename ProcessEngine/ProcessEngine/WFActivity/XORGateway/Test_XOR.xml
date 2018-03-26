@@ -1,0 +1,47 @@
+﻿<workflow id="test_XOR" name="test XOR gateway" status="new">
+
+  <variables>
+    <variable name="1.logText"  direction="both" dataType="stringType">step 1</variable>
+    <variable name="2.logText"  direction="both" dataType="stringType">step 2</variable>
+    <variable name="4.logText"  direction="both" dataType="stringType">step 4 XOR and gateway</variable>
+  </variables>
+
+  <activities>
+
+    <activity nr="0" id="start" instance="start" >
+      <name>Start XOR Gateway Test</name>
+      <transition to="1.AuditLogActivity"/>
+      <transition to="2.AuditLogActivity"/>
+    </activity>
+
+    <activity nr="1" id="Kapsch.IS.ProcessEngine.WFActivity.AuditLogActivity" instance="1.AuditLogActivity">
+      <name>log 01 </name>
+      <properties>
+        <property name="logText" direction="input"  dataType="stringType"/>
+      </properties>
+      <transition to="3.XORGatewayActivity"/>
+    </activity>
+
+    <activity nr="2" id="Kapsch.IS.ProcessEngine.WFActivity.AuditLogActivity" instance="2.AuditLogActivity">
+      <name>log 02</name>
+      <properties>
+        <property name="logText" direction="input"  dataType="stringType"/>
+      </properties>
+      <transition to="3.XORGatewayActivity"/>
+    </activity>
+
+    <activity nr="3" id="Kapsch.IS.ProcessEngine.WFActivity.XORGatewayActivity" instance="3.XORGatewayActivity">
+      <name>XOR Exclusive OR Gateway</name>
+      <properties />
+      <transition to="4.AuditLogActivity" default="true" />
+    </activity>
+
+    <activity nr="4" id="Kapsch.IS.ProcessEngine.WFActivity.AuditLogActivity" instance="4.AuditLogActivity">
+      <name>after XOR gateway</name>
+      <properties>
+        <property name="logText" direction="input" dataType="stringType"></property>
+      </properties>
+    </activity>
+
+  </activities>
+</workflow>

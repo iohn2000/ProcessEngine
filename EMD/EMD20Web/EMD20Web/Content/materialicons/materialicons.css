@@ -1,0 +1,71 @@
+﻿/*---- global variables ----*/
+/*--- colors ---*/
+/* Sizes */
+/* standard tags */
+html {
+  margin: 0;
+  padding: 0;
+  min-width: 1024px;
+}
+body {
+  font-family: Roboto, sans-serif;
+  margin: 0;
+}
+/* --- Designclasses --- */
+.lightbox {
+  background-color: #f1f1f1;
+  color: #5f5f68;
+}
+.darkbox {
+  background-color: #5f5f68;
+  color: #f1f1f1;
+}
+/* --- Colorclasses --- */
+.green {
+  color: #33cc66 !important;
+}
+.red {
+  color: #ff2d56 !important;
+}
+.dark {
+  color: #5f5f68 !important;
+}
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(MaterialIcons-Regular.eot);
+  /* For IE6-8 */
+  src: local('Material Icons'), local('MaterialIcons-Regular'), url(MaterialIcons-Regular.woff2) format('woff2'), url(MaterialIcons-Regular.woff) format('woff'), url(MaterialIcons-Regular.ttf) format('truetype');
+}
+.material-icons,
+.kapsch-icon-button {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 18px;
+  /* Preferred icon size */
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+a .material-icons {
+  color: #5f5f68;
+}
+a .material-icons:hover {
+  color: #ffcd00;
+}

@@ -1,0 +1,52 @@
+﻿
+
+<div style="width: 300px">
+    <h4>Add Activity to Workflow</h4>
+
+    @(Html.Kendo().ComboBox()
+        .Name("comboBoxActivities")
+        .Placeholder("Select an activity ...")
+        .DataTextField("Name")
+        .DataValueField("Id")
+        //  .BindTo(Model.AvailableActivities)
+        .HtmlAttributes(new { style = "width:100%;" })
+        .Events(e => e.Select("workflow.Events.OnComboBoxActivitySelect"))
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("ReadActivitiesForSelect", "Workflow");
+            });
+
+        })
+    )
+
+    <div id="area-workflow" style="visibility: hidden">
+        <h4>Select Subworkflow</h4>
+
+        @(Html.Kendo().ComboBox()
+                                .Name("DropDownWorkflow")
+                                  //.BindTo(Model.AvailableMethods)
+                                  .Placeholder("Select an activity ...")
+                                .DataTextField("Text")
+                                .DataValueField("Value")
+                                .HtmlAttributes(new { style = "width:100%;" })
+                                .Events(e => e.Select("workflow.Events.OnComboBoxWorkflowSelect"))
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("GetWorkflows", "Workflow");
+                                    });
+
+                                })
+        )
+
+    </div>
+
+    <div class="form-group form-group-buttons">
+        <button type="button" value="Cancel" class="k-button kapsch-text-button" onclick="kendoHelper.CloseWindow(this);">Cancel</button>
+        <button type="button" value="addActivity" class="k-button kapsch-text-button" onclick="workflow.Events.OnButtonAddSelectedActivityClick(this);">Add activity</button>
+    </div>
+</div>
+

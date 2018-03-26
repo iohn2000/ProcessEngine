@@ -1,0 +1,84 @@
+﻿@using Kapsch.IS.EMD.EMD20Web.Models.Workflow;
+@Html.Partial("~/Views/Shared/Javascript/_nullableDropDownJS.cshtml")
+
+@{
+    ViewBag.Title = "Workflow Instances";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/Workflow_WorkflowInstances.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+<div id="itemcontainer">
+
+    @(Html.Kendo().Grid<WorkflowInstanceModel>()
+    .Name("GridWorkflowInstances").HtmlAttributes(new { @class = "k-grid-big" })
+
+    .Sortable()
+    .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+    .Pageable(pageable => pageable
+        .Refresh(true)
+        .PageSizes(true)
+        .ButtonCount(5)
+        .PageSizes(new[] { 10, 15, 50 }))
+    .Scrollable(s => s.Enabled(true).Height("auto"))
+    .Columns(columns =>
+    {
+        columns.Bound(item => item.InstanceID).Title("").Filterable(false).Width(90)
+            // .ClientTemplate(@"<a href=""#"" onclick='showInWindow(""Edit/#= IdWorkflow #"",""Edit Workflow"");' data-id=""#=IdWorkflow#"">Edit</a>");
+            .ClientTemplate("<a title='Edit' style=\"visibility:#=EditWorkflowCssVisibilityValue#\" href='\\#' "
+            + "onclick='showInWindow(\""
+            + "/Workflow/EditWorkflowInstance/"
+            + "#= InstanceID #/true\",\"Edit Workflow Instance #=InstanceID#\");' "
+            + "data-id='#=InstanceID#'"
+            + ">"
+            + "<i class='material-icons'>#=EditWorkflowIconCssName#</i>"
+            + "</a>"
+            + "<a title='Rerun' style=\"visibility:#=RerunCssVisibilityValue#\" href='\\#' "
+            + "onclick='workflowInstance.Functions.Start(\"#=InstanceID#\",\"#=Name#\");' "
+            + "data-id='#=InstanceID#'"
+            + ">"
+            + "<i class='material-icons'>autorenew</i>"
+            + "</a>"
+            );
+
+        columns.Bound(item => item.InstanceID).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+        columns.Bound(item => item.Name).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+        columns.Bound(item => item.Description).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+        columns.Bound(item => item.CurrentActivity).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+        columns.Bound(item => item.Version).Width(125).Filterable(ftb => ftb.Cell(cell => cell.Template("kendoHelper.DisableAutocompleteFilter"))); ;
+
+        columns.Bound(item => item.StatusDisplayValue).Width(200).Filterable(ftb => ftb.Cell(cell => cell.Template("kendoHelper.DisableAutocompleteFilter")));
+        columns.Bound(item => item.Created).Format("{0:dd.MM.yyyy HH:mm:ss}").Width(250);
+
+    })
+
+    .Editable(editable => editable.Mode(GridEditMode.PopUp).DisplayDeleteConfirmation(false).Window(win => win.Width(700)))
+
+    .DataSource(dataSource => dataSource
+    .Ajax().ServerOperation(true)
+       .Sort(a =>
+       {
+           a.Add("Created").Descending();
+           a.Add("StatusDisplayValue").Ascending();
+       })
+    .PageSize(15)
+    .Model(model => model.Id(p => p.InstanceID))
+            .Read("ReadInstances", "Workflow")
+    .Events(events => events.Error("exceptionManager.Events.HandleError"))
+    )
+    )
+    
+</div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var url = '@Request.Url';
+        kendoHelper.Grid.FilterGrid('#GridWorkflowInstances', "InstanceID", "equals", url);
+    });
+</script>
+
+
+
+

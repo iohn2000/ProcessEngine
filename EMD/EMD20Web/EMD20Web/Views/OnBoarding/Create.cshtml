@@ -1,0 +1,520 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.Onboarding.OnboardingModel
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+@{
+    ViewBag.Title = "Onboarding";
+    ViewBag.CascadeFromEnterprise = "true";
+    ViewBag.CascadeFromLocation = "true";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/Onboarding_Create.html";
+
+
+}
+
+@{ Boolean CascadeFromEnterprise = Convert.ToBoolean(ViewData["CascadeFromEnterprise"]); }
+@{ Boolean EnterpriseFromURL = Convert.ToBoolean(ViewData["EnterpriseFromURL"]); }
+@*@{ String EnterpriseGuid = ViewData["EnterpriseGuid"].ToString(); }*@
+@{ String EnterpriseGuid = ViewData["EnterpriseGuid"] == null ? "" : ViewData["EnterpriseGuid"].ToString(); }
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+@if (Model.CanManage)
+{
+    <div id="formcontent">
+        @using (Ajax.BeginForm("DoCreate", "Onboarding", null, new AjaxOptions
+        {
+            HttpMethod = "Post",
+            OnBegin = "formValidation.OnBegin(xhr)",
+            OnSuccess = "onboarding.Events.OnOnboardingSuccess(xhr)",
+            OnFailure = "formValidation.OnFailure(xhr)"
+        }, new { id = "formCreateOnboarding" }))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(model => model.pers_guid)
+
+            <div id="formresults" class="infobox error" style="display:none"></div>
+
+
+            <div class="form-horizontal" style="width:900px;float:left;">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="k-edit-form-container" style="float:left;">
+
+
+                    @(Html.Kendo().TabStrip()
+            .Name("tabstrip")
+            .HtmlAttributes(new { style = "width:100%" })
+            .Events(ev =>
+            {
+                ev.Select("onSelect");
+            })
+            .Items(tab =>
+            {
+            tab.Add().Text("Employment").Selected(true).Content(@<text><div class="k-edit-form-container" style="padding-top:30px;width:800px;float:left;">
+
+                            <div class="editor-label">@Html.LabelForRequired(model => model.EmploymentType, htmlAttributes: new { @class = "control-label col-md-2" })</div>
+                            <div class="editor-field">
+                                @(
+                                    Html.Kendo().DropDownListFor(m => m)
+                                    .OptionLabel("Please select")
+                                    .Name("EmploymentType")
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .HtmlAttributes(new { @style = "width:300px" })
+                                    .Filter(FilterType.Contains)
+                                    .IgnoreCase(true)
+                                    .Events(e => e.Change("onboarding.Events.OnSelectEmploymentType"))
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("ReadForSelect", "EmploymentType");
+                                        })
+                                        .ServerFiltering(false);
+                                    })
+                                )
+                                @Html.ValidationMessageFor(model => model.EmploymentType, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div id="DivEMailType" class="hidden">
+                                <div class="editor-label">@Html.LabelForRequired(model => model.EMailType, htmlAttributes: new { @class = "control-label col-md-2" }) <span class="label-required">*</span></div>
+                                <div class="editor-field">
+                                    @(Html.Kendo().DropDownList().OptionLabel("Please select")
+                                            .Name("EMailType")
+                                            .BindTo(new List<SelectListItem>() { new SelectListItem() { Text = "intern", Value = "intern" }, new SelectListItem() { Text = "extern", Value = "extern" } })
+                                            .HtmlAttributes(new
+                                            {
+                                                style = "width:300px"
+                                                //data_validmask_msg = "Field required!"
+                                                //required = "required"
+                                            })
+                                    )
+
+                                    @*@Html.EditorFor(model => model.EMailType, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    @Html.ValidationMessageFor(model => model.EMailType, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="editor-label">@Html.LabelForRequired(model => model.Enterprise, new { @class = "control-label col-md-2" })</div>
+                            <div class="editor-field">
+                                @*@Html.EditorFor(model => model.Enterprise, new { htmlAttributes = new { @class = "form-control" } })*@
+
+                                @(
+                                    Html.Kendo().DropDownListFor(m => m)
+                                    .OptionLabel("Please select")
+                                    .Name("Enterprise")
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .HtmlAttributes(new { @style = "width:300px" })
+                                    .Filter(FilterType.Contains)
+                                    .IgnoreCase(true)
+                                    .BindTo(Model.EnterpriseList)
+                                    .Events(e =>
+                                    {
+                                        e.Change("onEnterpriseSelect");
+                                    })
+                                )
+
+                                @Html.ValidationMessageFor(model => model.Enterprise, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div id="DivSponsor">
+                                <div class="editor-label">@Html.LabelForRequired(model => model.SponsorGuid, htmlAttributes: new { @class = "control-label col-md-2" }) <span class="label-required">*</span></div>
+                                <div class="editor-field">
+                                    @Html.Partial("Controls/_TextValuePopupSelectionView", Model.SponsorSelection)
+                                    @Html.ValidationMessageFor(model => model.SponsorGuid, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="editor-label">@Html.LabelForRequired(model => model.CostCenter, htmlAttributes: new { @class = "control-label col-md-2" })</div>
+                            <div class="editor-field">
+                                @Html.EditorFor(model => model.CostCenter, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CostCenter, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="editor-label">@Html.LabelForRequired(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })</div>
+                            <div class="editor-field">
+                                @(
+                                        Html.Kendo().DropDownListFor(m => m)
+                                        .OptionLabel("Please select")
+                                        .Name("Location")
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .HtmlAttributes(new { @style = "width:500px" })
+                                        .Filter(FilterType.Contains)
+                                        .IgnoreCase(true)
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("ReadForSelectForEnterprise", "Location").Data("onboarding.Data.EnterpriseParameters");
+                                            });
+                                        })
+                                        .Events(e =>
+                                        {
+                                            e.Change("onboarding.Events.OnLocationChanged");
+                                        })
+                                )
+                                @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="editor-label">@Html.LabelForRequired(model => model.OrgUnit, htmlAttributes: new { @class = "control-label col-md-2" })</div>
+                            <div class="editor-field">
+                                @(
+                                    Html.Kendo().DropDownListFor(m => m)
+                                    .OptionLabel("Please select")
+                                    .Name("OrgUnit")
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .HtmlAttributes(new { @style = "width:500px" })
+                                    .Filter(FilterType.Contains)
+                                     .IgnoreCase(true)
+
+                                    .CascadeFrom("Enterprise")
+
+                                   .DataSource(source =>
+                                   {
+                                       source.Read(read =>
+                                       {
+                                           read.Action("ReadForSelectForEnterprise", "OrgUnit").Data("onboarding.Data.OrgunitParameters");
+                                       })
+                                       .ServerFiltering(true);
+                                   })
+                                        .Events(e =>
+                                        {
+                                            e.Change("onboarding.Events.OnOrgunitChange");
+                                        })
+
+
+                                )
+                                @Html.ValidationMessageFor(model => model.OrgUnit, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="editor-label">
+                            </div>
+                            <div class="editor-field">
+                                <span id="orgunit-linemanager"></span>
+                            </div>
+
+                            <div class="editor-label">@Html.LabelForRequired(model => model.EnterprisePackages, htmlAttributes: new { @class = "control-label col-md-2" })</div>
+                            <div class="editor-field">
+                                @(
+                                    Html.Kendo().DropDownListFor(m => m)
+                                    .OptionLabel("Please select")
+                                    .Name("EnterprisePackages")
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .HtmlAttributes(new { @style = "width:500px" })
+                                    .Filter(FilterType.Contains)
+                                    .IgnoreCase(true)
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("ReadForSelectForEnterprisePackages", "Package").Data("onboarding.Data.EnterpriseParameters");
+                                        });
+                                    })
+                                )
+                                @Html.ValidationMessageFor(model => model.EnterprisePackages, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="editor-label">@Html.LabelForRequired(model => model.LocationPackages, htmlAttributes: new { @class = "control-label col-md-2" })</div>
+                            <div class="editor-field">
+                                @(
+                                    Html.Kendo().DropDownListFor(m => m)
+                                    .OptionLabel("Please select")
+                                    .Name("LocationPackages")
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .HtmlAttributes(new { @style = "width:500px" })
+                                    .Filter(FilterType.Contains)
+                                    .IgnoreCase(true)
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("ReadForSelectForLocationPackages", "Package").Data("onboarding.Data.LocationPackagesParameters");
+                                        });
+                                    })
+                                )
+                                @Html.ValidationMessageFor(model => model.LocationPackages, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="editor-label">@Html.LabelForRequired(model => model.GuidDomain, htmlAttributes: new { @class = "control-label col-md-2" })</div>
+                            <div class="editor-field">
+                                @(
+                                        Html.Kendo().DropDownListFor(m => m)
+                                        .OptionLabel("Please select")
+                                        .Name("GuidDomain")
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .HtmlAttributes(new { @style = "width:500px" })
+                                        .Filter(FilterType.Contains)
+                                        .IgnoreCase(true)
+                                        .Value(Model.GuidDomain)
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("ReadForSelectForUserDomains", "OnBoarding");
+                                            });
+                                        })
+                                )
+                                @Html.ValidationMessageFor(model => model.GuidDomain, "", new { @class = "text-danger" })
+                            </div>
+
+
+                            <div class="editor-label">@Html.LabelForRequired(model => model.DistributionGroup, htmlAttributes: new { @class = "control-label col-md-2" })</div>
+                            <div class="editor-field">
+                                @(
+                                    Html.Kendo().DropDownListFor(m => m)
+                                    .OptionLabel("Please select")
+                                    .Name("DistributionGroup")
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .HtmlAttributes(new { @style = "width:500px" })
+                                    .Filter(FilterType.Contains)
+                                    .IgnoreCase(true)
+                                    .AutoBind(true)
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("ReadForSelect", "DistributionGroup");
+                                        });
+                                    })
+                                )
+                                @Html.ValidationMessageFor(model => model.DistributionGroup, "", new { @class = "text-danger" })
+                            </div>
+
+
+                            <div id="DivPersNr">
+                                <div class="editor-label">@Html.LabelForRequired(model => model.PersNr, htmlAttributes: new { @class = "control-label col-md-2" })</div>
+                                <div class="editor-field">
+                                    @Html.EditorFor(model => model.PersNr, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.PersNr, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+                            <div class="editor-label">@Html.LabelForRequired(model => model.EntryDate, htmlAttributes: new { @class = "control-label col-md-2" })</div>
+                            <div class="editor-field">
+                                @(Html.Kendo().DatePicker()
+                                    .Name("EntryDate")
+                                    .Format("dd.MM.yyyy")
+                                //.Value(DateTime.Now)
+                                )
+                                @Html.ValidationMessageFor(model => model.EntryDate, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="editor-label">@Html.LabelForRequired(model => model.FirstDayOfWork, htmlAttributes: new { @class = "control-label col-md-2" })</div>
+                            <div class="editor-field">
+                                @Html.EditorFor(model => model.FirstDayOfWork, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.FirstDayOfWork, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="editor-label">@Html.LabelForRequired(model => model.UntilDate, htmlAttributes: new { @class = "control-label col-md-2" })</div>
+                            <div class="editor-field">
+                                @Html.EditorFor(model => model.UntilDate, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.UntilDate, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="editor-label">@Html.LabelForRequired(model => model.LastDay, htmlAttributes: new { @class = "control-label col-md-2" })</div>
+                            <div class="editor-field">
+                                @Html.EditorFor(model => model.LastDay, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.LastDay, "", new { @class = "text-danger" })
+                            </div>
+
+
+
+                        </div>
+
+            </text>);
+
+            tab.Add().Text("Contact Data").Content(@<text>
+                        <div class="k-edit-form-container" style="padding-top:30px;width:800px;float:left;">
+
+                            <div class="editor-label">@Html.LabelForRequired(model => model.Room, htmlAttributes: new { @class = "control-label col-md-2" })</div>
+                            <div class="editor-field">
+                                @Html.EditorFor(model => model.Room, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Room, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="editor-label">@Html.LabelForRequired(model => model.FixedLine, htmlAttributes: new { @class = "control-label col-md-2" })</div>
+                            <div class="editor-field">
+                                @Html.EditorFor(model => model.FixedLine, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.FixedLine, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="editor-label">@Html.LabelForRequired(model => model.Extension, htmlAttributes: new { @class = "control-label col-md-2" })</div>
+                            <div class="editor-field">
+                                @Html.EditorFor(model => model.Extension, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Extension, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="editor-label">@Html.LabelForRequired(model => model.MobilePhone, htmlAttributes: new { @class = "control-label col-md-2" })</div>
+                            <div class="editor-field">
+                                @(Html.Kendo().MaskedTextBox()
+                    .Name("MobilePhone")
+                    //.Mask("+99 (999) 000 0000")
+                    .ClearPromptChar(false)
+                    .HtmlAttributes(new
+                    {
+                        data_validmask_msg = "Phone number is incomplete"
+                        //required = "required"
+                    })
+                                )
+                                <span data-for='PhoneNumber' class='k-invalid-msg'></span>
+                                @Html.ValidationMessageFor(model => model.MobilePhone, "", new { @class = "text-danger" })
+                            </div>
+
+
+                            <div class="editor-label">@Html.LabelForRequired(model => model.JobTitle, htmlAttributes: new { @class = "control-label col-md-2" })</div>
+                            <div class="editor-field">
+                                @Html.EditorFor(model => model.JobTitle, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.JobTitle, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+            </text>);
+
+
+            tab.Add().Text("Additional Data").HtmlAttributes(new { }).Content(
+                @<text>
+                    <div class="k-edit-form-container" style="padding-top:30px;width:800px;float:left;">
+                        <div class="editor-label">@Html.LabelForRequired(model => model.PersonnelRequisitionNumber, htmlAttributes: new { @class = "control-label col-md-2" })</div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.PersonnelRequisitionNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.PersonnelRequisitionNumber, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="editor-label">@Html.LabelForRequired(model => model.NoApprovalNeeded, htmlAttributes: new { @class = "control-label col-md-2" })</div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.NoApprovalNeeded, new { htmlAttributes = new { @class = "form-control", @onclick = "toggleNoApprovalNeededReason();" } })
+                            @Html.ValidationMessageFor(model => model.NoApprovalNeeded, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div id="DivNoApprovalNeededReason">
+                            <div class="editor-label">@Html.LabelForRequired(model => model.NoApprovalNeededReason, htmlAttributes: new { @class = "control-label col-md-2" })</div>
+                            <div class="editor-field">
+                                @Html.EditorFor(model => model.NoApprovalNeededReason, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.NoApprovalNeededReason, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="editor-label">@Html.LabelForRequired(model => model.Simcard, htmlAttributes: new { @class = "control-label col-md-2" })</div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Simcard, new { htmlAttributes = new { @class = "form-control" } })
+
+                            @Html.ValidationMessageFor(model => model.Simcard, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="editor-label">@Html.LabelForRequired(model => model.Datacard, htmlAttributes: new { @class = "control-label col-md-2" })</div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Datacard, new { htmlAttributes = new { @class = "form-control" } })
+
+                            @Html.ValidationMessageFor(model => model.Datacard, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="editor-label">
+                            <p>PFNet - please use link for registration <a target="_blank" href="https://pfnet.kapsch.net/ui/admin/user/requestform.aspx">Link Requestform</a></p>
+                        </div>
+
+                    </div>
+                </text>);
+
+            tab.Add().Text("Equipments").HtmlAttributes(new { }).Content(
+                @<text>
+                    <div id="ContentEquipment">
+                        @Html.Partial("EquipmentDefinitions", Model)
+
+                    </div>
+                </text>);
+            })
+                    )
+
+
+                    <div style="clear:both;"></div>
+                    <div class="form-group-buttons">
+                        <div style="margin-bottom: 10px">
+                            <input id="Previous" onclick="onboarding.Events.OnButtonPreviousClick(this)" type="button" value="Previous" class="k-button" />
+                            <input id="Next" onclick="onboarding.Events.OnButtonNextClick(this)" type="button" value="Next" class="k-button" />
+                        </div>
+                        <div>
+                            <button type="button" value="Cancel" class="k-button" onclick="closeWindow(true);">Cancel</button>
+
+
+                            @*<input id="CreateOnboarding" type="submit" value="Create Onboarding" style="visibility:hidden;" class="btn k-button kapsch-text-button" />*@
+                            <input id="CreateOnboarding" type="submit" value="Create Onboarding" class="btn k-button kapsch-text-button" />
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+
+    <script>
+        var validator;
+        var selectedTabStrip;
+
+
+        $(function () {
+            validator = $("form").kendoValidator().data("kendoValidator");
+        });
+
+
+        (function ($, kendo) {
+            $.extend(true, kendo.ui.validator, {
+                rules: {
+                    validmask: function (input) {
+                        if (input.is("[data-validmask-msg]") && input.val() != "") {
+                            var maskedtextbox = input.data("kendoMaskedTextBox");
+                            return maskedtextbox.value().indexOf(maskedtextbox.options.promptChar) === -1;
+                        }
+                        return true;
+                    }
+                }
+
+            });
+        })(jQuery, kendo);
+
+
+        $(document).ready(function () {
+            var tabStrip = $("#tabstrip").data("kendoTabStrip");
+            selectedTabStrip = tabStrip.select();
+            $("#Previous").attr('disabled', 'disabled');
+            tabStrip.select(0);
+            tabStrip.disable(tabStrip.items()[3]);
+
+            $($("#tabstrip").data("kendoTabStrip").items()[2]).attr("style", "display:none");
+            //$($("#tabstrip").data("kendoTabStrip").items()[3]).attr("style", "display:none");
+
+            $("#DivEMailType").hide();
+            $("#DivPersNr").hide();
+            $("#DivSponsor").hide();
+
+            $('#EmploymentType').on('change', function () {
+                $("#DivEMailType").show();
+            });
+
+            $('#tabstrip-3 input').attr('disabled', 'disabled');
+
+
+            var dtEntryDate = $("#EntryDate").data("kendoDatePicker");
+            dtEntryDate.bind("change", function () {
+                var value = this.value();
+                var FD = $("#FirstDayOfWork").data("kendoDatePicker");
+                if (FD.value() == null) { FD.value(value); }
+            });
+
+
+            onboarding.UIElements.KendoDropDownEnterprisePackage = $('#EnterprisePackages').data("kendoDropDownList");
+            onboarding.UIElements.KendoDropDownEnterprisePackage.bind('change', onboarding.Events.OnEnterprisePackageChanged);
+
+            onboarding.UIElements.KendoDropDownLocationPackage = $('#LocationPackages').data("kendoDropDownList");
+            onboarding.UIElements.KendoDropDownLocationPackage.bind('change', onboarding.Events.OnLocationPackageChanged);
+
+        });
+    </script>
+}
+
+

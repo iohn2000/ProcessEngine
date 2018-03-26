@@ -1,0 +1,11 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.Variables.EquipmentVariablesActivity" instance=".EquipmentVariablesActivity">
+  <name>Equipment Variables</name>
+  <description>create 0.Vars for given equipment</description>
+  <properties>
+    <!-- es muss eines der beiden befüllt sein! -->
+    <property name="ObjectRelation"  direction="input"   dataType="stringType" />
+    <property name="EquipmentDefinition"  direction="input"   dataType="stringType" />
+    
+  </properties>
+  <transition to=".XXX"/>
+</activity>

@@ -1,0 +1,225 @@
+﻿<!DOCTYPE html>
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions;
+<html lang="en">
+@{
+    var culture = System.Globalization.CultureInfo.CurrentCulture.ToString();
+}
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript" src="~/Scripts/xonomy/xonomy.js"></script>
+    <link type="text/css" rel="stylesheet" href="~/Scripts/xonomy/xonomy.css" />
+
+    <script src="@Url.Content("~/frameworks/vis/vis.js")"></script>
+    <link href="@Url.Content("~/frameworks/vis/vis.css")" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript" src="~/Scripts/kapsch/helper.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/kapsch/kapschEditor.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/kapsch/exceptionManager.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/Views/workflow.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/Views/workflowMapping.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/Views/personprofile.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/Views/person.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/Views/onboarding.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/Views/advancedsearch.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/Views/equipmentMapping.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/Views/user.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/Views/packageManagement.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/Views/equipmentDefinition.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/Views/enterprise.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/Views/enterpriseLocation.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/Views/locationManager.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/Views/country.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/Views/role.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/Views/costcenter.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/Views/orgunit.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/Views/orgunitrole.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/Views/employment.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/Views/workflowInstance.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/Views/changeEmployment.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/Views/accountGroup.js?v=@Configuration.VERSION"></script>    
+    <script type="text/javascript" src="~/Scripts/Views/taskManagement.js?v=@Configuration.VERSION"></script>   
+    <script type="text/javascript" src="~/Scripts/Views/contactData.js?v=@Configuration.VERSION"></script>   
+    <script type="text/javascript" src="~/Scripts/Views/equipmentDefinitionPrice.js?v=@Configuration.VERSION"></script>   
+    <script type="text/javascript" src="~/Scripts/Views/equipmentDefinitionOwners.js?v=@Configuration.VERSION"></script>
+    <script type="text/javascript" src="~/Scripts/Views/category.js?v=@Configuration.VERSION"></script>
+    
+
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Scripts/jszip.js")" type="text/javascript"></script>
+
+    <script src="~/Scripts/alertify.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="~/Content/alertifyjs/alertify.min.css" />
+    <link rel="stylesheet" href="~/Content/alertifyjs/themes/bootstrap.min.css" />
+
+
+
+    @Styles.Render("~/Content/kendo/2017.3.1026/css")
+    @Styles.Render("~/Content/css")
+
+    <link type="text/css" rel="stylesheet" href="~/Content/materialicons/materialicons.css?v=@Configuration.VERSION" />
+    <link type="text/css" rel="stylesheet" href="~/Content/kapsch/kapschDefinitions.css?v=@Configuration.VERSION" />
+    <link type="text/css" rel="stylesheet" href="~/Content/kapsch/kapschSite.css?v=@Configuration.VERSION" />
+    <link type="text/css" rel="stylesheet" href="~/Content/kapsch/kapschKendoOverwrites.css?v=@Configuration.VERSION" />
+    <link type="text/css" rel="stylesheet" href="~/Content/kapsch/kapschOverwrites.css?v=@Configuration.VERSION" />
+
+    @Scripts.Render("~/bundles/kendo")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/kapsch")
+
+
+
+    	<script src="@Url.Content("~/Scripts/kendo/2017.3.1026/cultures/kendo.culture.en-US.min.js")"></script>
+<script type="text/javascript">
+        kendo.culture("en-US");
+        var myculture = kendo.culture();
+
+        //Override date-formats for every culture, http://docs.telerik.com/kendo-ui/framework/globalization/dateformatting 
+        kendo.culture().calendar.patterns.d = "dd.MM.yyyy"; //short date
+        kendo.culture().calendar.patterns.D = "dddd, dd. MMMM yyyy"; //long date
+        kendo.culture().calendar.patterns.F = "dddd, dd. MMMM yyyy HH:mm:ss"; //full date/time
+        kendo.culture().calendar.patterns.g = "dd.MM.yyyy HH:mm"; //general date/time (short time)
+        kendo.culture().calendar.patterns.G = "dd.MM.yyyy HH:mm:ss"; //general date/time (long time)
+        kendo.culture().calendar.patterns.m = "d. MMMM"; //month/day
+        kendo.culture().calendar.patterns.M = "d. MMMM";
+        kendo.culture().calendar.patterns.t = "HH:mm"; //short time
+        kendo.culture().calendar.patterns.T = "HH:mm:ss"; //long time
+        kendo.culture().calendar.patterns.s = "yyyy'-'MM'-'dd'T'HH':'mm':'ss"; //universal sortable local date/time
+        kendo.culture().calendar.patterns.u = "yyyy'-'MM'-'dd HH':'mm':'ss'Z'"; //universal sortable UTC date/time
+        kendo.culture().calendar.patterns.y = "MMMM yyyy"; //or 'Y', year/month
+        kendo.culture().calendar.patterns.Y = "MMMM yyyy";
+
+        console.log('Current Kendo culture: ' + myculture.name);
+    </script>
+    <script type="text/javascript" src="~/Scripts/Views/Shared/kendoHelper.js?v=@Configuration.VERSION"></script>
+
+
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+
+    <script src="~/Scripts/Views/Shared/formValidation.js?v=@Configuration.VERSION" type="text/javascript"></script>
+    <script src="~/Scripts/Views/Shared/resource_en.js?v=@Configuration.VERSION" type="text/javascript"></script>
+
+
+    <style>
+        .console div {
+            background-image: url("sprite.png");
+            background-repeat: no-repeat;
+            background-color: transparent;
+        }
+
+        * html .console div {
+            background-image: url("sprite_ie6.png");
+        }
+
+        .console {
+            background-color: #FFF;
+            border: 1px solid #CCC;
+            color: #333;
+            font: 11px Consolas, Monaco, "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;
+            height: 200px;
+            margin: 1.4em 0 0;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            text-align: left;
+        }
+
+            .console .count {
+                background-color: #91AFEF;
+                -moz-border-radius: 15px;
+                -webkit-border-radius: 15px;
+                border-radius: 15px;
+                color: #FFFFFF;
+                font-size: 10px;
+                margin-left: 5px;
+                padding: 2px 6px 2px 5px;
+            }
+
+            .console div {
+                background-position: 6px -95px;
+                border-bottom: 1px solid #DDD;
+                padding: 5px 5px 4px 24px;
+            }
+
+            .console .error {
+                background-position: 6px -135px;
+            }
+    </style>
+    <link rel="stylesheet" href="~/Content/KapschOverwrites.css" />
+    	<script src="@Url.Content("~/Scripts/kendo/2017.3.1026/jszip.min.js")"></script>
+</head>
+<body>
+    @Html.Partial("_Header")
+
+    <div id="modwin">
+
+    </div>
+    @RenderBody()
+    <div id="window"></div>
+
+</body>
+
+</html>
+<script>
+    helper.Functions.Performance.Initialize('edp-version');
+    helper.Functions.Performance.SetStarted();
+
+    var tooltip = "@Html.Raw(ViewBag.Tooltip)";
+    var tooltipUrl = "@Html.Raw(ViewBag.TooltipUrl)";
+    var tooltipWidth = @(ViewBag.TooltipWidth == null ? 800 : Html.Raw(ViewBag.TooltipWidth));
+    var tooltipHeight = @(ViewBag.TooltipHeight == null ? 500 : Html.Raw(ViewBag.TooltipHeight));
+
+    $(document).ready(function () {
+        helper.Functions.Performance.SetStopped();
+
+        if (tooltipUrl && tooltipUrl.length > 0) {
+            $('.info-tooltip').show();
+
+            $("#kendoTooltip").kendoTooltip({
+                animation: {
+                    close: {
+                        duration: 100
+                    }
+                },
+                content: {
+                    url: tooltipUrl
+                },
+                autoHide: false,
+                width: tooltipWidth,
+                height: tooltipHeight
+            });
+        }
+        else if (tooltip && tooltip.length > 0) {
+            $('.info-tooltip').show();
+
+            $("#kendoTooltip").kendoTooltip({
+                animation: {
+                    close: {
+                        duration: 100
+                    }
+                },
+                autoHide: false,
+                content: function (e) {
+                    return tooltip;
+                },
+                autoHide: false
+            });
+        }
+
+    });
+</script>

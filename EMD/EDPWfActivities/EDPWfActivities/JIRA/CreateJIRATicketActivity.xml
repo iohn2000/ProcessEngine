@@ -1,0 +1,11 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.JIRA.CreateJIRATicketActivity" instance=".CreateJIRATicketActivity">
+  <name>CreateJIRATicketActivity</name>
+  <description>
+   create ticket in JIRA system
+  </description>
+  <properties>
+    <property name = "TicketBody"      direction="input"  dataType="stringType" ></property>
+    <property name = "ClientReferenceID"  direction="output"  dataType="stringType" ></property>
+  </properties>
+  <transition to=".xx"/>
+</activity>

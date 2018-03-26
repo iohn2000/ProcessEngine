@@ -1,0 +1,10 @@
+﻿@model int?           
+
+@(
+ Html.Kendo().DropDownListFor(m => m)
+        //use the data-skip attribute to prevent adding the default value binding and add the data-bind attribute for the custom binder
+        .HtmlAttributes(new { data_skip = "true", data_bind = "nullableValue: " + ViewData.TemplateInfo.GetFullHtmlFieldName("") })
+        .OptionLabel("-- please select value --")
+        .BindTo((SelectList)ViewData[ViewData.TemplateInfo.GetFullHtmlFieldName("") + "_Data"])   
+        
+)

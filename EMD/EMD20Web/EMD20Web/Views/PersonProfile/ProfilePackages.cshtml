@@ -1,0 +1,66 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.EmploymentPackageTabModels
+@using Kapsch.IS.EMD.EMD20Web.Models;
+@{
+    Layout = null;
+    ViewBag.Title = "ProfilePackages";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ProfilePackages</title>
+</head>
+<body>
+    <div>
+        @(Html.Kendo().TabStrip()
+          .Name("tabstripProfilePackage")
+          .Items(items =>
+          {
+              int i = 0;
+
+              bool hasSelectedTabs = (from a in Model.getList() where a.IsSelectedTab == true select a).FirstOrDefault() != null;
+
+              foreach (EmploymentPackageTabModel tab in Model.getList())
+              {
+                  bool selected = false;
+
+                  if (hasSelectedTabs)
+                  {
+                      if (tab.IsSelectedTab)
+                      {
+                          selected = true;
+                      }
+                  }
+                  else
+                  {
+                      if (i == 0)
+                      {
+                          selected = true;
+                      }
+                  }
+
+                  items
+                     .Add()
+                     .Selected(selected)
+                     .Text(tab.EnterpriseNameShort.ToString() + " - " + tab.EmploymentType.ToString()).LinkHtmlAttributes(new { title = tab.HtmlHoverText })
+                     .HtmlAttributes(new { @class = tab.HtmlCssClass })
+                     .Content(@Html.Partial("ProfilePackage", tab, new ViewDataDictionary { { "ProfilePackageGridId", "ProfilePackageGridId" + i.ToString() }, { "ProfileEquipmentGridId", "ProfileEquipmentGridId" + i.ToString() } }).ToHtmlString())
+                     ;
+
+
+                  i += 1;
+              }
+
+
+          })
+        )
+    </div>
+
+
+
+</body>
+</html>
+
+

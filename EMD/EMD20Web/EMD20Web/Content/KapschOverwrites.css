@@ -1,0 +1,46 @@
+﻿#xonomyBubble {
+    z-index: 99999999999999999999 !important;
+}
+
+
+
+.xonomy {
+    font-size: 13px !important;
+    /*line-height: 0 !important;*/
+}
+
+    .xonomy .element .children .textnode {
+        /*height: 0;*/
+    }
+
+    .xonomy .children {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+.textnode.whitespace {
+    margin: 0 !important;
+    height: 0 !important;
+}
+
+
+.alertify-notifier .ajs-message.ajs-success {
+    color: white;
+    background: #5f6268;
+    border: 2px solid #33cc66;
+    text-shadow: none;
+}
+
+.alertify-notifier .ajs-message.ajs-error {
+    color: white;
+    background: #5f6268;
+    border: 2px solid #e12d56;
+    text-shadow: none;
+}
+
+.alertify-notifier .ajs-message.ajs-warning {
+    color: white;
+    background: #5f6268;
+    border: 2px solid #dbad0e;
+    text-shadow: none;
+}

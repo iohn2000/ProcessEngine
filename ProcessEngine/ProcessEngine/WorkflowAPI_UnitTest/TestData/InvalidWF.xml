@@ -1,0 +1,391 @@
+﻿<workflow id='MobileRequestAT' name='request a mobile phone for AT' status='new' demoMode='true' xml:space='preserve'>
+  <variables xml:space='preserve'>
+    <variable direction='both' dataType='stringType' name='0.ObreGuid' xml:space='preserve'></variable>
+    <variable direction='both' dataType='stringType' name='0.EffectedPersonEmployment' xml:space='preserve'></variable>
+    <variable direction='both' dataType='stringType' name='0.RequestingPersonEmployment' xml:space='preserve'></variable>
+    
+    
+
+    
+    <variables direction='input' dataType='stringType' name='2.obreGuid' xml:space='preserve'>{{0.ObreGuid}}</variable>
+    <variable direction='input' dataType='stringType' name='2.status' xml:space='preserve'>30</variable>
+    
+    <variable direction='output' dataType='stringType' name='2.returnStatus' xml:space='preserve'></variable>
+
+    
+    <variable direction='input' dataType='stringType' name='3.recipient' xml:space='preserve'>{{0.RequestingPersonEmployment}}</variable>
+    <variable direction='input' dataType='stringType' name='3.subject' xml:space='preserve'>&quot;Equipment Request Received for : &quot; + {{0.EquipmentDefinitionName}}</variable>
+    <variable direction='input' dataType='stringType' name='3.emailBody' xml:space='preserve'>requestMailTemplate.html</variable>
+    <variable direction='input' dataType='stringType' name='3.sender' xml:space='preserve'>KIBSI-EDP-NoReply@kapsch.net</variable>
+    <variable direction='input' dataType='stringType' name='3.CC' xml:space='preserve'></variable>
+    <variable direction='input' dataType='stringType' name='3.BCC' xml:space='preserve'></variable>
+    <variable direction='input' dataType='stringType' name='3.Attachments_URLs' xml:space='preserve'></variable>
+    <variable direction='input' dataType='stringType' name='3.isBodyHtml' xml:space='preserve'>true</variable>
+    <variable direction='input' dataType='stringType' name='3.demoRecipient' xml:space='preserve'>robert.mayer@kapsch.net</variable>
+    
+    <variable direction='output' dataType='stringType' name='1.emailReturnStatus' xml:space='preserve'></variable>
+
+    
+    <variable direction='input' dataType='stringType' name='4.taskTitle' xml:space='preserve'>EQDE : Mobile Phone</variable>
+    <variable direction='input' dataType='stringType' name='4.effectedPerson_EmplGUID' xml:space='preserve'>{{0.EffectedPersonEmployment}}</variable>
+    <variable direction='input' dataType='stringType' name='4.requestor_EmplGUID' xml:space='preserve'>{{0.RequestingPersonEmployment}}</variable>
+    <variable direction='input' dataType='stringType' name='4.toDo' xml:space='preserve'>Data Input</variable>
+    <variable direction='input' dataType='stringType' name='4.decisionOptions' xml:space='preserve'>
+      <Taskfields xml:space='preserve'>
+        <Field type='dropdown' id='phonemodel' name='Phone model' description='Select a phone model' xml:space='preserve'>
+          <option value='Samsung S5' xml:space='preserve'>Samsung</option>
+          <option value='LG 233' xml:space='preserve'>LG</option>
+          <option value='IPhone S6' xml:space='preserve'>IPhone</option>
+        </Field>
+      </Taskfields>
+    </variable>
+    <variable direction='input' dataType='stringType' name='4.processName' xml:space='preserve'>EQ Request - {{0.EffectedPersonFirstname}} {{0.EffectedPersonSurname}}</variable>
+    <variable direction='input' dataType='stringType' name='4.taskInformation' xml:space='preserve'></variable>
+    <variable direction='input' dataType='stringType' name='4.dueDate' xml:space='preserve'>2018-01-28 17:00:00</variable>
+    <variable direction='input' dataType='stringType' name='4.nextReminder' xml:space='preserve'></variable>
+    
+    <variable direction='input' dataType='stringType' name='4.approver_EmplGUIDs' xml:space='preserve'>SELF_</variable>
+    <variable direction='input' dataType='stringType' name='4.emailBody' xml:space='preserve'>enterMobileModelTask.html</variable>
+    <variable direction='input' dataType='stringType' name='4.demoRecipient' xml:space='preserve'>robert.mayer@kapsch.net</variable>
+    <variable direction='input' dataType='stringType' name='4.isBodyHtml' xml:space='preserve'>true</variable>
+
+    <variable direction='input' dataType='intType' name='5.pollingIntervalSeconds' xml:space='preserve'>60</variable>
+    <variable direction='input' dataType='stringType' name='5.demoDecision' xml:space='preserve'>
+      <TaskGuiResponse xml:space='preserve'>
+        <Items xml:space='preserve'>
+          <Item key='phonemodel' xml:space='preserve'>Samsung S5</Item>
+        </Items>
+      </TaskGuiResponse>
+    </variable>
+    <variable direction='output' dataType='stringType' name='5.returnStatus' xml:space='preserve'></variable>
+
+    
+
+    
+    <variable direction='input' dataType='stringType' name='7.nullVariableName' xml:space='preserve'>0.PhoneModel</variable>
+    <variable direction='input' dataType='stringType' name='7.nullVariableValue' xml:space='preserve'>5.Key_phonemodel</variable>
+
+    
+    <variable direction='input' dataType='stringType' name='8.taskTitle' xml:space='preserve'>EQDE : Mobile Phone</variable>
+    <variable direction='input' dataType='stringType' name='8.effectedPerson_EmplGUID' xml:space='preserve'>{{0.EffectedPersonEmployment}}</variable>
+    <variable direction='input' dataType='stringType' name='8.requestor_EmplGUID' xml:space='preserve'>{{0.RequestingPersonEmployment}}</variable>
+    <variable direction='input' dataType='stringType' name='8.toDo' xml:space='preserve'>Approval</variable>
+    <variable direction='input' dataType='stringType' name='8.decisionOptions' xml:space='preserve'>
+      <Taskfields xml:space='preserve'>
+        <Field type='dropdown' id='approvalDecision' name='Decision' description='Please make a decision:' xml:space='preserve'>
+          <option value='approve' xml:space='preserve'>approve</option>
+          <option value='decline' xml:space='preserve'>decline</option>
+        </Field>
+      </Taskfields>
+    </variable>
+    <variable direction='input' dataType='stringType' name='8.processName' xml:space='preserve'>EQ Request - {{0.EffectedPersonFirstname}} {{0.EffectedPersonSurname}}</variable>
+    <variable direction='input' dataType='stringType' name='8.taskInformation' xml:space='preserve'></variable>
+    <variable direction='input' dataType='stringType' name='8.dueDate' xml:space='preserve'>2018-01-28 17:00:00</variable>
+    <variable direction='input' dataType='stringType' name='8.nextReminder' xml:space='preserve'></variable>
+    
+    <variable direction='input' dataType='stringType' name='8.approver_EmplGUIDs' xml:space='preserve'>R_10500</variable>
+    <variable direction='input' dataType='stringType' name='8.emailBody' xml:space='preserve'>newApprovalTask.html</variable>
+    <variable direction='input' dataType='stringType' name='8.demoRecipient' xml:space='preserve'>robert.mayer@kapsch.net</variable>
+    <variable direction='input' dataType='stringType' name='8.isBodyHtml' xml:space='preserve'>true</variable>
+
+    
+    <variable direction='input' dataType='intType' name='9.pollingIntervalSeconds' xml:space='preserve'>60</variable>
+    <variable direction='input' dataType='stringType' name='9.demoDecision' xml:space='preserve'>
+      <TaskGuiResponse xml:space='preserve'>
+        <Items xml:space='preserve'>
+          <Item key='approvalDecision' xml:space='preserve'>approve</Item>
+        </Items>
+      </TaskGuiResponse>
+    </variable>
+    <variable direction='output' dataType='stringType' name='9.returnStatus' xml:space='preserve'></variable>
+
+    
+
+    
+    <variable direction='input' dataType='stringType' name='11.obreGuid' xml:space='preserve'>{{0.ObreGuid}}</variable>
+    <variable direction='input' dataType='stringType' name='11.status' xml:space='preserve'>50</variable>
+    <variable direction='output' dataType='stringType' name='11.returnStatus' xml:space='preserve'></variable>
+
+    
+    <variable direction='input' dataType='stringType' name='12.recipient' xml:space='preserve'>{{0.RequestingPersonEmployment}}</variable>
+    <variable direction='input' dataType='stringType' name='12.subject' xml:space='preserve'>&quot;Equipment : &quot; + {{0.EquipmentDefinitionName}} + &quot; has been added.&quot;</variable>
+    <variable direction='input' dataType='stringType' name='12.emailBody' xml:space='preserve'>approvedMailTemplate.html</variable>
+    <variable direction='input' dataType='stringType' name='12.sender' xml:space='preserve'>KIBSI-EDP-NoReply@kapsch.net</variable>
+    <variable direction='input' dataType='stringType' name='12.CC' xml:space='preserve'></variable>
+    <variable direction='input' dataType='stringType' name='12.BCC' xml:space='preserve'></variable>
+    <variable direction='input' dataType='stringType' name='12.Attachments_URLs' xml:space='preserve'></variable>
+    <variable direction='input' dataType='stringType' name='12.isBodyHtml' xml:space='preserve'>true</variable>
+    <variable direction='input' dataType='stringType' name='12.demoRecipient' xml:space='preserve'>robert.mayer@kapsch.net</variable>
+    <variable direction='output' dataType='stringType' name='12.emailReturnStatus' xml:space='preserve'></variable>
+
+    
+    <variable direction='input' dataType='stringType' name='13.recipient' xml:space='preserve'>{{0.EffectedPersonEmployment}}</variable>
+    <variable direction='input' dataType='stringType' name='13.subject' xml:space='preserve'>&quot;Equipment : &quot; + {{0.EquipmentDefinitionName}} + &quot; has been added.&quot;</variable>
+    <variable direction='input' dataType='stringType' name='13.emailBody' xml:space='preserve'>approvedMailTemplate.html</variable>
+    <variable direction='input' dataType='stringType' name='13.sender' xml:space='preserve'>KIBSI-EDP-NoReply@kapsch.net</variable>
+    <variable direction='input' dataType='stringType' name='13.CC' xml:space='preserve'></variable>
+    <variable direction='input' dataType='stringType' name='13.BCC' xml:space='preserve'></variable>
+    <variable direction='input' dataType='stringType' name='13.Attachments_URLs' xml:space='preserve'></variable>
+    <variable direction='input' dataType='stringType' name='13.isBodyHtml' xml:space='preserve'>true</variable>
+    <variable direction='input' dataType='stringType' name='13.demoRecipient' xml:space='preserve'>robert.mayer@kapsch.net</variable>
+    <variable direction='output' dataType='stringType' name='13.emailReturnStatus' xml:space='preserve'></variable>
+
+    
+    <variable direction='input' dataType='stringType' name='14.obreGuid' xml:space='preserve'>{{0.ObreGuid}}</variable>
+    <variable direction='input' dataType='stringType' name='14.status' xml:space='preserve'>60</variable>
+    <variable direction='output' dataType='stringType' name='14.returnStatus' xml:space='preserve'></variable>
+
+    
+    <variable direction='input' dataType='stringType' name='15.recipient' xml:space='preserve'>{{0.RequestingPersonEmployment}}</variable>
+    <variable direction='input' dataType='stringType' name='15.subject' xml:space='preserve'>&quot;Equipment Request DECLINED for : &quot; + {{0.EquipmentDefinitionName}}</variable>
+    <variable direction='input' dataType='stringType' name='15.emailBody' xml:space='preserve'>declinedMailTemplate.html</variable>
+    <variable direction='input' dataType='stringType' name='15.sender' xml:space='preserve'>KIBSI-EDP-NoReply@kapsch.net</variable>
+    <variable direction='input' dataType='stringType' name='15.CC' xml:space='preserve'></variable>
+    <variable direction='input' dataType='stringType' name='15.BCC' xml:space='preserve'></variable>
+    <variable direction='input' dataType='stringType' name='15.Attachments_URLs' xml:space='preserve'></variable>
+    <variable direction='input' dataType='stringType' name='15.isBodyHtml' xml:space='preserve'>true</variable>
+    <variable direction='input' dataType='stringType' name='15.demoRecipient' xml:space='preserve'>robert.mayer@kapsch.net</variable>
+    <variable direction='output' dataType='stringType' name='15.emailReturnStatus' xml:space='preserve'></variable>
+  </variables>
+
+  <activities xml:space='preserve'>
+
+    <activity nr='0' id='start' instance='start' xml:space='preserve'>
+      <name xml:space='preserve'>Start Add EQ No Approval</name>
+      <transition to='1.BuildNullVarForRequestActivity'/>
+    </activity>
+
+    <activity nr='1' id='Kapsch.IS.EDP.WFActivity.BuildNullVarForRequestActivity' instance='1.BuildNullVarForRequestActivity' xml:space='preserve'>
+      <name xml:space='preserve'>Create All 0. Variables needed for an ADD Request EQ</name>
+      <properties xml:space='preserve'>
+      </properties>
+      <transition to='2.EquipmentApprovalActivity'/>
+    </activity>
+
+    
+    <activity nr='2' id='Kapsch.IS.EDP.WFActivity.EquipmentApprovalActivity' instance='2.EquipmentApprovalActivity' xml:space='preserve'>
+      <name xml:space='preserve'>Dummy OBRE Status DECLINED setzen</name>
+      <properties xml:space='preserve'>
+        <property name='obreGuid' direction='input' dataType='stringType'/>
+        <property name='status' direction='input' dataType='stringType'/>
+        <property name='returnStatus' direction='output' dataType='stringType'/>
+      </properties>
+      <transition to='3.EmailActivity'/>
+    </activity>
+
+    
+    <activity nr='3' id='Kapsch.IS.EDP.WFActivity.EmailActivity' instance='3.EmailActivity' xml:space='preserve'>
+      <name xml:space='preserve'>Info mail to requestor, add eq request received</name>
+      <properties xml:space='preserve'>
+        <property name='recipient' direction='input' dataType='stringType'/>
+        <property name='subject' direction='input' dataType='stringType'/>
+        <property name='emailBody' direction='input' dataType='stringType'/>
+        <property name='sender' direction='input' dataType='stringType'/>
+        <property name='CC' direction='input' dataType='stringType'/>
+        <property name='BCC' direction='input' dataType='stringType'/>
+        <property name='Attachments_URLs' direction='input' dataType='stringType'/>
+        <property name='isBodyHtml' direction='input' dataType='stringType'/>
+        <property name='demoRecipient' direction='input' dataType='stringType'/>
+        <property name='emailReturnStatus' direction='output' dataType='stringType'/>
+      </properties>
+      <transition to='4.TaskDecisionActivity'/>
+    </activity>
+
+    
+    <activity nr='4' id='Kapsch.IS.EDP.WFActivity.TaskDecisionActivity' instance='4.TaskDecisionActivity' xml:space='preserve'>
+      <name xml:space='preserve'>Task to effected peson to enter a mobile phone model</name>
+      <properties xml:space='preserve'>
+        <property name='processName' direction='input' dataType='stringType'/>
+        <property name='taskTitle' direction='input' dataType='stringType'/>
+        <property name='effectedPerson_EmplGUID' direction='input' dataType='stringType'/>
+        <property name='requestor_EmplGUID' direction='input' dataType='stringType'/>
+        <property name='toDo' direction='input' dataType='stringType'/>
+        <property name='decisionOptions' direction='input' dataType='stringType'/>
+        <property name='taskInformation' direction='input' dataType='stringType'/>
+        <property name='dueDate' direction='input' dataType='stringType'/>
+        <property name='nextReminder' direction='input' dataType='stringType'/>
+        <property name='approver_EmplGUIDs' direction='input' dataType='stringType'/>
+        <property name='emailBody' direction='input' dataType='stringType'/>
+      </properties>
+      <transition to='5.TaskDecisionActivityWait'/>
+    </activity>
+
+
+    
+    <activity nr='5' id='Kapsch.IS.EDP.WFActivity.TaskDecisionActivityWait' instance='5.TaskDecisionActivityWait' xml:space='preserve'>
+      <name xml:space='preserve'>Wait for eff.Pers. to enter phone model</name>
+      <linkedTo instance='4.TaskDecisionActivity'/>
+      <properties xml:space='preserve'>
+        <property name='pollingIntervalSeconds' direction='input' dataType='intType'/>
+        <property name='demoDecision' direction='input' dataType='stringType'/>
+        <property name='returnStatus' direction='output' dataType='stringType'/>
+      </properties>
+      <transition to='6.XORGatewayActivity'/>
+    </activity>
+
+    
+    <activity nr='6' id='Kapsch.IS.ProcessEngine.WFActivity.XORGatewayActivity' instance='6.XORGatewayActivity' xml:space='preserve'>
+      <name xml:space='preserve'>model entered or timeout</name>
+      <properties/>
+
+      <transition to='7.UpdateIndividualNullVarActivity' xml:space='preserve'>
+        <condition xml:space='preserve'>
+          
+        </condition>
+      </transition>
+
+      <transition to='xx_timeout' xml:space='preserve'>
+        <condition xml:space='preserve'>
+          
+        </condition>
+      </transition>
+    </activity>
+
+    <activity nr='7' id='Kapsch.IS.EDP.WFActivity.UpdateIndividualNullVarActivity' instance='7.UpdateIndividualNullVarActivity' xml:space='preserve'>
+      <name xml:space='preserve'>add or update an null var</name>
+      <properties xml:space='preserve'>
+        
+        <property name='nullVariableName' direction='input' dataType='stringType'/>
+        
+        <property name='nullVariableValue' direction='input' dataType='stringType'/>
+      </properties>
+      <transition to='8.TaskDecisionActivity'/>
+    </activity>
+
+
+    
+    <activity nr='8' id='Kapsch.IS.EDP.WFActivity.TaskDecisionActivity' instance='8.TaskDecisionActivity' xml:space='preserve'>
+      <name xml:space='preserve'>LineManger approval phone</name>
+      <properties xml:space='preserve'>
+        <property name='processName' direction='input' dataType='stringType'/>
+        <property name='taskTitle' direction='input' dataType='stringType'/>
+        <property name='effectedPerson_EmplGUID' direction='input' dataType='stringType'/>
+        <property name='requestor_EmplGUID' direction='input' dataType='stringType'/>
+        <property name='toDo' direction='input' dataType='stringType'/>
+        <property name='decisionOptions' direction='input' dataType='stringType'/>
+        <property name='taskInformation' direction='input' dataType='stringType'/>
+        <property name='dueDate' direction='input' dataType='stringType'/>
+        <property name='nextReminder' direction='input' dataType='stringType'/>
+        <property name='approver_EmplGUIDs' direction='input' dataType='stringType'/>
+        <property name='emailBody' direction='input' dataType='stringType'/>
+      </properties>
+      <transition to='9.TaskDecisionActivityWait'/>
+    </activity>
+
+
+    
+    <activity nr='9' id='Kapsch.IS.EDP.WFActivity.TaskDecisionActivityWait' instance='9.TaskDecisionActivityWait' xml:space='preserve'>
+      <name xml:space='preserve'>Wait for LineManger to approve phone</name>
+      <linkedTo instance='8.TaskDecisionActivity'/>
+      <properties xml:space='preserve'>
+        <property name='pollingIntervalSeconds' direction='input' dataType='intType'/>
+        <property name='demoDecision' direction='input' dataType='stringType'/>
+        <property name='returnStatus' direction='output' dataType='stringType'/>
+      </properties>
+      <transition to='10.XORGatewayActivity'/>
+    </activity>
+
+    
+    <activity nr='10' id='Kapsch.IS.ProcessEngine.WFActivity.XORGatewayActivity' instance='10.XORGatewayActivity' xml:space='preserve'>
+      <name xml:space='preserve'>Phone approved/declined?</name>
+      <properties/>
+
+      <transition to='11.EquipmentApprovalActivity' xml:space='preserve'>
+        <condition xml:space='preserve'>
+          
+        </condition>
+      </transition>
+
+      <transition to='14.EquipmentApprovalActivity' xml:space='preserve'>
+        <condition xml:space='preserve'>
+          
+        </condition>
+      </transition>
+
+      <transition to='14.EquipmentApprovalActivity' xml:space='preserve'>
+        <condition xml:space='preserve'>
+          
+        </condition>
+      </transition>
+    </activity>
+
+    
+    <activity nr='11' id='Kapsch.IS.EDP.WFActivity.EquipmentApprovalActivity' instance='11.EquipmentApprovalActivity' xml:space='preserve'>
+     <name xml:space='preserve'>Dummy OBRE Status APPROVED setzen</name>
+      <properties xml:space='preserve'>
+        <property name='obreGuid' direction='input' dataType='stringType'/>
+        <property name='status' direction='input' dataType='stringType'/>
+        <property name='returnStatus' direction='output' dataType='stringType'/>
+      </properties>
+      <transition to='12.EmailActivity'/>
+      <transition to='13.EmailActivity'/>
+    </activity>
+
+    
+    <activity nr='12' id='Kapsch.IS.EDP.WFActivity.EmailActivity' instance='12.EmailActivity' xml:space='preserve'>
+      <name xml:space='preserve'>Info mail to Requestor : EQ approved</name>
+      <properties xml:space='preserve'>
+        <property name='recipient' direction='input' dataType='stringType'/>
+        <property name='subject' direction='input' dataType='stringType'/>
+        <property name='emailBody' direction='input' dataType='stringType'/>
+        <property name='sender' direction='input' dataType='stringType'/>
+        <property name='CC' direction='input' dataType='stringType'/>
+        <property name='BCC' direction='input' dataType='stringType'/>
+        <property name='Attachments_URLs' direction='input' dataType='stringType'/>
+        <property name='isBodyHtml' direction='input' dataType='stringType'/>
+        <property name='demoRecipient' direction='input' dataType='stringType'/>
+        <property name='emailReturnStatus' direction='output' dataType='stringType'/>
+      </properties>
+      
+    </activity>
+
+    
+    <activity nr='13' id='Kapsch.IS.EDP.WFActivity.EmailActivity' instance='13.EmailActivity' xml:space='preserve'>
+      <name xml:space='preserve'>Info mail to User (Effected Person) : EQ added</name>
+      <properties xml:space='preserve'>
+        <property name='recipient' direction='input' dataType='stringType'/>
+        <property name='subject' direction='input' dataType='stringType'/>
+        <property name='emailBody' direction='input' dataType='stringType'/>
+        <property name='sender' direction='input' dataType='stringType'/>
+        <property name='CC' direction='input' dataType='stringType'/>
+        <property name='BCC' direction='input' dataType='stringType'/>
+        <property name='Attachments_URLs' direction='input' dataType='stringType'/>
+        <property name='isBodyHtml' direction='input' dataType='stringType'/>
+        <property name='demoRecipient' direction='input' dataType='stringType'/>
+        <property name='emailReturnStatus' direction='output' dataType='stringType'/>
+     </properties>
+      
+    </activity>
+
+    
+    <activity nr='14' id='Kapsch.IS.EDP.WFActivity.EquipmentApprovalActivity' instance='14.EquipmentApprovalActivity' xml:space='preserve'>
+      <name xml:space='preserve'>Dummy OBRE Status DECLINED setzen</name>
+      <properties xml:space='preserve'>
+        <property name='obreGuid' direction='input' dataType='stringType'/>
+        <property name='status' direction='input' dataType='stringType'/>
+        <property name='returnStatus' direction='output' dataType='stringType'/>
+      </properties>
+      <transition to='15.EmailActivity'/>
+    </activity>
+
+    
+    <activity nr='15' id='Kapsch.IS.EDP.WFActivity.EmailActivity' instance='15.EmailActivity' xml:space='preserve'>
+      <name xml:space='preserve'>Info mail to requestor : EQ approval declined</name>
+      <properties xml:space='preserve'>
+        <property name='recipient' direction='input' dataType='stringType'/>
+        <property name='subject' direction='input' dataType='stringType'/>
+        <property name='emailBody' direction='input' dataType='stringType'/>
+        <property name='sender' direction='input' dataType='stringType'/>
+        <property name='CC' direction='input' dataType='stringType'/>
+        <property name='BCC' direction='input' dataType='stringType'/>
+        <property name='Attachments_URLs' direction='input' dataType='stringType'/>
+        <property name='isBodyHtml' direction='input' dataType='stringType'/>
+        <property name='demoRecipient' direction='input' dataType='stringType'/>
+        <property name='emailReturnStatus' direction='output' dataType='stringType'/>
+      </properties>
+      
+    </activity>
+
+  </activities>
+
+</workflow>

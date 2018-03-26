@@ -1,0 +1,35 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.Email.EmailActivity" instance=".EmailActivity">
+  <name>Email send</name>
+  <properties>
+    
+    <!-- EMPL Guid -->
+    <property name="recipient"         direction="input"   dataType="stringType" />
+    
+    <!-- can contain WF-variables -->
+    <property name="subject"           direction="input"   dataType="stringType" />
+    
+    <!-- is a filename pointing to body template. Template can contain any 0.WF-Variables -->
+    <property name="emailBody"         direction="input"   dataType="stringType" />
+    
+    <!-- has to be an email address; if empty 'KIBSI-EDP-NoReply@kapsch.net' is used -->
+    <property name="sender"            direction="input"   dataType="stringType" />
+    
+    <!--  -->
+    <property name="CC"                direction="input"   dataType="stringType" />
+    
+    <!--  -->
+    <property name="BCC"               direction="input"   dataType="stringType" />
+    
+    <!-- not implemented at the moment  -->
+    <property name="Attachments_URLs"  direction="input"   dataType="stringType" />
+
+    <!-- the string value 'true' or 'false' is required; if empty or invalid 'true' is used -->
+    <property name="isBodyHtml"        direction="input"   dataType="stringType" />
+
+    <!--has to be an email address, if demo mode is true this is used instead of recipient -->
+    <property name="demoRecipient"     direction="input"   dataType="stringType" />
+    
+    <property name="emailReturnStatus" direction="output"  dataType="stringType" />
+  </properties>
+  <transition to=".XXX"/>
+</activity>

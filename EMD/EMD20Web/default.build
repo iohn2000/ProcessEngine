@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<project name="Kapsch.IS.Util" default="run">
+
+    <target name="clean">
+		<exec program="${MSBuildPath}">
+            <arg value="/target:Clean" />
+            <arg value="/verbosity:minimal" />
+            <arg value="/nologo" />
+		</exec>
+    </target>
+    
+    <target name="build">
+		<exec program="${MSBuildPath}">
+            <arg value="/target:Rebuild" />
+            <arg value="/verbosity:minimal" />
+            <arg value="/nologo" />
+		</exec>
+    </target>
+
+    <target name="test" depends="build">
+    </target>
+</project>

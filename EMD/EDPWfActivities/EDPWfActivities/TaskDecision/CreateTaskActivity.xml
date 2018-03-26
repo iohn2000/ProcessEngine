@@ -1,0 +1,33 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.TaskDecision.CreateTaskActivity" instance=".CreateTaskActivity">
+  <name>Create a Task</name>
+  <properties>
+    <!-- -->
+    <property name = "ClientReferenceID"  direction="output"  dataType="stringType" ></property>
+    <property name = "AutoCompleted"  direction="output"  dataType="stringType" ></property>    
+
+    <property name="autoField" direction="input" dataType="stringType"/>
+    <property name="autoValue" direction="input" dataType="stringType"/>
+    <property name="autoText" direction="input" dataType="stringType"/>
+    
+    <property name="taskTitle" direction="input"  dataType="stringType" />
+    <property name="decisionOptions" direction="input"  dataType="stringType" />
+    <property name="taskInformation" direction="input"  dataType="stringType" />
+
+    <property name="effectedPerson_EmplGUID" direction="input"  dataType="stringType" />
+    <property name="requestor_EmplGUID" direction="input"  dataType="stringType" />
+
+    <property name="nextReminderInDays" direction="input"  dataType="stringType" />
+    <property name="nextReminderDate" direction="output"  dataType="stringType" ></property>
+
+    <property name="dueDateInDays" direction="input"  dataType="stringType" />
+    <property name="dueDate" direction="output"  dataType="stringType" />
+
+    <property name="approver_EmplGUIDs" direction="input"  dataType="stringType" />    
+    <property name="toDo" direction="input"  dataType="stringType" />    
+
+    <property name="isBulk" direction="input"  dataType="boolType" />
+
+  </properties>
+  <transition to=".xx"/>
+</activity>
+

@@ -1,0 +1,57 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.TaskDecision.TaskDecisionActivity" instance=".TaskDecisionActivity">
+  <name>Task Create</name>
+  <properties>
+    <!-- --> 
+    <property name="taskTitle"                direction="input"  dataType="stringType" />
+
+    <!--<property name="processName"              direction="input"  dataType="stringType" />-->
+    <property name="effectedPerson_EmplGUID"  direction="input"  dataType="stringType" />
+    <property name="requestor_EmplGUID"       direction="input"  dataType="stringType" />
+    <!-- EMPL Guids for approver, can be a comma separated list doku see http://s060b212:8080/tfs/web/wi.aspx?pcguid=0809da0b-7467-4736-9353-4bad60cec8c5&id=1021 -->
+    <property name="approver_EmplGUIDs"       direction="input"  dataType="stringType" />    
+    <property name="toDo"                     direction="input"  dataType="stringType" />
+
+    <!-- config that defines what to do on this task. at the moment its a coma separated list with options 
+         <Taskfields>
+        <Field id="approvalDecision" type="dropdown" name="Decision" description="Please make a decision:">
+          <option value="approve">approve</option>
+          <option value="decline">decline</option>
+        </Field>
+      </Taskfields> 
+    -->
+    <property name="decisionOptions"          direction="input"  dataType="stringType" />
+    <property name="taskInformation"          direction="input"  dataType="stringType" />    
+    
+    <!-- due date in days from now, (must be bevor next checkdate)  -->
+    <property name="dueDate"                  direction="input"  dataType="stringType" />
+    
+    <!-- nextReminder in days from now : entitycheck.ReminderIntervalInDays, it is relative to CheckDate -->
+    <property name="nextReminder"             direction="input"  dataType="stringType" />
+
+    <property name="isBulk"             direction="input"  dataType="boolType" />
+
+    <!-- EMPL Guids for approver, can be a comma separated list doku see http://s060b212:8080/tfs/web/wi.aspx?pcguid=0809da0b-7467-4736-9353-4bad60cec8c5&id=1021 -->
+    <property name="approver_EmplGUIDs"       direction="input"  dataType="stringType" />
+
+    <property name="emailBody"                direction="input"  dataType="stringType" />
+    
+    <!-- hast to be an email -->
+    <property name="demoRecipient"      direction="input"   dataType="stringType"/>
+  
+    
+    <!-- the string value 'true' or 'false' is required; if empty or invalid 'true' is used -->
+    <property name="isBodyHtml"        direction="input"   dataType="stringType" />
+
+    <!-- default is true , man muss abschalten -->
+    <property name="autoApproval" direction="input" dataType="stringType"/>
+    <!-- default value : approvalDecision -->
+    <property name="autoField" direction="input" dataType="stringType"/>
+    <!-- default value  approve -->
+    <property name="autoValue" direction="input" dataType="stringType"/>
+    <!-- task item guid of first task (if more than 1) -->
+    <property name="FirstTaskItemGuid" direction="output" dataType="stringType"/>
+
+  </properties>
+  <transition to=".TaskDecisionActivityWait"/>
+</activity>
+

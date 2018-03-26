@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="Kapsch.IS.ProcessEngine.Webservice.Service" CodeBehind="Service.svc.cs" %>

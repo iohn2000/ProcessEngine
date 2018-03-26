@@ -1,0 +1,65 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.PersonProfileEmploymentModels
+@using Kapsch.IS.EMD.EMD20Web.Models;
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ProfileEmployments</title>
+</head>
+<body>
+    <div>
+
+        @(Html.Kendo().TabStrip()
+          .Name("tabstripProfileEmployment")
+          .Items(items =>
+          {
+              string emplGuid = Request["empl_guid"];
+
+              int i = 0;
+              bool hasDeepLink = false;
+              foreach (PersonProfileEmploymentModel tab in Model.getList())
+              {
+                  if (tab.Guid == emplGuid)
+                  {
+                      hasDeepLink = true;
+                  }
+              }
+
+              foreach (PersonProfileEmploymentModel tab in Model.getList())
+              {
+                  bool selected = false;
+
+                  if (hasDeepLink == true)
+                  {
+                      if (tab.Guid == emplGuid)
+                          selected = true;
+                  }
+                  else
+                  {
+                      if (i == 0)
+                          selected = true;
+                  }
+
+
+                  items
+                     .Add()
+                     .Selected(selected)
+                     .Text(tab.EnterpriseNameShort.ToString()+" - "+tab.EmploymentTypeShort.ToString()).LinkHtmlAttributes(new { title = tab.HtmlHoverText })
+                     .HtmlAttributes(new { @class = tab.HtmlCssClass })
+                     .Content(@Html.Partial("ProfileEmployment", tab).ToHtmlString());
+
+                  i += 1;
+              }
+
+
+          })
+        )
+    </div>
+
+</body>
+</html>

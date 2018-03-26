@@ -1,0 +1,103 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.OrgUnitModel
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+@{
+    ViewBag.Title = "View";
+    ViewBag.TooltipUrl = Model.IsSecurity ? "http://" + Request.Url.Authority + "/Quickinfo/OrgUnit_View.html" : "http://" + Request.Url.Authority + "/Quickinfo/OrgUnit_View.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+<div id="formcontent">
+        @Html.AntiForgeryToken()
+
+        <div id="formresults" class="infobox error" style="display:none"></div>
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="k-edit-form-container" style="float:left;">
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Name, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Note, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Note, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Guid_Parent, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @(
+                            Html.Kendo().DropDownListFor(m => m)
+                            .OptionLabel("Please select")
+                            .Name("Guid_Parent")
+                            .DataTextField("Text")
+                            .DataValueField("Value")
+                            .HtmlAttributes(new { disabled = "disabled", @style = "width:100%" })
+                            .Filter(FilterType.Contains)
+                            .IgnoreCase(true)
+                            .AutoBind(true)
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
+                                {
+                                    read.Action("ReadForSelect", "OrgUnit");
+                                })
+                                .ServerFiltering(false);
+                            })
+                        )
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.IsSecurity, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.CheckBoxFor(model => model.IsSecurity, new { disabled = "disabled" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.E_Guid, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @(
+                            Html.Kendo().DropDownListFor(m => m)
+                            .OptionLabel("Please select")
+                            .Name("E_Guid")
+                            .DataTextField("Text")
+                            .DataValueField("Value")
+                            .HtmlAttributes(new { disabled = "disabled", @style = "width:100%" })
+                            .Filter(FilterType.Contains)
+                            .IgnoreCase(true)
+                            .AutoBind(true)
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
+                                {
+                                    read.Action("ReadForSelect", "Enterprise");
+                                })
+                                .ServerFiltering(false);
+                            })
+                        )
+
+                    </div>
+                </div>
+
+                <div class="form-group form-group-buttons">
+                    <label></label>
+                    <div class="col-md-10">
+                        <button type="button" value="Close" class="k-button" onclick="closeWindow();">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+<div style="width:900px;height:800px;float:left;border:none; margin-left: 30px;">
+    @Html.Partial("Controls/_OrgUnitMap", Model.orgUnitModelList)
+</div>

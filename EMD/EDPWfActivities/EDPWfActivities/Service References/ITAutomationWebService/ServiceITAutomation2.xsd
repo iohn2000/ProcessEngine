@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://s900b112.kapsch.co.at:7791/ServiceITAutomation.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Kapsch.IS.ITAutomation.Webservice.Entities" />
+  <xs:element name="CreateScriptRun">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="taskName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="scriptDataEntries" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="idClient" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateScriptRunResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Kapsch.IS.ITAutomation.Webservice.Entities" minOccurs="0" name="CreateScriptRunResult" nillable="true" type="q1:ResultObjectItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddScriptData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="scriptRunID" type="xs:int" />
+        <xs:element minOccurs="0" name="scriptDataEntries" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddScriptDataResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Kapsch.IS.ITAutomation.Webservice.Entities" minOccurs="0" name="AddScriptDataResult" nillable="true" type="q2:ResultObjectItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="QueueScript">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="scriptRunID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="QueueScriptResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Kapsch.IS.ITAutomation.Webservice.Entities" minOccurs="0" name="QueueScriptResult" nillable="true" type="q3:ResultObjectItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetScriptRunStatus">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="scriptRunID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetScriptRunStatusResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Kapsch.IS.ITAutomation.Webservice.Entities" minOccurs="0" name="GetScriptRunStatusResult" nillable="true" type="q4:ResultObjectItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TestService">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="value" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TestServiceResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="TestServiceResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

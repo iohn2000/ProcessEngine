@@ -1,0 +1,48 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.TaskDecision.TaskDecisionActivityReminderWait" instance=".TaskDecisionActivityReminderWait">
+  <name>Task Reminder Wait</name>
+  <linkedTo instance=".TaskDecisionActivity" />
+
+  <properties>
+    <!-- how often to poll for result -->
+    <property name="pollingIntervalSeconds" direction="input"  dataType="intType"/>
+    <!-- how many days until task is timed out (overdue) and a configured action is started (defaultDecision oder Pause modus) -->
+    <property name="timeOutIntervalDays"    direction="input"  dataType="intType" />
+
+    <!-- template for reminder email -->
+    <property name="reminderEmailTemplate"  direction="input"  dataType="stringType" />
+    <!-- subject for reminder email -->
+    <property name="reminderEmailSubject"  direction="input"  dataType="stringType" />
+    <!-- who to send the reminder email to; input is a semicolon separated list of emplguids, or prefix coded elements; e.g.: R_10500;EMPL_00cd3d3;MAIL_sepp@kapsch.net -->
+    <property name="reminderEmailRecipient"  direction="input"  dataType="stringType" />
+    <!-- mail sender, if left empty the default "KIBSI-EDP-NoReply@kapsch.net" is used -->
+    <property name="reminderMailSender"  direction="input"  dataType="stringType" />
+    
+    <!--effected person employment guid; this is needed for calculation email recipients -> findtaskapprover(...) -->
+    <property name="effectedPersonEmplGuid"  direction="input"  dataType="stringType" />    
+    
+    <!-- what to do when task is timed out (overdue) : use string "pause" to set WF into pause modus or value "defaultDecision" to trigger a default decision for task -->
+    <variable name="timeoutAction" direction="input" dataType="stringType"/>
+    <!-- Field id to be used for default decision -->
+    <variable name="defaultField" direction="input" dataType="stringType"/>
+    <!-- value for default decision -->
+    <variable name="defaultValue" direction="input" dataType="stringType"/>
+    <!--indicates if defaultDecision was triggered by timeout "true" or "false" ,  this will be false if task was closed normally or timeoutAction was pause 
+        will be "true" if timeout occured AND timeoutAction is "defaultDecision"   -->
+    <property name="defaultDecisionTriggered" direction="output" dataType="stringType"/>
+
+    <!-- if reminder email has been sent this is set to "true"; "false" or empty means not sent yet -->
+    <property name="reminderHasBeenSentFlag" direction="output" dataType="stringType"/>
+    
+  </properties>
+
+  <transition to="">
+    <condition>
+      <![CDATA["{{xx.Key_VariableName}}" = "decisionOption_1"]]>
+    </condition>
+  </transition>
+  <transition to="">
+    <condition>
+      <![CDATA["{{xx.Key_VariableName}}" = "decisionOption_2"]]>
+    </condition>
+  </transition>
+  </activity>

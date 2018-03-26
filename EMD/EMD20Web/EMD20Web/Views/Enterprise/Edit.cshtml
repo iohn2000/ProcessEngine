@@ -1,0 +1,272 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.EnterpriseViewModel
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+@{
+    ViewBag.Title = "Edit Enterprise";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/Enterprise_Edit.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+<div id="formcontent" style="width: 720px">
+    @using (Ajax.BeginForm("DoEdit", "Enterprise", null, new AjaxOptions
+    {
+        HttpMethod = "Post",
+        OnBegin = "formValidation.OnBegin(xhr)",
+        OnSuccess = "formValidation.OnSuccess(xhr)",
+        OnFailure = "formValidation.OnFailure(xhr)"
+    }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.Guid)
+        @Html.HiddenFor(model => model.Created)
+        @Html.HiddenFor(model => model.E_ID_Parent)
+        @Html.HiddenFor(model => model.E_ID_Root)
+        @Html.HiddenFor(model => model.HistoryGuid)
+        @Html.HiddenFor(model => model.HomeInternet)
+        @Html.HiddenFor(model => model.HomeIntranet)
+        @Html.HiddenFor(model => model.IntranetCOM)
+        @Html.HiddenFor(model => model.Modified)
+        @Html.HiddenFor(model => model.O_ID_Dis)
+        @Html.HiddenFor(model => model.O_ID_Prof)
+        @Html.HiddenFor(model => model.ValidFrom)
+        @Html.HiddenFor(model => model.ValidTo)
+        @Html.HiddenFor(model => model.ActiveFrom)
+        @Html.HiddenFor(model => model.ActiveTo)
+        @Html.HiddenFor(model => model.Guid_Root)
+
+
+        var url = "http://localhost:8021/Enterprise/EnterpriseMap/" + Model.Guid;
+    <!-- http://localhost:8021/Enterprise/EnterpriseMap/ENTE_28f4ab8284e34688a388ff3e4e578ea7 -->
+        @*<iframe src="@url" width="900" height="600">
+
+            </iframe>*@
+
+        <div id="formresults" class="infobox error" style="display:none"></div>
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="k-edit-form-container" style="float:left;">
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.NameShort, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.NameShort)
+                        @Html.ValidationMessageFor(model => model.NameShort, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.NameLong, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.NameLong)
+                        @Html.ValidationMessageFor(model => model.NameLong, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.E_ID_new, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.E_ID_new)
+                        @Html.ValidationMessageFor(model => model.E_ID_new, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.E_ID, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.E_ID, new { @class = "form-control, k-textbox" })
+                        @Html.ValidationMessageFor(model => model.E_ID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.ARA, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ARA)
+                        @Html.ValidationMessageFor(model => model.ARA, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.DVR, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.DVR)
+                        @Html.ValidationMessageFor(model => model.DVR, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Guid_Parent, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @(Html.Kendo().DropDownListFor(m => m)
+                            .OptionLabel("Please select")
+                            .Name("Guid_Parent")
+                            .DataTextField("Text")
+                            .DataValueField("Value")
+                            .HtmlAttributes(new { @style = "width:100%;" })
+                            .Filter(FilterType.Contains)
+                            .IgnoreCase(true)
+                               .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("ReadForSelect", "Enterprise");
+                                      })
+                                      .ServerFiltering(false);
+                                  })
+                        )
+                        @Html.ValidationMessageFor(model => model.Guid_Parent, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.FibuGericht, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.FibuGericht)
+                        @Html.ValidationMessageFor(model => model.FibuGericht, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.FibuNummer, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.FibuNummer)
+                        @Html.ValidationMessageFor(model => model.FibuNummer, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.HasEmployees, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.HasEmployees)
+                        @Html.ValidationMessageFor(model => model.HasEmployees, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.AD_Picture, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.AD_Picture)
+                        @Html.ValidationMessageFor(model => model.AD_Picture, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.O_Guid_Dis, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @(Html.Kendo().DropDownListFor(m => m)
+                            .OptionLabel("Please select")
+                            .Name("O_Guid_Dis")
+                            .DataTextField("Text")
+                            .DataValueField("Value")
+                            .HtmlAttributes(new { @style = "width:100%;" })
+                            .Filter(FilterType.Contains)
+                            .IgnoreCase(true)
+                                   .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetOrganizationUnits", "Enterprise");
+                                      })
+                                      .ServerFiltering(false);
+                                  })
+
+                        )
+
+                        @Html.ValidationMessageFor(model => model.O_Guid_Dis, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                @*<div class="form-group">
+                        @Html.LabelForRequired(model => model.O_Guid_Prof, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+
+                            @(Html.Kendo().DropDownListFor(m => m)
+                                .OptionLabel("Please select")
+                                .Name("O_Guid_Prof")
+                                .DataTextField("Text")
+                                .DataValueField("Value")
+                                .HtmlAttributes(new { @style = "width:100%;" })
+                                .Filter(FilterType.Contains)
+                                .IgnoreCase(true)
+                                       .DataSource(source =>
+                                      {
+                                          source.Read(read =>
+                                          {
+                                              read.Action("GetOrganizationUnits", "Enterprise");
+                                          })
+                                          .ServerFiltering(false);
+                                      })
+
+                            )
+
+                            @Html.ValidationMessageFor(model => model.O_Guid_Prof, "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Synonyms, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Synonyms)
+                        @Html.ValidationMessageFor(model => model.Synonyms, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.UID1, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.UID1)
+                        @Html.ValidationMessageFor(model => model.UID1, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.UID2, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.UID2)
+                        @Html.ValidationMessageFor(model => model.UID2, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.DistributionEmailAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.DistributionEmailAddress)
+                        @Html.ValidationMessageFor(model => model.DistributionEmailAddress, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group form-group-buttons">
+                    <label></label>
+                    <div class="col-md-10">
+                        <button type="button" value="Cancel" class="k-button kapsch-text-button" onclick="closeWindow();">Cancel</button>
+                        <input type="submit" value="Save" class="btn k-button kapsch-text-button" />
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    }
+</div>
+
+<div style="width:900px;height:800px;float:left;border:none; margin-left: 30px;">
+    @if (Model.enterpriseModelList != null)
+    {
+        @Html.Partial("Controls/_EnterpriseMap", Model.enterpriseModelList)
+    }
+
+</div>
+
+<script>
+    $(function () {
+        $("form").kendoValidator();
+    });
+
+    $(document).ready(function () {
+        //registerOnBlurEvent();
+    });
+</script>

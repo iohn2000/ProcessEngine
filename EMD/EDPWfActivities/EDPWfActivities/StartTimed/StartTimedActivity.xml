@@ -1,0 +1,16 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.StartTimed.StartTimedActivity" instance=".StartTimedActivity">
+  <name>Start on a Date</name>
+  <description>
+    continue with workflow at a certain date
+    2 ways to use this :
+    1) enter a date in Iso8601 format 2017-01-14T18:15:02.889+01:00
+    2) enter relative time : now+3 means "in 3 hours"
+  </description>
+  <properties>
+    <property name="startDate"  direction="input"  dataType="stringType" />
+    <!-- move the start date forward or backward in days (start before or after start date), default is 0 days -->
+    <property name="offsetInDays"  direction="input"  dataType="stringType" />
+    <property name="isExecuted"  direction="both"  dataType="stringType" />
+  </properties>
+  <transition to="" />
+</activity>

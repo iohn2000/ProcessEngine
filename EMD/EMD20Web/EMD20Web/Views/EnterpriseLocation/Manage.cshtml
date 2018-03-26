@@ -1,0 +1,108 @@
+﻿@using Kapsch.IS.EMD.EMD20Web.Models;
+@model Kapsch.IS.EMD.EMD20Web.Models.EnterpriseLocationModel
+
+@{
+    ViewBag.Title = "Enterprise-Locations";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/EnterpriseLocation_Manage.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+@if (Model.CanView || Model.CanManage)
+{
+    @(Html.Kendo().Grid<EnterpriseLocationModel>()
+        .Name("Grid").HtmlAttributes(new { @class = "k-grid-big" })
+
+        .Sortable()
+        .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+            .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(true)
+            .ButtonCount(5)
+            .PageSizes(new[] { 15, 50, 100 }))
+        .Scrollable(s => s.Enabled(true).Height("auto"))
+        .Columns(columns =>
+        {
+            columns.Bound(item => item.Guid).Title("")
+            .ClientTemplate(
+                                "# if (CanManage == true) { #"
+
+                                + "<a title='Edit' href='\\#' "
+                                + "onclick='showInWindow(\""
+                                + "Edit/"
+                                + "#= Guid #/true\",\"Edit Enterprise-Location\");' "
+                                + "data-id='#=Guid#'"
+                                + ">"
+                                + "<i class='material-icons'>mode_edit</i>"
+                                + "</a>"
+                                + "<a title='Delete' href='\\#' "
+                                + "onclick='enterpriseLocation.Functions.Delete(\"#=Guid#\",\"Enterprise-Location\",\"#=DistList_int#\");' "
+                                + "data-id='#=Guid#'"
+                                + ">"
+                                + "<i class='material-icons'>delete</i>"
+                                + "</a>"
+
+                                + "# } else {#"
+
+                                + "<a title='View' href='\\#' "
+                                + "onclick='showInWindow(\""
+                                + "View/"
+                                + "#= Guid #/true\",\"View Enterprise-Location\");' "
+                                + "data-id='#=Guid#'"
+                                + ">"
+                                + "<i class='material-icons'>pageview</i>"
+                                + "</a>"
+
+                                + "#} #"
+                              ).Width(60).Filterable(false);
+
+            columns.Bound(item => item.EnterpriseNameEnhanced).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter"))).Width(250)
+            .ClientTemplate(
+                "<div><a title='View Enterprise-Details' onclick='showInWindow(\"/Enterprise/View/#=EnteGuid#/true\",\"View Enterprise\");'><i class='material-icons'>pageview</i></a><a style='text-decoration: underline;' Title='Filter for Enterprise ID #=EnterpriseNumber#' onClick='enterpriseLocation.Events.OnEnterpriseClick(\"#=EnterpriseNameEnhanced#\")'>#=EnterpriseName#</a> (#=EnterpriseNumber#)</div>"
+                );
+            columns.Bound(item => item.LocationNameEnhanced).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter"))).Width(500)
+                .ClientTemplate(
+                "<div><a title='View Location-Details' onclick='showInWindow(\"/Location/View/#=LocaGuid#/true\",\"View Location\");'><i class='material-icons'>pageview</i></a><a style='text-decoration: underline;' Title='Filter for Location Object #=LocationObjectNumber#' onClick='enterpriseLocation.Events.OnLocationClick(\"#=LocationNameEnhanced#\")'>#=LocationName#</a> (#=LocationObjectNumber#)</div>"
+                );
+
+
+            columns.Bound(item => item.DistList_int).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter"))).Width(250);
+            columns.Bound(item => item.DistList_ext).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter"))).Width(250);
+            columns.Bound(item => item.StatusDisplayName).Width(200);
+        })
+
+        .Editable(editable => editable.Mode(GridEditMode.PopUp).DisplayDeleteConfirmation(false).Window(win => win.Width(700)))
+        .ToolBar(tb =>
+        {
+            if (Model.CanManage)
+            {
+                tb.Custom().Text("Add Enterprise-Location").Url("#").HtmlAttributes(new { onclick = "showInWindow('Create/true','Add Enterprise-Location',false);", @class = "kapsch-text-button" });
+            }
+            //tb.Custom().Text("Clear Filter").Url("#").HtmlAttributes(new { onclick = "kendoHelper.Grid.ClearFilter('#Grid');", @class = "kapsch-text-button" });
+        })
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            //.Filter(filter =>
+            //{
+            //    filter.Add(f => f.E_Guid).Contains(Model.EnterpriseNameEnhanced);
+            //    filter.Add(f => f.L_Guid).Contains(Model.LocationNameEnhanced);
+            //})
+            .ServerOperation(true)
+            .PageSize(15)
+            .Model(model => model.Id(item => item.Guid))
+            .Read(read => read.Action("Read", "EnterpriseLocation"))
+            .Events(events => events.Error("exceptionManager.Events.HandleError")
+
+            )
+        )
+    )
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var url = '@Request.Url';
+            kendoHelper.Grid.FilterGrid('#Grid', "Guid", "equals", url);
+        });
+    </script>
+}
+
+

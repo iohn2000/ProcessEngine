@@ -1,0 +1,10 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.ContractorCheck.SetExitAndLastDayActivity" instance=".SetExitAndLastDayActivity">
+  <name>Set Exit And LastDay</name>
+  <description>Set the exit and last day for employment checks (e.g. contractor check wf)</description>
+  <properties>
+    <property name = "EmplGuid"  direction="input"  dataType="stringType" ></property>
+    <property name = "Exit"  direction="input"  dataType="stringType" ></property>
+    <property name = "LastDay"  direction="input"  dataType="stringType" ></property>
+  </properties>
+  <transition to=".xx"/>
+</activity>

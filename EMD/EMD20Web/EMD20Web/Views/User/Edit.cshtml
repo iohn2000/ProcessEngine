@@ -1,0 +1,190 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.UserModel
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+@using Kapsch.IS.EMD.EMD20Web.Models
+
+@{
+    ViewBag.Title = string.IsNullOrEmpty(Model.Guid) ? "Create User" : "Edit User";
+    ViewBag.TooltipUrl = string.IsNullOrEmpty(Model.Guid) ? "http://" + Request.Url.Authority + "/Quickinfo/User_Create.html" : "http://" + Request.Url.Authority + "/Quickinfo/User_Edit.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+<script>
+    user.Entities.IsNew = @Model.IsNew.ToString().ToLower();
+    user.Entities.EmploymentGuid = '@Model.EMPL_Guid';
+</script>
+
+<div id="formcontent">
+
+    @using (Ajax.BeginForm("Edit", "User", null, new AjaxOptions
+    {
+        HttpMethod = "Post",
+        OnBegin = "formValidation.OnBegin(xhr)",
+        OnSuccess = "user.Events.OnUserEditSuccess(xhr)",
+        OnFailure = "formValidation.OnFailure(xhr)"
+    }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Guid)
+        @Html.HiddenFor(model => model.EMPL_Guid)
+        @Html.HiddenFor(model => model.USDO_Guid)
+        @Html.HiddenFor(model => model.ValidFrom)
+        @Html.HiddenFor(model => model.ValidTo)
+        @Html.HiddenFor(model => model.ActiveFrom)
+        @Html.HiddenFor(model => model.ActiveTo)
+
+        <div id="formresults" class="infobox error" style="display:none"></div>
+
+        <div class="form-horizontal">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="k-edit-form-container" style="float:left;">
+
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.UserType, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @(Html.Kendo().DropDownListFor(m => m.UserType)
+                        .Name("UserType")
+                        .DataTextField("Name")
+                        .DataValueField("Type")
+                        .Filter(FilterType.Contains)
+                        .OptionLabel("Please select")
+                        .DataSource(source =>
+                        {
+                            source.Read(read =>
+                            {
+                                read.Action("GetUserTypeModelList", "User", new { hideDeleted = Model.HideDeletedUsertypes });
+                            })
+                            .ServerFiltering(false);
+                        })
+                        .SelectedIndex(Model.SelectedUserTypeIndex)
+                         .Events(e =>
+                         {
+                             e.Change("user.Events.OnUserTypeChanged");
+                         })
+                        //.Value(Model.UserType.ToString())
+                        //  .Value(Enum.GetName(typeof(Kapsch.IS.EDP.Core.Entities.EnumUserType), Model.UserType))
+                        )
+
+                        @Html.ValidationMessageFor(model => model.UserType, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @*@Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })*@
+                        @Html.TextBoxFor(model => model.Username, new { @readonly = "readonly", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.USDO_UI, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @(Html.Kendo().DropDownListFor(m => m.USDO_UI)
+                        .Name("USDO_UI")
+                        .DataTextField("Text")
+                        .DataValueField("Value")
+                        .Filter(FilterType.Contains)
+                        .OptionLabel("Please select")
+                        .DataSource(source =>
+                        {
+                            source.Read(read =>
+                            {
+                                read.Action("ReadUserDomainListForSelect", "User");
+                            })
+                            .ServerFiltering(false);
+                        })
+                        .Value(Model.USDO_Guid)
+                        )
+
+
+                        @Html.ValidationMessageFor(model => model.USDO_UI, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @(Html.Kendo().DropDownListFor(m => m.Status)
+                        .Name("Status")
+                        .DataTextField("Name")
+                        .DataValueField("Status")
+                        .Filter(FilterType.Contains)
+                        .OptionLabel("Please select")
+                        .DataSource(source =>
+                        {
+                            source.Read(read =>
+                            {
+                                read.Action("GetUserStatusModelList", "User");
+                            })
+                            .ServerFiltering(false);
+                        })
+                        .SelectedIndex(Model.SelectedStatusIndex)
+                        )
+
+                        @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                @if (Model.UserType == Kapsch.IS.EDP.Core.Entities.EnumUserType.ADUserFullAccount)
+                {
+                    <div class="form-group">
+                        @Html.LabelForRequired(model => model.IsMainUser, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.CheckBoxFor(model => model.IsMainUser, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.IsMainUser, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @Html.HiddenFor(model => model.IsMainUser)
+                }
+
+
+                <div class="form-group form-group-buttons">
+                    <label></label>
+                    <div class="col-md-10">
+                        <button type="button" value="Cancel" class="k-button kapsch-text-button" onclick="closeWindow();">Cancel</button>
+                        @if (Model.isEditable)
+                        {
+                            <input id="SubmitButton" type="submit" value="Save" class="btn k-button kapsch-text-button" />
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+
+<script>
+    $(function () {
+        $("form").kendoValidator();
+    });
+
+    /*
+     ** Avoids to uncheck an already set 'IsMainUser'
+     ** but allows to deselect an items which was originally unset
+    */
+    $('#IsMainUser').on('change', function (e) {
+        var checkbox = $(this);
+        console.log(checkbox.is(":checked"));
+        if (!checkbox.is(":checked") && !this.hasAttribute('deselectable')) {
+            // do the confirmation thing here
+            this.checked = true;
+        }
+        else {
+            this.setAttribute('deselectable', 'true');
+        }
+    });
+</script>

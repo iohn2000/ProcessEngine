@@ -1,0 +1,115 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.OrgUnitRoleModel
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+@{
+    ViewBag.Title = "Create Orgunit employee";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/OrgUnitRole_Create.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+<div id="formcontent">
+
+    @using (Ajax.BeginForm("DoCreate", "OrgUnitRole", null, new AjaxOptions
+    {
+        HttpMethod = "Post",
+        OnBegin = "formValidation.OnBegin(xhr)",
+        OnSuccess = "formValidation.OnSuccess(xhr)",
+        OnFailure = "formValidation.OnFailure(xhr)"
+    }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.Guid)
+        @Html.HiddenFor(model => model.Created)
+        @Html.HiddenFor(model => model.HistoryGuid)
+        @Html.HiddenFor(model => model.Modified)
+        @Html.HiddenFor(model => model.ValidFrom)
+        @Html.HiddenFor(model => model.ValidTo)
+
+        <div id="formresults" class="infobox error" style="display:none"></div>
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="k-edit-form-container" style="float:left;">
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.R_Guid, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @(
+                        Html.Kendo().DropDownListFor(m => m)
+                        .OptionLabel("Please select")
+                        .Name("R_Guid")
+                        .DataTextField("Text")
+                        .DataValueField("Value")
+                        //.DataTextField("Name")
+                        //.DataValueField("Guid")
+                        .HtmlAttributes(new { @style = "width:500px" })
+                        .Filter(FilterType.Contains)
+                        .IgnoreCase(true)
+                        .AutoBind(true)
+                        .BindTo(Model.availableRoles)
+                        )
+                        @Html.ValidationMessageFor(model => model.R_Guid, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.O_Guid, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @(
+                        Html.Kendo().DropDownListFor(m => m)
+                        .OptionLabel("Please select")
+                        .Name("O_Guid")
+                        .DataTextField("Text")
+                        .DataValueField("Value")
+                        //.DataTextField("Name")
+                        //.DataValueField("Guid")
+                        .HtmlAttributes(new { @style = "width:500px" })
+                        .Filter(FilterType.Contains)
+                        .IgnoreCase(true)
+                        .AutoBind(true)
+                        .Value(Model.O_Guid)
+                        .BindTo(Model.availableOrgUnits)
+                        )
+                        @Html.ValidationMessageFor(model => model.O_Guid, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.EP_Guid, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @(Html.Kendo().DropDownListFor(m => m.EP_Guid)
+                        .Name("EP_Guid")
+                        .DataTextField("Text")
+                        .DataValueField("Value")
+                        .Filter(FilterType.Contains)
+                        .OptionLabel("Please select")
+                        .BindTo(Model.availableEmployments)
+                        //.DataSource(source =>
+                        //{
+                        //    source.Read(read =>
+                        //    {
+                        //        read.Action("GetEmployments", "Employment");
+                        //    })
+                        //    .ServerFiltering(false);
+                        //})
+                        .Value(Model.EP_Guid)
+                        )
+
+                        @Html.ValidationMessageFor(model => model.EP_Guid, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group form-group-buttons">
+                    <label></label>
+                    <div class="col-md-10">
+                        <button type="button" value="Cancel" class="k-button kapsch-text-button" onclick="closeWindow();">Cancel</button>
+                        <input type="submit" value="Save" class="btn k-button kapsch-text-button" />
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

@@ -1,0 +1,80 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.ContactDataModel
+@using Kapsch.IS.EMD.EMD20Web.Models;
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+@{
+    ViewBag.Title = "Edit call numbers";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/ContactData_Edit.html";
+}
+@*http://localhost:15428/ContactData/Edit/EMPL_1a60ba4d38db4234bce9f491554c3ce7*@
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+
+
+<div style="margin-top: 20px">
+    @(Html.Kendo().Grid<Kapsch.IS.EMD.EMD20Web.Models.ContactModel>()
+                            .Name("GridContactModel")
+                            .Sortable()
+                            .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+                            .Columns(columns =>
+                            {
+                                columns.Bound(item => item.ActiveFrom).Title(string.Empty).Filterable(false).ClientTemplate(
+
+                                     "<a title='Edit' href='\\#' "
+                                     + "onclick='showInWindow(\"/ContactData/EditNumber/#=EP_Guid#/#=Guid#/#=C_CT_ID#/#=IsFuture#/true\",\"Edit #=Name#\");' "
+                                     + "data-id='#=Guid#' "
+                                     + ">"
+                                     + "<i class='material-icons'>edit</i>"
+                                     + "</a>"
+                                     + "<a title='Delete' href='\\#' "
+                                     + "onclick='contactData.Events.OnDeleteClick(\"#=Guid#\",\"Number\",\"#=Name#\");' "
+                                     + "data-id='#=Guid#' style='visibility: #=CssActionButtonDeleteVisible#'"
+                                     + ">"
+                                     + "<i class='material-icons'>delete</i>"
+                                     + "</a>"
+                                     + "</a>"
+                                     + "<a title='Add future number' href='\\#' "
+                                     + "onclick='showInWindow(\"/ContactData/AddNumber/#=EP_Guid#/#=C_CT_ID#/true/true\",\"Add Future #=Name#\");' "
+                                     + "data-id='#=Guid#' style='visibility: #=CssActionButtonAddFutureVisible#'"
+                                     + ">"
+                                     + "<i class='material-icons'>add</i>"
+                                     + "</a>"
+                                );
+
+                                columns.Bound(item => item.Name).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+                                columns.Bound(item => item.NationalCode).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+                                columns.Bound(item => item.Prefix).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+                                columns.Bound(item => item.Number).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+                                columns.Bound(item => item.IsVisibleInPhoneBook).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+                                columns.Bound(item => item.IsVisibleInCallCenter).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+                                columns.Bound(item => item.ActiveFrom).Filterable(ftb => ftb.Cell(a => a.Operator("gte"))).ClientTemplate("#=ActiveFromString#").Width(200);
+                                columns.Bound(item => item.ShowInGrid).Visible(false);
+                            })
+
+                              .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .Filter(a =>
+                                {
+                                    a.Add(b => b.ShowInGrid).IsEqualTo(true);
+
+                                }
+
+                        )
+
+                        .ServerOperation(true)
+                        .Read(read => read.Action("ReadContacts", "ContactData", new { empl_guid = Model.GuidEmployment }))
+                        .Events(events => events.Error("exceptionManager.Events.HandleError")
+
+                        )
+
+        )
+
+
+    )
+
+
+
+
+    <button type="button" style="margin-left: 350px; margin-top: 50px" value="Cancel" class="k-button kapsch-text-button" onclick="closeWindow();">Close</button>
+
+</div>
+

@@ -1,0 +1,14 @@
+﻿@model Exception
+@{
+
+}
+
+<div class="nodata-found" exception="@Model.Message.ToString()">No data found</div>
+
+<script>
+    $('.nodata-found').click(function (e) {
+        var exceptionText = $(this).attr('exception');
+
+        alertify.alert(res.Alert.Title_NoDataFound, 'Handled exception:<br>' + exceptionText);
+    });
+</script>

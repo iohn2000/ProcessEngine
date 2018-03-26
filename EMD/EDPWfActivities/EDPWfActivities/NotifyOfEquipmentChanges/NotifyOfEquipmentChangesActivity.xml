@@ -1,0 +1,32 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.NotifyOfEquipmentChanges.NotifyOfEquipmentChangesActivity" instance=".NotifyOfEquipmentChangesActivity">
+  <name>Notify of Equipment Changes</name>
+  <description></description>
+  <properties>
+    <!-- 
+    How to format E-Mail Equipment Liste Result :
+   
+    Has New Employment : {{0.HasNewEmployment}}
+   
+    {{#EqInfos}}
+      {{EqName}} {{WorkflowAction}} {{Keep}} {{IsAvailable}} 
+    {{/EqInfos}}
+
+      Token   Remove false n/a
+      Msdn    Remove true false
+      Visio   Change true true
+      Project Ignore false n/a  
+    -->
+    <property name="ResultEqHandling"                direction="input"   dataType="stringType" />
+    <property name="RequestingPersonEmploymentGuid"  direction="input"   dataType="stringType" />
+    <property name="EffectedPersonEmploymentGuid"    direction="input"   dataType="stringType" />
+    <property name="TargetDate"                      direction="input"   dataType="stringType" />
+    
+    <property name="Recipient"         direction="input"  dataType="stringType" />
+    <property name="Subject"           direction="input"  dataType="stringType" />
+    <property name="EmailBody"         direction="input"  dataType="stringType" />
+    <property name="Sender"            direction="input"  dataType="stringType" />
+    <property name="IsBodyHtml"        direction="input"  dataType="stringType" />
+    <property name="DemoRecipient"     direction="input"  dataType="stringType" />
+  </properties>
+  <transition to="" />
+</activity>

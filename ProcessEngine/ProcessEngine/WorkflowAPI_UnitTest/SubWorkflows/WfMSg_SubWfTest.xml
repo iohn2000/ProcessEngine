@@ -1,0 +1,44 @@
+﻿<?xml version="1.0"?>
+<WorkflowfMessageQueueData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <WfVariables>
+    
+    <WfVariable>
+      <VarName>Method</VarName>
+      <VarValue>SubWorkflow_SimpleEmail_method</VarValue>
+    </WfVariable>
+
+    <WfVariable>
+      <VarName>subWorkflowDefinitionID</VarName>
+      <VarValue>SimpleEmail</VarValue>
+    </WfVariable>    
+    
+    <WfVariable>
+      <VarName>EqName</VarName>
+      <VarValue>Subworkflow EQ Example</VarValue>
+    </WfVariable>
+
+    <WfVariable>
+      <VarName>ObreID</VarName>
+      <VarValue>not_used_in_this_example</VarValue><!-- OBRE Tischer : Second Mailbox -->
+    </WfVariable>
+    
+    <WfVariable>
+      <VarName>EffectedPerson</VarName>
+      <VarValue>not_used_in_this_example</VarValue>
+    </WfVariable>
+    
+    <WfVariable>
+      <VarName>RequestorPerson</VarName>
+      <VarValue>PERS_d7ded6b2be9c4234a15f487796b77d13</VarValue><!-- this person gets the email (fleckj) -->
+    </WfVariable>
+    
+    <WfVariable>
+      <VarName>Approver</VarName>
+      <VarValue>not_used_in_this_example</VarValue>
+    </WfVariable>
+    
+  </WfVariables>
+
+</WorkflowfMessageQueueData>
+
+

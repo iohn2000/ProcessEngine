@@ -1,0 +1,39 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.NavisionTicket.NavisionTicketActivityWait" instance=".NavisionTicketActivityWait">
+  <name>Navision Ticket Wait</name>
+  <description>
+    angelegt         --> step wait     : ticket has been created and ticketnumber is available
+    beendet          --> step complete : ticket has been finished
+    
+    timeoutAngelegt  --> step paused   : nav ticket has not been created from webeinmeldung. stop polling, wait for user to activate again
+    timeoutBeendet   --> step paused   : nav ticket has not been finished. stop polling, wait for user to activate again
+    
+    storno           --> step complete : nav ticket has been cancelled
+  </description>
+  <linkedTo instance=".NavisionTicketActivity" />
+
+  <properties>
+    <property name="pollingIntervalSeconds" direction="input"  dataType="intType"/>
+    <property name="returnStatus"           direction="output" dataType="stringType"/>
+    <property name="ticketNumber"           direction="output" dataType="stringType"/>
+  </properties>
+  <transition to="">
+    <condition>
+      <![CDATA[{{.returnStatus}} = "beendet"]]>
+    </condition>
+  </transition>
+  <transition to="">
+    <condition>
+      <![CDATA[{{.returnStatus}} = "storno"]]>
+    </condition>
+  </transition>
+  <transition to="">
+    <condition>
+      <![CDATA[{{.returnStatus}} = "timeoutAngelegt"]]>
+    </condition>
+  </transition>
+  <transition to="">
+    <condition>
+      <![CDATA[{{.returnStatus}} = "timeoutBeendet"]]>
+    </condition>
+  </transition>
+</activity>

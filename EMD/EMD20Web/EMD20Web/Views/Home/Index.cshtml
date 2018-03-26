@@ -1,0 +1,20 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.PhonebookModel
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/Home_Index.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+<script>
+    function resizeIframe(obj) {
+        
+        //obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+
+        //console.debug('set iframe height to:' + obj.style.height);
+    }
+</script>
+
+<iframe style="border-width:0px; width:98%; height:700px" src="@Model.Url" onload="resizeIframe(this)"></iframe>
+

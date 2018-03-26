@@ -1,0 +1,8 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.Variables.VariablesActivity" instance=".VariablesActivity">
+  <name>Variables create multiple</name>
+  <properties>
+    <!-- name of variable -->
+    <property name="variablesList"  direction="input"   dataType="stringType" />
+  </properties>
+  <transition to=".XXX"/>
+</activity>

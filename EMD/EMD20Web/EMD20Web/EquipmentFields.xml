@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Taskfields>
+  <Field id="taskphonenumber" type="textbox" regex="" name="Mobile Number" description="Enter a phone number"></Field>
+  <Field id="taskphonedropdown" type="dropdown" name="Phone model" description="Select a phone model">
+      <option value="sam">Samsung</option>
+      <option value="lg">LG</option>
+      <option value="ip">IPhone</option>
+  </Field>
+  <Field id="taskdate" name="Task Date" type="date"></Field>
+  <Field id="taskdatetime" name="Task Datetime" type="datetime"></Field>
+  <Field id="taskphonemultiselect" name="Phone model multi" type="multiselect">
+    <option value="sam">Samsung</option>
+    <option value="lg">LG</option>
+    <option value="ip">IPhone</option>
+  </Field>
+  <Field id="taskphonememorymultiselect" name="Memory" type="dropdown">
+    <option value="16GB">16 GB</option>
+    <option value="32GB">32 GB</option>
+    <option value="64GB">64 GB</option>
+  </Field>
+  <Field id="taskphonenumber" name="Number" type="textbox"></Field>
+  <!--<Field type="check"></Field>
+  <Field type="radiobutton"></Field>
+  
+  <Field type="boolean"></Field>-->
+</Taskfields>

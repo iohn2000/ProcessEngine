@@ -1,0 +1,123 @@
+﻿/*---- global variables ----*/
+/*--- colors ---*/
+/* Sizes */
+/* standard tags */
+html {
+  margin: 0;
+  padding: 0;
+  min-width: 1024px;
+}
+body {
+  font-family: Roboto, sans-serif;
+  margin: 0;
+  font-size: 14px;
+}
+/* --- Designclasses --- */
+.lightbox {
+  background-color: #afb0b3;
+  color: #5f6268;
+}
+.darkbox {
+  background-color: #5f6268;
+  color: #f1f1f1;
+}
+/* --- Colorclasses --- */
+.green {
+  color: #33cc66 !important;
+}
+.red {
+  color: #ff2d56 !important;
+}
+.dark {
+  color: #5f6268 !important;
+}
+.form-group-buttons {
+  margin-top: 50px;
+}
+.form-group-buttons.small {
+  float: right;
+  margin-top: 20px;
+}
+.form-group-inline label,
+.form-group-inline div {
+  display: inline;
+}
+.form-group-inline label {
+  margin-right: 5px;
+}
+.infobox {
+  margin: 16px auto;
+  width: 97%;
+  padding: 8px;
+  border: 1px solid black;
+  display: block;
+  background-color: #33cc66;
+}
+.infobox.error {
+  background-color: #ff2d56;
+  color: #fff;
+}
+.alertify .ajs-dimmer,
+.alertify .ajs-modal,
+.alertify-notifier {
+  z-index: 99999999999;
+}
+.xonomy .element > .tag.opening > .attributes > .attribute > .valueContainer > .value {
+  -webkit-user-select: all;
+  /* Chrome 49+ */
+  -moz-user-select: all;
+  /* Firefox 43+ */
+  -ms-user-select: all;
+  /* No support yet */
+  user-select: all;
+  cursor: text;
+}
+a:link,
+a:visited {
+  color: #5f6268;
+}
+a:hover {
+  font-family: Roboto-Black;
+  font-weight: normal;
+}
+a:hover.k-icon {
+  font-family: WebComponentsIcons;
+  font-weight: bold;
+}
+i[linktype="workWithTask"].batchColored {
+  background-color: #0ab040;
+  color: #FFFFFF;
+}
+::-webkit-input-placeholder {
+  /* WebKit, Blink, Edge */
+  color: #afb0b3;
+}
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #afb0b3;
+  opacity: 1;
+}
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #afb0b3;
+  opacity: 1;
+}
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #afb0b3;
+}
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #afb0b3;
+}
+/*.k-grid-norecords-template {
+    border: 1px solid black;
+}*/
+.k-grid-content > .k-grid-norecords > .k-grid-norecords-template {
+  width: auto;
+  padding: 0;
+  margin-left: 0;
+  margin-right: 0;
+  overflow: hidden;
+  color: black;
+}

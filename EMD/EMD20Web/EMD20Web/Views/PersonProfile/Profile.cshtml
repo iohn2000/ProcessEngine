@@ -1,0 +1,530 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.PersonProfileModel
+@using Kapsch.IS.EMD.EMD20Web.Models;
+@{
+    ViewBag.Title = "Profile";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/PersonProfile_ProfileByPid.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+
+<style>
+    .contact-label {
+        /*border:1px solid red;*/
+        float: left;
+        clear: both;
+        text-align: left;
+        margin-left: 5%;
+        width: 150px;
+        padding: 0.2em 0px 0.2em;
+        font-weight: bold;
+    }
+
+    .contact-value {
+        /*border:1px solid green;*/
+        float: right;
+        clear: right;
+        text-align: right;
+        margin-left: 2%;
+        width: 150px;
+        padding: 0.2em 0px 0.2em;
+    }
+
+    .contact-fillline {
+        float: left;
+        clear: both;
+        text-align: left;
+        margin-left: 5%;
+        width: 300px;
+        padding: 0.2em 0px 0.2em;
+    }
+
+    .contact-container {
+        position: relative;
+    }
+
+    .kapsch-container {
+        padding-left: 10px;
+        display: inline-block;
+    }
+
+    .kapsch-label {
+        width: 300px;
+        float: left;
+        clear: both;
+        font-weight: bold;
+        padding-top: 0.4em;
+        padding-bottom: 0.4em;
+    }
+
+    .kapsch-label-full {
+        width: 99%;
+        float: left;
+        clear: both;
+        font-weight: bold;
+        padding-top: 0.4em;
+        padding-bottom: 0.4em;
+        /*margin-right:0.4em;*/
+        /*padding-right:0.4em;*/
+        /*border: 1px solid red;*/
+    }
+
+    .kapsch-label-value {
+        width: 200px;
+        float: left;
+        clear: right;
+        padding-top: 0.4em;
+        padding-bottom: 0.4em;
+    }
+
+    /*File Upload Start*/
+    .file-icon {
+        display: inline-block;
+        float: left;
+        width: 48px;
+        height: 48px;
+        margin-left: 10px;
+        margin-top: 13.5px;
+    }
+
+    .img-file {
+        background-image: url(/content/web/upload/jpg.png);
+    }
+
+    .doc-file {
+        background-image: url(/content/web/upload/doc.png);
+    }
+
+    .pdf-file {
+        background-image: url(/content/web/upload/pdf.png);
+    }
+
+    .xls-file {
+        background-image: url(/content/web/upload/xls.png);
+    }
+
+    .zip-file {
+        background-image: url(/content/web/upload/zip.png);
+    }
+
+    .default-file {
+        background-image: url(/content/web/upload/default.png);
+    }
+
+    #example .file-heading {
+        font-size: 1.1em;
+        display: inline-block;
+        float: left;
+        width: 450px;
+        margin: 0 0 0 20px;
+        height: 25px;
+        -ms-text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    #example .file-name-heading {
+        font-weight: bold;
+    }
+
+    #example .file-size-heading {
+        font-weight: normal;
+        font-style: italic;
+    }
+
+    li.k-file .file-wrapper .k-upload-action {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    li.k-file div.file-wrapper {
+        position: relative;
+        height: 25px;
+    }
+    /*File Upload END*/
+
+    .k-upload {
+        width: 500px;
+    }
+</style>
+
+
+<script>
+    $(document).ready(function () {
+        // show the progressbar at the initial window
+        kendo.ui.progress($('#tabStripBackground'), true);
+    });
+</script>
+
+
+<script type="text/javascript">
+    //File Upload
+    function addExtensionClass(extension) {
+        switch (extension) {
+            case '.jpg':
+            case '.img':
+            case '.png':
+            case '.gif':
+                return "img-file";
+            case '.doc':
+            case '.docx':
+                return "doc-file";
+            case '.xls':
+            case '.xlsx':
+                return "xls-file";
+            case '.pdf':
+                return "pdf-file";
+            case '.zip':
+            case '.rar':
+                return "zip-file";
+            default:
+                return "default-file";
+        }
+    }
+</script>
+
+<style>
+    #tabStripProfile .k-content {
+        min-height: 600px !important;
+        border: 1px solid #ccc !important;
+    }
+</style>
+
+<div style="float:left;width:330px;text-align:center; border:0px solid red;">
+    <img oncontextmenu="javascript:return false;" src="@Html.DisplayTextFor(model => model.ImageURL)" />
+    @{  if (Model.ShowImageNotVisibleInPhonebookText)
+        {
+            <br /><span style="font-size:0.7em;font-weight:bold;">@Model.ImageNotVisibleInPhonebookText </span>
+        }
+    }
+
+    <br /><br />
+
+    <div class="contact-container">
+        <div id="person_complete_name" class="contact-fillline">
+            @Html.DisplayTextFor(model => model.Display_FirstName)
+            <strong> @Html.DisplayTextFor(model => model.Display_FamilyName) </strong>
+            (<span id="personprofile-username">@Html.DisplayTextFor(model => model.UserID)</span>)
+        </div>
+
+        <div class="contact-fillline">
+            <a href="mailto:@Model.MainMail">@Html.DisplayTextFor(model => model.MainMail)</a>
+        </div>
+
+        <div class="contact-fillline">&nbsp;</div>
+
+
+        @if (Model.ShowGuidEntities)
+        {
+            <div style="margin-left: 5%; margin-bottom: 10px">
+                @Html.DisplayTextFor(model => model.Guid)
+            </div>
+        }
+
+        <div class="contact-label">
+            @Html.DisplayNameFor(model => model.P_ID)
+        </div>
+        <div id="personinfo_sex" class="contact-value">
+            @Html.DisplayTextFor(model => model.P_ID)
+        </div>
+        <div class="contact-label">
+            @Html.DisplayNameFor(model => model.Sex)
+        </div>
+        <div id="personinfo_sex" class="contact-value">
+            @Html.DisplayTextFor(model => model.Sex)
+        </div>
+
+        <div class="contact-label">
+            @Html.DisplayNameFor(model => model.DegreePrefix)
+        </div>
+        <div id="personinfo_degreeprefix" class="contact-value">
+            @Html.DisplayTextFor(model => model.DegreePrefix)
+        </div>
+
+        <div class="contact-label">
+            @Html.DisplayNameFor(model => model.DegreeSuffix)
+        </div>
+        <div id="personinfo_degreesuffix" class="contact-value">
+            @Html.DisplayTextFor(model => model.DegreeSuffix)
+        </div>
+
+        <div style="width: 100%; height: 20px"></div>
+
+        <div class="contact-label">
+            @Html.DisplayNameFor(model => model.JobTitle)
+        </div>
+        <div data-id="12" data-isFuture="false" class="contact-value">
+            @Html.DisplayTextFor(model => model.JobTitle)
+        </div>
+
+        <div class="contact-label">
+            @Html.DisplayNameFor(model => model.Room)
+        </div>
+        <div data-id="7" data-isFuture="false" class="contact-value">
+            <a target="_blank" href="@Model.RoomLink">@Html.DisplayTextFor(model => model.Room)</a>
+        </div>
+
+        <div class="contact-label">
+            @Html.DisplayNameFor(model => model.CostCenterKstID)
+        </div>
+        <div class="contact-value">
+            <a target="_blank" href="@Model.CostCenterKstIDLink">@Html.DisplayTextFor(model => model.CostCenterKstID)</a>
+        </div>
+
+        <div class="contact-label" style="margin-top: 10px">
+            @Html.DisplayNameFor(model => model.DirectPhone)
+        </div>
+        <div data-id="6" data-isFuture="false" class="contact-value" style="margin-top: 10px">
+            @Html.DisplayTextFor(model => model.DirectPhone)
+        </div>
+
+        <div class="contact-label">
+            @Html.DisplayNameFor(model => model.Phone)
+        </div>
+        <div data-id="2" data-isFuture="false" class="contact-value">
+            @Html.DisplayTextFor(model => model.Phone)
+        </div>
+
+        <div class="contact-label">
+            @Html.DisplayNameFor(model => model.Mobile)
+        </div>
+        <div data-id="4" data-isFuture="false" class="contact-value">
+            @Html.DisplayTextFor(model => model.Mobile)
+        </div>
+
+
+
+        @{
+            if (Model.CanOnboard)
+            {
+                <div class="contact-label" style="margin-top:10px">
+                    <input class="kapsch-text-button k-button k-button-icontext" type="button" value="Add new employment" onclick="javascript: showInWindow('/Onboarding/Create/@Model.Guid/true', 'Add employment')" />
+                </div>
+            }
+        }
+    </div>
+
+
+    @*<br />
+        @foreach (ContactModel contact in ViewBag.Contacts)
+        {
+            @contact.Number;
+            <br />
+        }*@
+</div>
+
+@{
+    string emplGuid = Request["empl_guid"];
+    string obreGuid = Request["obre_guid"];
+    bool personTabSelected = false;
+    bool employmentTabSelected = true;
+    bool packageTabSelected = false;
+
+    if (!string.IsNullOrWhiteSpace(obreGuid))
+    {
+        employmentTabSelected = false;
+        packageTabSelected = true;
+    }
+
+    //if (emplGuid != null && !String.IsNullOrWhiteSpace(emplGuid))
+    //{
+    //    personTabSelected = false;
+    //    employmentTabSelected = true;
+    //}
+}
+
+
+
+<div style="position: relative;  margin-left:350px; width: auto; height: auto">
+    <div id="tabStripBackground" style="z-index: 0; position: absolute; left: 113px; right: 5px; top: 0; bottom: 5px; height: 100%; border: 1px solid #ccc;"></div>
+    @(Html.Kendo().TabStrip()
+        .Name("tabStripProfile")
+        .TabPosition(TabStripTabPosition.Left)
+        .Events(events => events
+            .Show("personprofile.UIEvents.OnTabStripShow")
+            .Select("personprofile.UIEvents.OnSelect")
+            .Activate("personprofile.UIEvents.OnActivate")
+            .ContentLoad("personprofile.UIEvents.OnContentLoad")
+        )
+
+        .Items(panelbar =>
+        {
+        panelbar.Add().Text("Settings").Enabled(true).Selected(personTabSelected).HtmlAttributes(new { style = "height: auto" }).Visible(Model.ShowTabSettings)
+         .Content(@<div>
+                <div class="text-header">Additional person properties:</div>
+                <div class="form-horizontal" style="border:0px solid yellow; color: black !important; min-height: 120px ">
+                    <div class="k-edit-form-container" style="float:left;">
+                        <div id="person_is_visible_in_phonebook" class="form-group">
+                            <label class="control-label col-md-2" style="text-align: left; width: 250px">
+                                @Html.DisplayNameFor(model => model.IsVisibleInPhonebook)
+                            </label>
+                            <div class="col-md-10" style="width: 50px;">
+                                @Html.DisplayFor(model => model.IsVisibleInPhonebook)  &nbsp;
+                            </div>
+                        </div>
+
+                        <div id="person_is_picture_visible" class="form-group">
+                            <label class="control-label col-md-2" style="text-align: left; width: 250px">
+                                @Html.DisplayNameFor(model => model.IsPictureVisible)
+                            </label>
+                            <div class="col-md-10" style="width: 50px;">
+                                @Html.DisplayFor(model => model.IsPictureVisible)  &nbsp;
+                            </div>
+                        </div>
+
+                        <div id="person_is_picture_visible_inAD" class="form-group">
+                            <label class="control-label col-md-2" style="text-align: left; width: 250px">
+                                @Html.DisplayNameFor(model => model.IsPictureVisibleInAD)
+                            </label>
+                            <div class="col-md-10" style="width: 50px;">
+                                @Html.DisplayFor(model => model.IsPictureVisibleInAD)  &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @if (Model.CanManage)
+                {
+                    <button class="kapsch-text-button k-button k-button-icontext " onclick="showInWindow('/Person/Update/@Model.Guid/true','Edit Person');">Edit Person</button>
+                }
+
+                <div style="margin-top: 20px">
+                    @(Html.Kendo().Grid<EmploymentModel>()
+                        .Name("Grid")
+                        .Columns(columns =>
+                        {
+
+
+                            columns.Bound(emp => emp.Guid).Title("")
+                            .ClientTemplate(
+                                                "# if (CanManage == true && StatusDisplayName == 'Active') { #"
+                                                + "<a title='Edit' href='\\#' "
+                                                + "onclick='showInWindow(\""
+                                                + "/Employment/Edit/"
+                                                + "#= Guid #/true\",\"Edit Employment\");' "
+                                                + "data-id='#=Guid#'"
+                                                + ">"
+                                                + "<i class='material-icons'>mode_edit</i>"
+                                                + "</a>"
+                                                + "#} #"
+                                              ).Width(60).Filterable(false);
+
+                            if (Model.ShowSettingsEmploymentGridExtended)
+                            {
+                                columns.Bound(emp => emp.Guid).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")));
+                            }
+                            //columns.Command(command => { command.Edit().Text("Edit").UpdateText("Update").CancelText("Cancel"); }).Width(120);
+                            columns.Bound(emp => emp.EnterpriseName).Width(100).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")));
+                            columns.Bound(emp => emp.EmploymentTypeName).Width(100).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")));
+                            columns.Bound(emp => emp.Visible).Width(80).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains"))).ClientTemplate("<input type='checkbox' disabled #= Visible == true ? checked='checked' : '' # />");
+                            columns.Bound(emp => emp.Main).Width(80).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains"))).ClientTemplate("<input type='checkbox' disabled #= Main == true ? checked='checked' : '' # />");
+                            columns.Bound(emp => emp.AD_Update).Width(80).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains"))).ClientTemplate("<input type='checkbox' disabled #= AD_Update == true ? checked='checked' : '' # />");
+                            columns.Bound(emp => emp.DistributionGroupName).Width(100).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")));
+
+
+                            columns.Bound(emp => emp.Guid).Title(" ").Width(30).Filterable(false).Sortable(false)
+                            .ClientTemplate(
+                                          "<span style='cursor: arrow;' onmouseover='personprofile.Events.OnEmploymentMouseover(this, \"#= Guid #\", #= IsAdmin #)' >"
+                                         + "<i class='material-icons'>info</i>"
+                                         + "</span>"
+                                         );
+
+
+                            //   columns.Bound(emp => emp.SponsorName).Width(100).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")));
+                            columns.Bound(emp => emp.StatusDisplayName).Width(120).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")));
+                            //columns.Bound(emp => emp.Guid).Title("Guid").Width(100).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")));
+                            columns.Bound(emp => emp.WorkflowAction).Width(120).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")));
+                            columns.Bound(emp => emp.FirstWorkDay).ClientTemplate("#= kendo.toString(FirstWorkDay, 'dd.MM.yyyy') #").Width(90);
+                            columns.Bound(emp => emp.Entry).ClientTemplate("#= kendo.toString(Entry, 'dd.MM.yyyy') #").Width(90);
+                            if (Model.ShowSettingsEmploymentGridExtended)
+                            {
+                                columns.Bound(emp => emp.LastDay).ClientTemplate("#= kendo.toString(LastDay, 'dd.MM.yyyy') #").Width(90);
+                                columns.Bound(emp => emp.Exit).ClientTemplate("#= kendo.toString(Exit, 'dd.MM.yyyy') #").Width(90);
+                                columns.Bound(emp => emp.LeaveFrom).ClientTemplate("#= kendo.toString(LeaveFrom, 'dd.MM.yyyy') #").Width(90);
+                                columns.Bound(emp => emp.LeaveTo).ClientTemplate("#= kendo.toString(LeaveTo, 'dd.MM.yyyy') #").Width(90);
+                            }
+                        })
+                        //.Events(events => events.Edit("onEdit"))
+                        .Sortable()
+                        .DataSource(dataSource => dataSource
+                        .Ajax()
+                        .PageSize(10)
+                        .Model(model => model.Id(p => p.Guid))
+                        .Read("ReadForSettings", "Employment", new { pers_guid = Model.Guid, deliverInActive = true })
+                        .Events(events => events.Error("exceptionManager.Events.HandleError"))
+                        )
+                    )
+                </div>
+                <script type="text/javascript">
+                    function onPictureUploadError(e) {
+                        // invalid because the responseText is a raw string, not JSON
+                        //var err = $.parseJSON(e.XMLHttpRequest.responseText);
+                        var err = e.XMLHttpRequest.responseText;
+                        alert(err);
+                    };
+                </script>
+
+
+                <div class="kapsch-label-value">&nbsp;</div>
+                @{ if (Model.CanUploadPicture)
+                    {
+                        <div class="kapsch-label-full">&nbsp;</div>
+                        <div class="kapsch-label-full">Upload Image (You can only upload <strong>JPG</strong> files.)</div>
+                        <div class="kapsch-label-full">
+                            @(Html.Kendo().Upload()
+                        .Name("imageFiles")
+                        .HtmlAttributes(new { @class = "PersonProfileImageUpload" })
+                        .Multiple(false)
+                        .Async(a => a
+                            .Save("UploadPersonImage", "PersonProfile", new { userId = Model.UserID, persGuid = Model.Guid })
+                            .Remove("Remove", "PersonProfile")
+                            .AutoUpload(true)
+                        )
+                        .Events(ev => ev.Error("onPictureUploadError"))
+                        .Messages(m => m.StatusFailed("Error uploading file"))
+                        .Validation(validation => validation.AllowedExtensions(new string[] { ".jpg" }))
+                            )
+                        </div>
+                    } }
+
+            </div>
+    );
+
+            if (employmentTabSelected)
+            {
+                panelbar.Add().Text("Employments").Selected(employmentTabSelected)
+                .LoadContentFrom("ProfileEmployments", "PersonProfile", new { pers_guid = Model.Guid, empl_guid = Request.Params["empl_guid"] });
+                //.LoadContentFrom("ProfileEmployments", "PersonProfile", new { pers_guid = Request.Params["pers_guid"], empl_guid = Request.Params["empl_guid"] });
+            }
+            else
+            {
+                panelbar.Add().Text("Employments").Selected(employmentTabSelected)
+                //.LoadContentFrom("ProfileEmployments", "PersonProfile", new { pers_guid = Request.Params["pers_guid"] });
+                .LoadContentFrom("ProfileEmployments", "PersonProfile", new { pers_guid = Model.Guid });
+            }
+
+
+
+
+            //.LoadContentFrom("ProfileEmployments", "Person", new {pers_guid = HttpContext.Current.Request["PERS_Guid"] });
+
+
+            panelbar.Add().Text("Packages").Selected(packageTabSelected).Content("<div style='width: 100%; height: 700px'>... load content</div>").Visible(Model.ShowTabPackages)
+            //.LoadContentFrom("ProfilePackages", "PersonProfile", new { pers_guid = HttpContext.Current.Request["pers_guid"] });//.Visible(Model.ShowTabPackages);
+            .LoadContentFrom("ProfilePackages", "PersonProfile", new { pers_guid = Model.Guid, empl_guid = Request.Params["empl_guid"], obre_guid = obreGuid });//.Visible(Model.ShowTabPackages);
+
+        })
+    )
+
+    <div id="modal-window-profile"></div>
+</div>
+
+
+
+
+<script>
+                    helper.Functions.Performance.SetStarted();
+</script>

@@ -1,0 +1,28 @@
+﻿<script type="text/javascript">
+    //for binding the data to the dropdown-boxes
+    //create a custom binder that always sets the value from the widget
+    kendo.data.binders.widget.nullableValue = kendo.data.Binder.extend({
+        init: function (widget, bindings, options) {
+            kendo.data.Binder.fn.init.call(this, widget.element[0], bindings, options);
+            this.widget = widget;
+            this._change = $.proxy(this.change, this);
+            this.widget.bind("change", this._change);
+        },
+        refresh: function () {
+            var value = this.bindings.nullableValue.get();
+            this.widget.value(value);
+        },
+        change: function () {
+            var value = this.widget.value();
+            if (value === "") {
+                value = null;
+            }
+
+            this.bindings.nullableValue.set(value);
+        },
+        destroy: function () {
+            this.widget.unbind("change", this._change);
+        }
+    });
+
+</script>

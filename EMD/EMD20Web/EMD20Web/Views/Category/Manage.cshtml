@@ -1,0 +1,75 @@
+﻿@using Kapsch.IS.EMD.EMD20Web.Models;
+@model CategoryModel
+@{
+    ViewBag.Title = "Categories";
+    ViewBag.Identifier = "CategoriesManagement";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/Categories_Manage.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+@{ if (Model.CanManage)
+    {
+        @(Html.Kendo().Grid<CategoryModel>()
+            .Name("Grid").HtmlAttributes(new { @class = "k-grid-big" })
+
+            .Sortable()
+            .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+            .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(true)
+                .ButtonCount(5)
+                .PageSizes(new[] { 15, 50, 100 }))
+            .Scrollable(s => s.Enabled(true).Height("auto"))
+            .ToolBar(tb =>
+            {
+                if (Model.CanManage)
+                {
+                    tb.Custom().Text("Add Category").Url("#").HtmlAttributes(new { onclick = "showInWindow('Add/true','Add Category');", @class = "kapsch-text-button" });
+                }
+            })
+            .Columns(columns =>
+            {
+                columns.Bound(item => item.Guid).Title("")
+                .ClientTemplate(
+                "<a title='Edit' href='\\#' "
+                + "onclick='showInWindow(\""
+                + "Edit/"
+                + "#= Guid #/true\",\"Edit Category\");' "
+                + "data-id='#=Guid#'"
+                + ">"
+                + "<i class='material-icons'>edit</i>"
+                + "</a>"
+
+                + "<a title='Delete' href='\\#' "
+                + "onclick='category.Functions.Delete(\"#=Guid#\",\"Category\",\"#=Name#\",#=IsAdmin#);' "
+                + "data-id='#=Guid#'"
+                + ">"
+                + "<i class='material-icons'>delete</i>"
+                + "</a>"
+
+                ).Width(70).Filterable(false);
+
+
+                columns.Bound(item => item.Name).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")));
+                columns.Bound(item => item.Description).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")));
+                //columns.Bound(item => item.Config).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")));
+            })
+
+        .Editable(editable => editable.Mode(GridEditMode.PopUp).DisplayDeleteConfirmation(false).Window(win => win.Width(700)))
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .ServerOperation(false)
+            .PageSize(15)
+            .Sort(a =>
+            {
+                a.Add("Name").Ascending();
+                a.Add("ActiveFrom").Ascending();
+            })
+            .Model(model => model.Id(item => item.Guid))
+            .Read(read => read.Action("Read", "Category"))
+            .Events(events => events.Error("exceptionManager.Events.HandleError"))
+        )
+        )
+    }
+}

@@ -1,0 +1,99 @@
+﻿@import "kapschDefinitions.less";
+
+.form-group-buttons {
+    margin-top: 50px;
+}
+
+.form-group-buttons.small {
+    float: right;
+    margin-top: 20px;
+}
+
+.form-group-inline label, .form-group-inline div {
+    display: inline;
+}
+
+.form-group-inline label {
+    margin-right: 5px;
+}
+
+.infobox {
+    margin: 16px auto;
+    width: 97%;
+    padding: 8px;
+    border: 1px solid black;
+    display: block;
+    background-color: @color-green;
+}
+
+.infobox.error {
+    background-color: @color-redbackground;
+    color: @color-white;
+}
+
+.alertify .ajs-dimmer, .alertify .ajs-modal, .alertify-notifier {
+    z-index: 99999999999;
+}
+
+.xonomy .element > .tag.opening > .attributes > .attribute > .valueContainer > .value {
+    -webkit-user-select: all; /* Chrome 49+ */
+    -moz-user-select: all; /* Firefox 43+ */
+    -ms-user-select: all; /* No support yet */
+    user-select: all;
+    cursor: text;
+}
+
+a:link, a:visited {
+    color: @color-typography;
+}
+
+a:hover {
+    font-family: Roboto-Black;
+    font-weight: normal;
+}
+
+a:hover.k-icon {
+    font-family: WebComponentsIcons;
+    font-weight: bold;
+}
+
+i[linktype="workWithTask"].batchColored {
+    background-color: #0ab040;
+    color: #FFFFFF;
+}
+
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: @color-lightgray;
+}
+
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: @color-lightgray;
+    opacity: 1;
+}
+
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: @color-lightgray;
+    opacity: 1;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: @color-lightgray;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+    color: @color-lightgray;
+}
+
+/*.k-grid-norecords-template {
+    border: 1px solid black;
+}*/
+
+.k-grid-content > .k-grid-norecords > .k-grid-norecords-template {
+    width: auto;
+    padding: 0;
+    margin-left: 0;
+    margin-right: 0;
+    overflow: hidden;
+    color: black;
+}

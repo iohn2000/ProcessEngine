@@ -1,0 +1,11 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.ChangeObre.ChangeObreActivity" instance=".ChangeObreActivity">
+  <name>OBRE umhängen</name>
+  <description>
+    make OBRE point to new employment instead of old
+  </description>
+  <properties>
+    <property name="obreGuid"           direction="input"  dataType="stringType" ></property>
+    <property name="newEmploymentGuid"  direction="input"  dataType="stringType" ></property>
+  </properties>
+  <transition to=".xx"/>
+</activity>

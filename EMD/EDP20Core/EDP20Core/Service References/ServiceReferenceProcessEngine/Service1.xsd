@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/Kapsch.IS.ProcessEngine.Webservice.Entities" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Kapsch.IS.ProcessEngine.Webservice.Entities" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://gis-dev-processengine.kapsch.co.at/Webservice/Service.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Kapsch.IS.ProcessEngine.Shared.Enums" />
+  <xs:import schemaLocation="http://gis-dev-processengine.kapsch.co.at/Webservice/Service.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="ArrayOfActivityItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ActivityItem" nillable="true" type="tns:ActivityItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfActivityItem" nillable="true" type="tns:ArrayOfActivityItem" />
+  <xs:complexType name="ActivityItem">
+    <xs:sequence>
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Kapsch.IS.ProcessEngine.Shared.Enums" minOccurs="0" name="ActivityType" type="q1:EnumActivityType" />
+      <xs:element minOccurs="0" name="Id" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ActivityItem" nillable="true" type="tns:ActivityItem" />
+  <xs:complexType name="ArrayOfWorkflowItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="WorkflowItem" nillable="true" type="tns:WorkflowItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfWorkflowItem" nillable="true" type="tns:ArrayOfWorkflowItem" />
+  <xs:complexType name="WorkflowItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ActiveProcesses" type="xs:int" />
+      <xs:element minOccurs="0" name="CheckedOutBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Created" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Definition" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ValidFrom" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ValidTo" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Version" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WorkflowItem" nillable="true" type="tns:WorkflowItem" />
+  <xs:complexType name="ArrayOfWorkflowErrorItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="WorkflowErrorItem" nillable="true" type="tns:WorkflowErrorItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfWorkflowErrorItem" nillable="true" type="tns:ArrayOfWorkflowErrorItem" />
+  <xs:complexType name="WorkflowErrorItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="LineNumber" type="xs:int" />
+      <xs:element minOccurs="0" name="LinePosition" type="xs:int" />
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WorkflowErrorItem" nillable="true" type="tns:WorkflowErrorItem" />
+  <xs:complexType name="ArrayOfWorkflowInstanceItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="WorkflowInstanceItem" nillable="true" type="tns:WorkflowInstanceItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfWorkflowInstanceItem" nillable="true" type="tns:ArrayOfWorkflowInstanceItem" />
+  <xs:complexType name="WorkflowInstanceItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Created" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="CurrentActivity" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefinitionID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Finished" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="InstanceID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="InstanceXML" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NextActivity" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ParentWorkflowInstanceID" nillable="true" type="xs:string" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Kapsch.IS.ProcessEngine.Shared.Enums" minOccurs="0" name="Status" type="q2:EnumWorkflowInstanceStatus" />
+      <xs:element minOccurs="0" name="Updated" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Version" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WorkflowInstanceItem" nillable="true" type="tns:WorkflowInstanceItem" />
+  <xs:complexType name="WorkflowMessageDataItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="WorkflowDefinitionID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WorkflowVariables" nillable="true" type="tns:ArrayOfWorkflowMessageVariableItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WorkflowMessageDataItem" nillable="true" type="tns:WorkflowMessageDataItem" />
+  <xs:complexType name="ArrayOfWorkflowMessageVariableItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="WorkflowMessageVariableItem" nillable="true" type="tns:WorkflowMessageVariableItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfWorkflowMessageVariableItem" nillable="true" type="tns:ArrayOfWorkflowMessageVariableItem" />
+  <xs:complexType name="WorkflowMessageVariableItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="VarName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="VarValue" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WorkflowMessageVariableItem" nillable="true" type="tns:WorkflowMessageVariableItem" />
+  <xs:complexType name="ArrayOfKeyValuePairItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="KeyValuePairItem" nillable="true" type="tns:KeyValuePairItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfKeyValuePairItem" nillable="true" type="tns:ArrayOfKeyValuePairItem" />
+  <xs:complexType name="KeyValuePairItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Key" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Value" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="KeyValuePairItem" nillable="true" type="tns:KeyValuePairItem" />
+  <xs:complexType name="ArrayOfWorkflowInstanceStatusItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="WorkflowInstanceStatusItem" nillable="true" type="tns:WorkflowInstanceStatusItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfWorkflowInstanceStatusItem" nillable="true" type="tns:ArrayOfWorkflowInstanceStatusItem" />
+  <xs:complexType name="WorkflowInstanceStatusItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="InstanceID" nillable="true" type="xs:string" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Kapsch.IS.ProcessEngine.Shared.Enums" minOccurs="0" name="Status" type="q3:EnumWorkflowInstanceStatus" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WorkflowInstanceStatusItem" nillable="true" type="tns:WorkflowInstanceStatusItem" />
+  <xs:complexType name="ArrayOfActivityResultMessageItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ActivityResultMessageItem" nillable="true" type="tns:ActivityResultMessageItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfActivityResultMessageItem" nillable="true" type="tns:ArrayOfActivityResultMessageItem" />
+  <xs:complexType name="ActivityResultMessageItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ARM_ActivityInstanceId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ARM_Created" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ARM_ID" type="ser:guid" />
+      <xs:element minOccurs="0" name="ARM_ResultMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ARM_Woin" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ActivityResultMessageItem" nillable="true" type="tns:ActivityResultMessageItem" />
+</xs:schema>

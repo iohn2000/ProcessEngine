@@ -1,0 +1,149 @@
+﻿@using Kapsch.IS.EMD.EMD20Web.Models;
+@model Kapsch.IS.EMD.EMD20Web.Models.TaskManagementModel
+@{
+    ViewBag.Title = "Tasks";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/TaskManagement_Manage.html";
+    IEnumerable<string> statusFilterData = new List<string> { @"open", @"closed" };
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+
+
+
+<div id="itemcontainer">
+    <div class="col-md-10" style="margin: 10px 15px;">
+        Status:
+        @(
+                    Html.Kendo().DropDownListFor(m => m)
+                    .Name("TaskStatus")
+                    .DataTextField("Text")
+                    .DataValueField("Value")
+                    .Value(Kapsch.IS.EMD.EMD20Web.Models.Enum.EnumTaskStatusModel.OpenAllTypes.ToString())
+                    .Filter(FilterType.Contains)
+                    .IgnoreCase(true)
+                    .AutoBind(true)
+                    .BindTo(Model.AvailableStatusList)
+                    .Events(a => a.Change("taskManagement.Events.HandleOnTaskFilterStatusChanged"))
+        )
+    </div>
+
+
+
+    @(Html.Kendo().Grid<TaskItemModel>()
+        .Name("Grid").HtmlAttributes(new { @class = "k-grid-big" })
+        .ToolBar(tb =>
+        {
+            tb.Custom().Text("<span style='margin-right: 20px'>Work with selected tasks</span><i style='padding: 0' class='material-icons'>playlist_add_check</i>").Url("#").HtmlAttributes(new { id = "ButtonDoBulk", title = "Work with similar tasks from the same type", disabled = "disabled", onclick = "taskManagement.Events.OnButtonApproveTaskBatchClick(this)", @class = "kapsch-text-button" });
+            tb.Custom().Text("<span style='margin-right: 20px'>Forward selected tasks</span><i style='padding: 0' class='material-icons'>forward</i>").Url("#").HtmlAttributes(new { id = "ButtonDoForward", title = "Forward tasks to another user", disabled = "disabled", onclick = "taskManagement.Events.OnButtonShowForwardTaskWindowClick(this);", @class = "kapsch-text-button" });
+            tb.Custom().Text("<span style='margin-right: 20px'>Select similar batch tasks</span><i style='padding: 0' class='material-icons'>check_box</i>").Url("#").HtmlAttributes(new { id = "ButtonSelectBatchTasks", title = "Select all similar batch tasks on current page", disabled = "disabled", onclick = "taskManagement.Events.SelectSimilarBatchItems(this);", @class = "kapsch-text-button" });
+        })
+        .Sortable()
+        .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+            .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(true)
+            .ButtonCount(5)
+            .PageSizes(new[] { 10, 15, 50 }))
+
+        .Scrollable(s => s.Enabled(true).Height("auto"))
+                .Columns(columns =>
+                {
+
+                    columns.Bound(item => item.Guid).ClientTemplate("<input type='checkbox' style='visibility: #=HtmlVisibilityString#' guid='#=Guid#' isBulkTask='#=IsBulkTask#' tasktype='#=TempTypeId#' class='checkbox' onclick='taskManagement.Events.HandleOnTaskItemCheckBoxChanged(this)' />").Filterable(false).Width(50).Title("");
+
+
+                    columns.Bound(item => item.Guid).Title("").Filterable(false).Width(60).ClientTemplate(
+                                       "<a title='Work' href='\\#' "
+                                      + "onclick='showInWindow(\""
+                                      + "/TaskManagement/Edit/"
+                                      + "#= Guid #/true/true\",\"#= ViewLinkText #\");' "
+                                      + "data-id='#=Guid#'"
+                                      + ">"
+                                      + "<i linkType='workWithTask' taskType='#= TempTypeId #' class='material-icons' >#= MaterialIconViewLink #</i>"
+                                      + "</a>"
+                                      );
+
+                    columns.Bound(item => item.IsBulkTask).Filterable(ftb => ftb.Cell(cell => cell.Operator("eq").SuggestionOperator(FilterType.Contains).ShowOperators(false)).Messages(m => m.IsFalse("no").IsTrue("yes"))).ClientTemplate("<input type='checkbox' disabled #= IsBulkTask == true ? checked='checked' : '' # />").Width(100);
+
+                    columns.Bound(item => item.Effected_Person_Name).Width(250).ClientTemplate(
+                        "<a href='\\#' "
+                       + "onclick='showInWindow(\""
+                       + "/PersonProfile/Profile/"
+                       + "#= EffectedPersonPersonGuid #/true\",\"#= Effected_Person_Name #\");' "
+                       + "data-id='#=Guid#'"
+                       + ">"
+                       + "#= Effected_Person_Name #"
+                       + "</a>"
+                    ).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+
+                    columns.Bound(item => item.TSK_TaskTitle).Width(600).ClientTemplate("<span title='#=TSK_Information#'>#=TSK_TaskTitle#</span>").Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+                    columns.Bound(item => item.TSK_ToDo).Width(300).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+
+                    //    columns.Bound(item => item.TSK_ProcessName).Width(300).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false)));
+
+                    //if (Model.IsAdmin)
+                    //{
+                    //    columns.Bound(item => item.Guid).Width(350);
+                    //}
+                    columns.Bound(item => item.ApproverName).Width(250).ClientTemplate(
+                                    "<a href='\\#' "
+                                   + "onclick='showInWindow(\""
+                                   + "/PersonProfile/Profile/"
+                                   + "#= ApproverPersonGuid #/true\",\"#= ApproverName #\");' "
+                                   + "data-id='#=Guid#'"
+                                   + ">"
+                                   + "#= ApproverName #"
+                                   + "</a>"
+                                   ).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+
+                    columns.ForeignKey(item => item.StatusString,
+                        new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("open", "Open"), new KeyValuePair<string, string>("closed", "Closed"), new KeyValuePair<string, string>("Saved", "Saved"), new KeyValuePair<string, string>("Reminded", "Reminded") }
+                        , "Key", "Value").EditorTemplateName("NullableDropDown").Width(200).Filterable(false)
+                        .ClientTemplate("<i title='#=StatusString#' class='material-icons #=AdditionalStatusClassMaterialIcon#'>#=AdditionalStatusClassMaterialIcon#</i>");
+
+                    columns.Bound(item => item.TSK_DateRequested).Width(200).Format("{0:dd.MM.yyyy HH:mm:ss}");
+
+                    columns.Bound(item => item.Requestor_Name).Width(200).ClientTemplate(
+                                    "<a href='\\#' "
+                                     + "onclick='showInWindow(\""
+                                     + "/PersonProfile/Profile/"
+                                     + "#= Requestor_pers_guid #/true\",\"#= Requestor_Name #\");' "
+                                     + "data-id='#=Guid#'"
+                                     + ">"
+                                     + "#= Requestor_Name #"
+                                     + "</a>"
+                                     ).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+
+
+
+
+                    columns.Bound(item => item.TempTypeDisplayName).Width(350).ClientTemplate("<span title='#=TempTypeId#'>#=TempTypeDisplayName#</span>").Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+                    //columns.Bound(item => item.ActiveFromDateOnly).Format("{0:dd.MM.yyyy}").Width(200);
+                })
+
+ .Events(x => x.DataBound("taskManagement.Events.OnGridDataBound"))
+        .Editable(editable => editable.Mode(GridEditMode.PopUp).DisplayDeleteConfirmation(false).Window(win => win.Width(700)))
+        .DataSource(dataSource => dataSource
+            .Ajax().ServerOperation(true)
+            .Sort(a =>
+            {
+                a.Add("TSK_DateRequestedDateOnly").Descending();
+            })
+            .Filter(filter =>
+            {
+                //filter.Add(f => f.StatusString).IsNotEqualTo("closed");
+                filter.Add(f => f.ApproverName).Contains(Model.UserFullName);
+            })
+        .PageSize(15)
+        .Model(model => model.Id(ti => ti.Guid))
+        .Read(read => read.Action("ReadTasks", "TaskManagement").Data("taskManagement.Data.TaskParameters"))
+        .Update("UpdateTask", "TaskManagement")
+        .Events(events => events.Error("kendoHelper.Grid.OnError"))
+
+    )
+    )
+</div>
+
+
+<div id="modal-window-activities"></div>

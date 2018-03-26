@@ -1,0 +1,35 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.HandleChangeEquipments.HandleChangeEquipmentsActivity" instance=".HandleChangeEquipmentsActivity">
+  <name>Handle Equipments for the Change Process</name>
+  <description></description>
+  <properties>
+    <property name="NewEmploymentGuid"              direction="input"   dataType="stringType" ></property>
+    <property name="ChangeEquipmentInfos"           direction="input"   dataType="stringType" ></property>
+    <property name="RequestingPersonEmploymentGuid" direction="input"   dataType="stringType" ></property>
+    <property name="EffectedPersonEmploymentGuid"   direction="input"   dataType="stringType" ></property>
+    <property name="NewCostCenterGuid"              direction="input"   dataType="stringType" ></property>
+    <property name="TargetDate"                     direction="input"   dataType="stringType" ></property>
+    <property name="ChangeHasNewEmployment"         direction="input"   dataType="stringType" ></property>
+    <property name="GuidEmploymentType"             direction="input"   dataType="stringType" ></property>
+    <property name="GuidLocation"                   direction="input"   dataType="stringType" ></property>
+    <property name="ResultEqHandling"               direction="both"   dataType="stringType" ></property>
+
+    <!--
+    <property name="CostcenterOldGuid"              direction="input"   dataType="stringType" ></property>
+    <property name="CostcenterNewGuid"              direction="input"   dataType="stringType" ></property>
+    <property name="CostCenterResponsibleOldEmplGuid"              direction="input"   dataType="stringType" ></property>
+    <property name="CostCenterResponsibleNewEmplGuid"              direction="input"   dataType="stringType" ></property>
+    <property name="OrgunitOldGuid"              direction="input"   dataType="stringType" ></property>
+    <property name="OrgunitNewGuid"              direction="input"   dataType="stringType" ></property>
+    <property name="LineManagerOldEmplGuid"              direction="input"   dataType="stringType" ></property>
+    <property name="LineManagerNewEmplGuid"              direction="input"   dataType="stringType" ></property>
+    <property name="TeamleaderOldEmplGuid"              direction="input"   dataType="stringType" ></property>
+    <property name="TeamleaderNewEmplGuid"              direction="input"   dataType="stringType" ></property>
+    <property name="AssistanceOldEmplGuid"              direction="input"   dataType="stringType" ></property>
+    <property name="AssistanceNewEmplGuid"              direction="input"   dataType="stringType" ></property>
+    <property name="PersNrOld"              direction="input"   dataType="stringType" ></property>
+    <property name="PersNrNew"              direction="input"   dataType="stringType" ></property>
+    -->
+    
+  </properties>
+  <transition to="" />
+</activity>

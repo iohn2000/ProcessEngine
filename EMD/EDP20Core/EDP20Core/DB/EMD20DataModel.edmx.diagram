@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f47aa6159ee94beca132e7a49731f9ab" Name="Diagram1" ZoomLevel="55">
+        <EntityTypeShape EntityType="EMD20DataModel.Access" Width="1.5" PointX="5.25" PointY="81.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.Account" Width="1.5" PointX="12.75" PointY="81.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.AccountGroup" Width="1.5" PointX="25.5" PointY="71.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.BaseContainer" Width="1.5" PointX="23.25" PointY="33.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.ComponentVersion" Width="1.5" PointX="23.25" PointY="38.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.Contact" Width="1.5" PointX="15.75" PointY="80.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.ContactType" Width="1.5" PointX="23.25" PointY="43" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.Country" Width="1.5" PointX="23.25" PointY="47.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.DatabaseVersion" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.DistributiongroupType" Width="1.5" PointX="23.25" PointY="53.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.Employment" Width="1.5" PointX="10.5" PointY="79.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.EmploymentAccount" Width="1.5" PointX="28.25" PointY="84" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.EmploymentType" Width="1.5" PointX="23.25" PointY="58.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.Enterprise" Width="1.5" PointX="3" PointY="79.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.EnterpriseLocation" Width="1.5" PointX="8.25" PointY="81.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.EntityCheck" Width="1.5" PointX="25.5" PointY="105" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.Group" Width="1.5" PointX="23.25" PointY="79.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.GroupMember" Width="1.5" PointX="12.75" PointY="75.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.Location" Width="1.5" PointX="25.5" PointY="64.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.ModifcationLog" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.ObjectContainer" Width="1.5" PointX="23.25" PointY="84.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.ObjectContainerContent" Width="1.5" PointX="25.5" PointY="77.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.ObjectFlag" Width="1.5" PointX="23.25" PointY="89.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.ObjectRelation" Width="1.5" PointX="25.5" PointY="84.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.ObjectRelationType" Width="1.5" PointX="23.25" PointY="98.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.OrgUnit" Width="1.5" PointX="28.25" PointY="76.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.OrgUnitRole" Width="1.5" PointX="12.75" PointY="87.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.Person" Width="1.5" PointX="21" PointY="70.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.PersonPortrait" Width="1.5" PointX="23.25" PointY="110.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.PersonTranslation" Width="1.5" PointX="23.25" PointY="115.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.ProcessEntity" Width="1.5" PointX="18.75" PointY="81.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.ProcessMapping" Width="1.5" PointX="23.25" PointY="120.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.Role" Width="1.5" PointX="23.25" PointY="125.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.SecurityAction" Width="1.5" PointX="25.5" PointY="99.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.sysdiagrams" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.TaskItem" Width="1.5" PointX="23.25" PointY="137.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.User" Width="1.5" PointX="18.75" PointY="75.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMD20DataModel.UserDomain" Width="1.5" PointX="0.75" PointY="82.25" IsExpanded="true" />
+        <AssociationConnector Association="EMD20DataModel.FK_Access_Enterprise" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_Access_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK__Account__Guid_Mo__2FBAD748" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_Account_Employment" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_AccountGroup_Account" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_EmploymentAccount_Account" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK__AccountGr__Guid___31A31FBA" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_AccountGroup_Group" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK__BaseConta__Guid___347F8C65" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK__Component__Guid___3573B09E" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_Contact_ContactType" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_Contact_Employment" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_Contact_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_ContactType_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_Country_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_Location_Country" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK__Distribut__Guid___3B2C89F4" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_Employment_DistributiongroupType" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_Employment_EmploymentType" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_Employment_EnterpriseLocation" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_Employment_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_EmploymentAccount_Employment" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_GroupMember_Employment" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_OrgUnitRole_Employment" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_ProcessEntity_Employment1" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_User_Employment" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK__Employmen__Guid___3FF13F11" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_EmploymentType_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_Enterprise_OrgUnit" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_Enterprise_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_Enterprise_UserDomain" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_EnterpriseLocation_Enterprise" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_OrgUnit_Enterprise" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_EnterpriseLocation_Location" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_EnterpriseLocation_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_EntityCheck_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_EntityCheck_TaskItem" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK__Group__Guid_Modi__4B62F1BD" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_GroupMember_Group" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK__GroupMemb__Guid___4C5715F6" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_Location_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK__ObjectCon__Guid___511BCB13" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_ObjectContainerContent_ObjectContainer" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK__ObjectCon__Guid___520FEF4C" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK__ObjectFla__Guid___53F837BE" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK__ObjectRel__Guid___54EC5BF7" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_ObjectRelation_ObjectRelationType" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK__ObjectRel__Guid___56D4A469" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_OrgUnit_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_OrgUnitRole_OrgUnit" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK__OrgUnitRo__Guid___59B11114" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_OrgUnitRole_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK__PersonPor__Guid___5F69EA6A" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK__PersonTra__Guid___615232DC" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK__ProcessMa__Guid___633A7B4E" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK__ProcessMa__Guid___642E9F87" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK__SecurityA__Guid___6616E7F9" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK__SecurityA__Guid___670B0C32" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK__TaskItem__Guid_M__55BFB948" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK__TaskItem__Guid_M__56B3DD81" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_Person_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_Person_User" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_PersonPortrait_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_PersonTranslation_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_ProcessEntity_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_ProcessEntity_Person1" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_Role_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_User_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_UserDomain_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_SecurityAction_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="EMD20DataModel.FK_User_UserDomain" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="EMD20DataModel.EquipmentDefinitionPrice" Width="1.5" PointX="25.5" PointY="59.375" />
+        <EntityTypeShape EntityType="EMD20DataModel.EquipmentDefinition" Width="1.5" PointX="23.25" PointY="67.75" />
+        <AssociationConnector Association="EMD20DataModel.FK__Equipment__Guid___497AA94B" />
+        <AssociationConnector Association="EMD20DataModel.FK_EquipmentDefinitionPrice_EquipmentDefinition" />
+        <EntityTypeShape EntityType="EMD20DataModel.EquipmentDefinitionOwner" Width="1.5" PointX="28.5" PointY="71.375" />
+        <AssociationConnector Association="EMD20DataModel.FK_EquipmentDefinitionOwner_Employment" />
+        <AssociationConnector Association="EMD20DataModel.FK_EquipmentDefinitionOwner_EquipmentDefinition" />
+        <EntityTypeShape EntityType="EMD20DataModel.Category" Width="1.5" PointX="0.75" PointY="6" />
+        <EntityTypeShape EntityType="EMD20DataModel.CategoryEntity" Width="1.5" PointX="3" PointY="6.125" />
+        <AssociationConnector Association="EMD20DataModel.FK_CategoryEntity_Category" />
+        <AssociationConnector Association="EMD20DataModel.FK_CategoryEntity_EquipmentDefinition" />
+        <EntityTypeShape EntityType="EMD20DataModel.FilterRule" Width="1.5" PointX="23.25" PointY="103.625" />
+        <AssociationConnector Association="EMD20DataModel.FK__FilterRul__Guid___064EAD61" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Kapsch.IS.ITAutomation.Webservice.Entities" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Kapsch.IS.ITAutomation.Webservice.Entities" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://s900b112.kapsch.co.at:7791/ServiceITAutomation.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Kapsch.IS.ITAutomation.Webservice.Entities.Enum" />
+  <xs:complexType name="ResultObjectItem">
+    <xs:sequence>
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Kapsch.IS.ITAutomation.Webservice.Entities.Enum" minOccurs="0" name="ErrorClass" type="q1:EnumErrorClassItem" />
+      <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ScriptRunID" type="xs:int" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Kapsch.IS.ITAutomation.Webservice.Entities.Enum" minOccurs="0" name="Status" type="q2:EnumStatusItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ResultObjectItem" nillable="true" type="tns:ResultObjectItem" />
+</xs:schema>

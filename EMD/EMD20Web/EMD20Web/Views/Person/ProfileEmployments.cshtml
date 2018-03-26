@@ -1,0 +1,44 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.PersonProfileEmploymentModels
+@using Kapsch.IS.EMD.EMD20Web.Models;
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ProfileEmployments</title>
+</head>
+<body>
+    <div>
+       @(Html.Kendo().TabStrip()
+          .Name("tabstrip")
+          .Items(items =>
+          {
+              int i = 0;
+              foreach (PersonProfileEmploymentModel tab in Model.getList())
+              {
+                  bool selected = false;
+                  if (i == 0)
+                  {
+                      selected = true;
+                  }
+
+                  items
+                     .Add()
+                     .Selected(selected)
+                     .Text(tab.EnterpriseNameShort.ToString())
+                     //.HtmlAttributes(new { id = tab.Id.ToString() })
+                     .Content(@Html.Partial("ProfileEmployment", tab).ToHtmlString());
+                  i += 1;
+              }
+
+
+          })
+    )
+    </div>
+    
+</body>
+</html>

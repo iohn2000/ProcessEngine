@@ -1,0 +1,73 @@
+﻿@{ Boolean CascadeFromEnterprise = Convert.ToBoolean(ViewData["CascadeFromEnterprise"]); }
+@{ Boolean EnterpriseFromURL = Convert.ToBoolean(ViewData["EnterpriseFromURL"]); }
+@*@{ String EnterpriseGuid = ViewData["EnterpriseGuid"].ToString(); }*@
+@{ String EnterpriseGuid = ViewData["EnterpriseGuid"] == null ? "" : ViewData["EnterpriseGuid"].ToString(); }
+
+
+@if (CascadeFromEnterprise)
+{
+    <script>
+        function orgunitServerFilterForEnterprise() {
+            return {
+                ente_guid: $("#Enterprise").val(),
+                text: $("#OrgUnit").data("kendoDropDownList").filterInput.val()
+            };
+        }
+    </script>
+
+    @(
+    Html.Kendo().DropDownListFor(m => m)
+    .OptionLabel("Please select")
+    .Name("OrgUnit")
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .HtmlAttributes(new { @style = "width:500px" })
+    .Filter(FilterType.Contains)
+    .CascadeFrom("Enterprise")
+    .IgnoreCase(true)
+    .AutoBind(false)
+    .DataSource(source =>
+    {
+        source.Read(read =>
+        {
+            read.Action("ReadForSelectForEnterprise", "OrgUnit").Data("orgunitServerFilterForEnterprise");
+        })
+        .ServerFiltering(true);
+    })
+    )
+}
+else
+{
+    <script>
+                function filterForEnterprise() {
+                    return {
+                        //ente_guid: getParameterByName('ente_guid', window.location.href)
+                        ente_guid: '@EnterpriseGuid'
+                    };
+                }
+    </script>
+
+    @(
+        Html.Kendo().DropDownListFor(m => m)
+        .OptionLabel("Please select")
+        .Name("OrgUnit")
+        .DataTextField("Text")
+        .DataValueField("Value")
+        .HtmlAttributes(new { @style = "width:500px" })
+        .Filter(FilterType.Contains)
+        .IgnoreCase(true)
+        .AutoBind(true)
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("ReadForSelectForEnterprise", "OrgUnit").Data("filterForEnterprise");
+            })
+            .ServerFiltering(false);
+        })
+    )
+
+
+}
+
+

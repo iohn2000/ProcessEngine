@@ -1,0 +1,8 @@
+﻿<activity nr="" id="Kapsch.IS.ProcessEngine.WFActivity.AuditLog.AuditLogActivity" instance=".AuditLogActivity">
+  <name>Audit Log</name>
+  <properties>
+    <property name="AuditLogMessage" direction="input" dataType="stringType"></property>
+    <property name="AuditLogLevel" direction="input" dataType="stringType"></property>
+  </properties>
+  <transition to=""/>
+</activity>

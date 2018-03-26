@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Service" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:28869/Service.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:28869/Service.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:28869/Service.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Kapsch.IS.WsProcessEngine.Entities" />
+      <xsd:import schemaLocation="http://localhost:28869/Service.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Kapsch.IS.ProcessEngine.Shared.Enums" />
+      <xsd:import schemaLocation="http://localhost:28869/Service.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/Kapsch.IS.WsProcessEngine.FaultContracts" />
+      <xsd:import schemaLocation="http://localhost:28869/Service.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IProcessService_GetProcessInstanceCountFromWorkflowID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetProcessInstanceCountFromWorkflowID" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_GetProcessInstanceCountFromWorkflowID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetProcessInstanceCountFromWorkflowIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_GetActivityItems_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetActivityItems" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_GetActivityItems_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetActivityItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_GetWorkflowItems_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetWorkflowItems" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_GetWorkflowItems_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetWorkflowItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_GetWorkflowItem_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetWorkflowItem" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_GetWorkflowItem_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetWorkflowItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_SaveWorkflowMetaData_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveWorkflowMetaData" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_SaveWorkflowMetaData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveWorkflowMetaDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_SaveWorkflowMetaData_FcActivityExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/Kapsch.IS.WsProcessEngine.FaultContracts" name="detail" element="q1:FcActivityException" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_SaveWorkflowMetaData_FcWorkflowExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://schemas.datacontract.org/2004/07/Kapsch.IS.WsProcessEngine.FaultContracts" name="detail" element="q2:FcWorkflowException" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_SaveWorkflowMetaData_FcVariableExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://schemas.datacontract.org/2004/07/Kapsch.IS.WsProcessEngine.FaultContracts" name="detail" element="q3:FcVariableException" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_SaveWorkflowMetaData_FcPermissionExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://schemas.datacontract.org/2004/07/Kapsch.IS.WsProcessEngine.FaultContracts" name="detail" element="q4:FcPermissionException" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_SaveWorkflowXmlDefinition_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveWorkflowXmlDefinition" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_SaveWorkflowXmlDefinition_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveWorkflowXmlDefinitionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_SaveWorkflowXmlDefinition_FcVariableExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q5="http://schemas.datacontract.org/2004/07/Kapsch.IS.WsProcessEngine.FaultContracts" name="detail" element="q5:FcVariableException" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_SaveWorkflowXmlDefinition_FcWorkflowExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q6="http://schemas.datacontract.org/2004/07/Kapsch.IS.WsProcessEngine.FaultContracts" name="detail" element="q6:FcWorkflowException" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_SaveWorkflowXmlDefinition_FcActivityExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q7="http://schemas.datacontract.org/2004/07/Kapsch.IS.WsProcessEngine.FaultContracts" name="detail" element="q7:FcActivityException" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_SaveWorkflowXmlDefinition_FcPermissionExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q8="http://schemas.datacontract.org/2004/07/Kapsch.IS.WsProcessEngine.FaultContracts" name="detail" element="q8:FcPermissionException" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_CreateWorkflow_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateWorkflow" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_CreateWorkflow_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateWorkflowResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_CreateWorkflow_FcActivityExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q9="http://schemas.datacontract.org/2004/07/Kapsch.IS.WsProcessEngine.FaultContracts" name="detail" element="q9:FcActivityException" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_CreateWorkflow_FcWorkflowExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q10="http://schemas.datacontract.org/2004/07/Kapsch.IS.WsProcessEngine.FaultContracts" name="detail" element="q10:FcWorkflowException" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_CreateWorkflow_FcVariableExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q11="http://schemas.datacontract.org/2004/07/Kapsch.IS.WsProcessEngine.FaultContracts" name="detail" element="q11:FcVariableException" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_CheckoutWorkflow_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckoutWorkflow" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_CheckoutWorkflow_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckoutWorkflowResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_CheckoutWorkflow_FcPermissionExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q12="http://schemas.datacontract.org/2004/07/Kapsch.IS.WsProcessEngine.FaultContracts" name="detail" element="q12:FcPermissionException" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_CheckinWorkflow_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckinWorkflow" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_CheckinWorkflow_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckinWorkflowResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_CheckinWorkflow_FcPermissionExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q13="http://schemas.datacontract.org/2004/07/Kapsch.IS.WsProcessEngine.FaultContracts" name="detail" element="q13:FcPermissionException" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_UndoCheckout_InputMessage">
+    <wsdl:part name="parameters" element="tns:UndoCheckout" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_UndoCheckout_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UndoCheckoutResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_UndoCheckout_FcPermissionExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q14="http://schemas.datacontract.org/2004/07/Kapsch.IS.WsProcessEngine.FaultContracts" name="detail" element="q14:FcPermissionException" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_DeleteWorkflow_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteWorkflow" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_DeleteWorkflow_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteWorkflowResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_GetWorkflowXmlWithNewActivityId_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetWorkflowXmlWithNewActivityId" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_GetWorkflowXmlWithNewActivityId_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetWorkflowXmlWithNewActivityIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_GetWorkflowXmlWithNewSubworkflowActivity_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetWorkflowXmlWithNewSubworkflowActivity" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_GetWorkflowXmlWithNewSubworkflowActivity_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetWorkflowXmlWithNewSubworkflowActivityResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_IsPackageUsedInActiveWorkflow_InputMessage">
+    <wsdl:part name="parameters" element="tns:IsPackageUsedInActiveWorkflow" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_IsPackageUsedInActiveWorkflow_OutputMessage">
+    <wsdl:part name="parameters" element="tns:IsPackageUsedInActiveWorkflowResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_WakeupWorkflow_InputMessage">
+    <wsdl:part name="parameters" element="tns:WakeupWorkflow" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_WakeupWorkflow_OutputMessage">
+    <wsdl:part name="parameters" element="tns:WakeupWorkflowResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_GetWorkflowInstances_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetWorkflowInstances" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_GetWorkflowInstances_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetWorkflowInstancesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_SaveWorkflowInstanceItem_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveWorkflowInstanceItem" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_SaveWorkflowInstanceItem_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveWorkflowInstanceItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_GetWorkflowInstanceItem_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetWorkflowInstanceItem" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_GetWorkflowInstanceItem_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetWorkflowInstanceItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_GetDataHelperName_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDataHelperName" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_GetDataHelperName_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDataHelperNameResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_CreateWorkflowInstance_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateWorkflowInstance" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_CreateWorkflowInstance_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateWorkflowInstanceResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_GetAllEmailDocumentTemplates_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllEmailDocumentTemplates" />
+  </wsdl:message>
+  <wsdl:message name="IProcessService_GetAllEmailDocumentTemplates_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllEmailDocumentTemplatesResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IProcessService">
+    <wsdl:operation name="GetProcessInstanceCountFromWorkflowID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProcessService/GetProcessInstanceCountFromWorkflowID" message="tns:IProcessService_GetProcessInstanceCountFromWorkflowID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProcessService/GetProcessInstanceCountFromWorkflowIDResponse" message="tns:IProcessService_GetProcessInstanceCountFromWorkflowID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetActivityItems">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProcessService/GetActivityItems" message="tns:IProcessService_GetActivityItems_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProcessService/GetActivityItemsResponse" message="tns:IProcessService_GetActivityItems_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflowItems">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProcessService/GetWorkflowItems" message="tns:IProcessService_GetWorkflowItems_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProcessService/GetWorkflowItemsResponse" message="tns:IProcessService_GetWorkflowItems_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflowItem">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProcessService/GetWorkflowItem" message="tns:IProcessService_GetWorkflowItem_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProcessService/GetWorkflowItemResponse" message="tns:IProcessService_GetWorkflowItem_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveWorkflowMetaData">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProcessService/SaveWorkflowMetaData" message="tns:IProcessService_SaveWorkflowMetaData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProcessService/SaveWorkflowMetaDataResponse" message="tns:IProcessService_SaveWorkflowMetaData_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IProcessService/SaveWorkflowMetaDataFcActivityExceptionFault" name="FcActivityExceptionFault" message="tns:IProcessService_SaveWorkflowMetaData_FcActivityExceptionFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IProcessService/SaveWorkflowMetaDataFcWorkflowExceptionFault" name="FcWorkflowExceptionFault" message="tns:IProcessService_SaveWorkflowMetaData_FcWorkflowExceptionFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IProcessService/SaveWorkflowMetaDataFcVariableExceptionFault" name="FcVariableExceptionFault" message="tns:IProcessService_SaveWorkflowMetaData_FcVariableExceptionFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IProcessService/SaveWorkflowMetaDataFcPermissionExceptionFault" name="FcPermissionExceptionFault" message="tns:IProcessService_SaveWorkflowMetaData_FcPermissionExceptionFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveWorkflowXmlDefinition">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProcessService/SaveWorkflowXmlDefinition" message="tns:IProcessService_SaveWorkflowXmlDefinition_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProcessService/SaveWorkflowXmlDefinitionResponse" message="tns:IProcessService_SaveWorkflowXmlDefinition_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IProcessService/SaveWorkflowXmlDefinitionFcVariableExceptionFault" name="FcVariableExceptionFault" message="tns:IProcessService_SaveWorkflowXmlDefinition_FcVariableExceptionFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IProcessService/SaveWorkflowXmlDefinitionFcWorkflowExceptionFault" name="FcWorkflowExceptionFault" message="tns:IProcessService_SaveWorkflowXmlDefinition_FcWorkflowExceptionFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IProcessService/SaveWorkflowXmlDefinitionFcActivityExceptionFault" name="FcActivityExceptionFault" message="tns:IProcessService_SaveWorkflowXmlDefinition_FcActivityExceptionFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IProcessService/SaveWorkflowXmlDefinitionFcPermissionExceptionFault" name="FcPermissionExceptionFault" message="tns:IProcessService_SaveWorkflowXmlDefinition_FcPermissionExceptionFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateWorkflow">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProcessService/CreateWorkflow" message="tns:IProcessService_CreateWorkflow_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProcessService/CreateWorkflowResponse" message="tns:IProcessService_CreateWorkflow_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IProcessService/CreateWorkflowFcActivityExceptionFault" name="FcActivityExceptionFault" message="tns:IProcessService_CreateWorkflow_FcActivityExceptionFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IProcessService/CreateWorkflowFcWorkflowExceptionFault" name="FcWorkflowExceptionFault" message="tns:IProcessService_CreateWorkflow_FcWorkflowExceptionFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IProcessService/CreateWorkflowFcVariableExceptionFault" name="FcVariableExceptionFault" message="tns:IProcessService_CreateWorkflow_FcVariableExceptionFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckoutWorkflow">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProcessService/CheckoutWorkflow" message="tns:IProcessService_CheckoutWorkflow_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProcessService/CheckoutWorkflowResponse" message="tns:IProcessService_CheckoutWorkflow_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IProcessService/CheckoutWorkflowFcPermissionExceptionFault" name="FcPermissionExceptionFault" message="tns:IProcessService_CheckoutWorkflow_FcPermissionExceptionFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckinWorkflow">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProcessService/CheckinWorkflow" message="tns:IProcessService_CheckinWorkflow_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProcessService/CheckinWorkflowResponse" message="tns:IProcessService_CheckinWorkflow_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IProcessService/CheckinWorkflowFcPermissionExceptionFault" name="FcPermissionExceptionFault" message="tns:IProcessService_CheckinWorkflow_FcPermissionExceptionFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UndoCheckout">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProcessService/UndoCheckout" message="tns:IProcessService_UndoCheckout_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProcessService/UndoCheckoutResponse" message="tns:IProcessService_UndoCheckout_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IProcessService/UndoCheckoutFcPermissionExceptionFault" name="FcPermissionExceptionFault" message="tns:IProcessService_UndoCheckout_FcPermissionExceptionFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteWorkflow">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProcessService/DeleteWorkflow" message="tns:IProcessService_DeleteWorkflow_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProcessService/DeleteWorkflowResponse" message="tns:IProcessService_DeleteWorkflow_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflowXmlWithNewActivityId">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProcessService/GetWorkflowXmlWithNewActivityId" message="tns:IProcessService_GetWorkflowXmlWithNewActivityId_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProcessService/GetWorkflowXmlWithNewActivityIdResponse" message="tns:IProcessService_GetWorkflowXmlWithNewActivityId_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflowXmlWithNewSubworkflowActivity">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProcessService/GetWorkflowXmlWithNewSubworkflowActivity" message="tns:IProcessService_GetWorkflowXmlWithNewSubworkflowActivity_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProcessService/GetWorkflowXmlWithNewSubworkflowActivityResponse" message="tns:IProcessService_GetWorkflowXmlWithNewSubworkflowActivity_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IsPackageUsedInActiveWorkflow">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProcessService/IsPackageUsedInActiveWorkflow" message="tns:IProcessService_IsPackageUsedInActiveWorkflow_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProcessService/IsPackageUsedInActiveWorkflowResponse" message="tns:IProcessService_IsPackageUsedInActiveWorkflow_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="WakeupWorkflow">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProcessService/WakeupWorkflow" message="tns:IProcessService_WakeupWorkflow_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProcessService/WakeupWorkflowResponse" message="tns:IProcessService_WakeupWorkflow_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflowInstances">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProcessService/GetWorkflowInstances" message="tns:IProcessService_GetWorkflowInstances_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProcessService/GetWorkflowInstancesResponse" message="tns:IProcessService_GetWorkflowInstances_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveWorkflowInstanceItem">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProcessService/SaveWorkflowInstanceItem" message="tns:IProcessService_SaveWorkflowInstanceItem_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProcessService/SaveWorkflowInstanceItemResponse" message="tns:IProcessService_SaveWorkflowInstanceItem_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflowInstanceItem">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProcessService/GetWorkflowInstanceItem" message="tns:IProcessService_GetWorkflowInstanceItem_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProcessService/GetWorkflowInstanceItemResponse" message="tns:IProcessService_GetWorkflowInstanceItem_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDataHelperName">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProcessService/GetDataHelperName" message="tns:IProcessService_GetDataHelperName_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProcessService/GetDataHelperNameResponse" message="tns:IProcessService_GetDataHelperName_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateWorkflowInstance">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProcessService/CreateWorkflowInstance" message="tns:IProcessService_CreateWorkflowInstance_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProcessService/CreateWorkflowInstanceResponse" message="tns:IProcessService_CreateWorkflowInstance_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllEmailDocumentTemplates">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProcessService/GetAllEmailDocumentTemplates" message="tns:IProcessService_GetAllEmailDocumentTemplates_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProcessService/GetAllEmailDocumentTemplatesResponse" message="tns:IProcessService_GetAllEmailDocumentTemplates_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IProcessService" type="tns:IProcessService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetProcessInstanceCountFromWorkflowID">
+      <soap:operation soapAction="http://tempuri.org/IProcessService/GetProcessInstanceCountFromWorkflowID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetActivityItems">
+      <soap:operation soapAction="http://tempuri.org/IProcessService/GetActivityItems" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflowItems">
+      <soap:operation soapAction="http://tempuri.org/IProcessService/GetWorkflowItems" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflowItem">
+      <soap:operation soapAction="http://tempuri.org/IProcessService/GetWorkflowItem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveWorkflowMetaData">
+      <soap:operation soapAction="http://tempuri.org/IProcessService/SaveWorkflowMetaData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="FcActivityExceptionFault">
+        <soap:fault use="literal" name="FcActivityExceptionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="FcWorkflowExceptionFault">
+        <soap:fault use="literal" name="FcWorkflowExceptionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="FcVariableExceptionFault">
+        <soap:fault use="literal" name="FcVariableExceptionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="FcPermissionExceptionFault">
+        <soap:fault use="literal" name="FcPermissionExceptionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SaveWorkflowXmlDefinition">
+      <soap:operation soapAction="http://tempuri.org/IProcessService/SaveWorkflowXmlDefinition" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="FcVariableExceptionFault">
+        <soap:fault use="literal" name="FcVariableExceptionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="FcWorkflowExceptionFault">
+        <soap:fault use="literal" name="FcWorkflowExceptionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="FcActivityExceptionFault">
+        <soap:fault use="literal" name="FcActivityExceptionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="FcPermissionExceptionFault">
+        <soap:fault use="literal" name="FcPermissionExceptionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CreateWorkflow">
+      <soap:operation soapAction="http://tempuri.org/IProcessService/CreateWorkflow" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="FcActivityExceptionFault">
+        <soap:fault use="literal" name="FcActivityExceptionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="FcWorkflowExceptionFault">
+        <soap:fault use="literal" name="FcWorkflowExceptionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="FcVariableExceptionFault">
+        <soap:fault use="literal" name="FcVariableExceptionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CheckoutWorkflow">
+      <soap:operation soapAction="http://tempuri.org/IProcessService/CheckoutWorkflow" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="FcPermissionExceptionFault">
+        <soap:fault use="literal" name="FcPermissionExceptionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CheckinWorkflow">
+      <soap:operation soapAction="http://tempuri.org/IProcessService/CheckinWorkflow" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="FcPermissionExceptionFault">
+        <soap:fault use="literal" name="FcPermissionExceptionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UndoCheckout">
+      <soap:operation soapAction="http://tempuri.org/IProcessService/UndoCheckout" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="FcPermissionExceptionFault">
+        <soap:fault use="literal" name="FcPermissionExceptionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteWorkflow">
+      <soap:operation soapAction="http://tempuri.org/IProcessService/DeleteWorkflow" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflowXmlWithNewActivityId">
+      <soap:operation soapAction="http://tempuri.org/IProcessService/GetWorkflowXmlWithNewActivityId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflowXmlWithNewSubworkflowActivity">
+      <soap:operation soapAction="http://tempuri.org/IProcessService/GetWorkflowXmlWithNewSubworkflowActivity" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsPackageUsedInActiveWorkflow">
+      <soap:operation soapAction="http://tempuri.org/IProcessService/IsPackageUsedInActiveWorkflow" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WakeupWorkflow">
+      <soap:operation soapAction="http://tempuri.org/IProcessService/WakeupWorkflow" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflowInstances">
+      <soap:operation soapAction="http://tempuri.org/IProcessService/GetWorkflowInstances" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveWorkflowInstanceItem">
+      <soap:operation soapAction="http://tempuri.org/IProcessService/SaveWorkflowInstanceItem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflowInstanceItem">
+      <soap:operation soapAction="http://tempuri.org/IProcessService/GetWorkflowInstanceItem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataHelperName">
+      <soap:operation soapAction="http://tempuri.org/IProcessService/GetDataHelperName" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateWorkflowInstance">
+      <soap:operation soapAction="http://tempuri.org/IProcessService/CreateWorkflowInstance" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllEmailDocumentTemplates">
+      <soap:operation soapAction="http://tempuri.org/IProcessService/GetAllEmailDocumentTemplates" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service">
+    <wsdl:port name="BasicHttpBinding_IProcessService" binding="tns:BasicHttpBinding_IProcessService">
+      <soap:address location="http://localhost:28869/Service.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

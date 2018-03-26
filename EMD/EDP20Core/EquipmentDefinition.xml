@@ -1,0 +1,11 @@
+<!-- The XML structure is used in the DatabaseTable EquipmentDefinition-Config  -->
+<!-- The XML Schema is a const string in the Entity EquipmentDefinition.cs-ConfigXSD  -->
+<EquipmentDefinition>
+  <IsDefault>true</IsDefault>
+  <MaxNumberAllowedEquipments>10</MaxNumberAllowedEquipments>
+  <CanKeep>true</CanKeep>
+  <IsAccountingJob>true</IsAccountingJob>
+  <IsAccountingOnMainEmployment>false</IsAccountingOnMainEmployment>
+  <GuidApprover>das ist</GuidApprover>
+  <IdEmailTemplate>ba</IdEmailTemplate>
+</EquipmentDefinition>

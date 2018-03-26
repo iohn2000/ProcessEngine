@@ -1,0 +1,101 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.Change.ChangeEmploymentModel
+
+
+<h3>Equipments descisions:</h3>
+<div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2 equipment-header">Equipment name</label>
+
+        <div class="col-md-10" style="line-height: 40px; width: 400px">
+            <div style="display: inline-block">
+                @*<label class="equipment-header" style="min-width: 20px; width: 62px; float: left; padding-right: 2px">Remove</label>*@
+                <label class="equipment-header" style="min-width: 20px; width: 62px; float: left; padding-right: 2px">Keep</label>
+                <label class="equipment-header" style="min-width: 20px; width: auto; float: left; padding-left: 20px; padding-right: 2px">Target Date</label>
+            </div>
+        </div>
+    </div>
+    <hr style="margin:0; width: 720px" />
+
+
+    @if (Model.EquipmentInstanceModels.Count > 0)
+    {
+        for (int i = 0; i < Model.EquipmentInstanceModels.Count; i++)
+        {
+
+            <div class="form-group">
+                <label class="control-label col-md-2">@Model.EquipmentInstanceModels[i].EquipmentName</label>
+
+                <div class="col-md-10" style="line-height:40px">
+
+                    @*@Html.CheckBoxFor(model => model[i].DoRemove, new { @class = "form-control" })*@
+
+                    @*@Html.CheckBox("EquipmentInstanceModels[" + @i + "].DoRemove", Model[i].DoRemove, new { @class = "form-control" })*@
+                    <div style="display: inline-block; width: 750px">
+
+                        @Html.HiddenFor(model => Model.EquipmentInstanceModels[i].EquipmentName)
+                        @Html.HiddenFor(model => Model.EquipmentInstanceModels[i].ObjectRelationGuid)
+                        @Html.HiddenFor(model => Model.EquipmentInstanceModels[i].EquipmentDefinitionGuid)
+
+                        @Html.HiddenFor(model => Model.EquipmentInstanceModels[i].IsDefault)
+                        @Html.HiddenFor(model => Model.EquipmentInstanceModels[i].MaxNumberAllowedEquipments)
+                        @Html.HiddenFor(model => Model.EquipmentInstanceModels[i].CanKeep)
+                        @Html.HiddenFor(model => Model.EquipmentInstanceModels[i].IsAccountingJob)
+                        @Html.HiddenFor(model => Model.EquipmentInstanceModels[i].IsAccountingOnMainEmployment)
+                        @Html.HiddenFor(model => Model.EquipmentInstanceModels[i].IsPeriodic)
+                        @Html.HiddenFor(model => Model.EquipmentInstanceModels[i].GuidApprover)
+                        @Html.HiddenFor(model => Model.EquipmentInstanceModels[i].IdEmailTemplateAdd)
+                        @Html.HiddenFor(model => Model.EquipmentInstanceModels[i].IdEmailTemplateChange)
+                        @Html.HiddenFor(model => Model.EquipmentInstanceModels[i].IdEmailTemplateRemove)
+                        @Html.HiddenFor(model => Model.EquipmentInstanceModels[i].NavisionSourceSystemNumber)
+                        @Html.HiddenFor(model => Model.EquipmentInstanceModels[i].ActiveDirectoryGroupName)
+
+                        @Html.HiddenFor(model => Model.EquipmentInstanceModels[i].ShowComputerName)
+                        @Html.HiddenFor(model => Model.EquipmentInstanceModels[i].IsComputerNameMandatory)
+                        @Html.HiddenFor(model => Model.EquipmentInstanceModels[i].ShowEmailAddress)
+                        @Html.HiddenFor(model => Model.EquipmentInstanceModels[i].IsEmailAddressMandatory)
+
+
+                        @if (Model.EquipmentInstanceModels[i].CanKeep)
+                        {
+                            @Html.CheckBox("EquipmentInstanceModels[" + @i + "].DoKeep", Model.EquipmentInstanceModels[i].DoKeep, new { @style = " width: 62px" })
+
+                        }
+                        else
+                        {
+                            @Html.HiddenFor(model => Model.EquipmentInstanceModels[i].DoKeep)
+
+                            <input type="checkbox" disabled="disabled" style="width: 62px"/>
+                        }
+
+
+                        @(Html.Kendo().DatePicker()
+                            .Name("EquipmentInstanceModels[" + @i + "].TargetDate")
+                            .Format("dd.MM.yyyy")
+                            .Value(Model.EquipmentInstanceModels[i].TargetDate)
+                            .HtmlAttributes(new { style = "width: 205px" })
+                        )
+
+                        @if (!string.IsNullOrEmpty(Model.EquipmentInstanceModels[i].Info))
+                        {
+                            @Html.Label(Model.EquipmentInstanceModels[i].Info)
+                        }
+
+                        @*@Html.ValidationMessageFor(model => model[i].RemoveDate, "", new { @class = "text-danger" })*@
+
+
+
+                    </div>
+
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div>No equipments found to remove</div>
+    }
+
+</div>
+
+

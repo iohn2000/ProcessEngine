@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xs:element name="workflow" >
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="variables">
+          <xs:complexType>
+            <xs:sequence>
+
+              <xs:element minOccurs="0" name="vars">
+              </xs:element>
+
+              <xs:element name="variable" minOccurs="0" maxOccurs="unbounded" >
+                <xs:complexType mixed="true">
+                  <xs:sequence>
+
+                    <xs:element minOccurs="0" name="vars">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="var" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="name" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:extension base="xs:string">
+                                      </xs:extension>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="value" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:extension base="xs:string">
+                                      </xs:extension>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+
+
+                    <xs:element minOccurs="0" name="TaskGuiResponse">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Items" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Item" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:extension base="xs:string">
+                                        <xs:attribute name="key" type="xs:string" use="required" />
+
+                                      </xs:extension>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element minOccurs="0" maxOccurs="1" name="Taskfields">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Field" minOccurs="1" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element minOccurs="0" maxOccurs="unbounded" name="option">
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:extension base="xs:string">
+                                        <xs:attribute name="value" type="xs:string" use="required" />
+
+                                      </xs:extension>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="type" use="required" >
+                                <xs:simpleType>
+                                  <xs:restriction>
+                                    <xs:simpleType>
+                                      <xs:list>
+                                        <xs:simpleType>
+                                          <xs:restriction base="xs:token">
+                                            <xs:enumeration value="dropdown"/>
+                                            <xs:enumeration value="multiselect"/>
+                                            <xs:enumeration value="radiobutton"/>
+                                            <xs:enumeration value="textbox"/>
+                                            <xs:enumeration value="date"/>
+                                            <xs:enumeration value="datetime"/>
+                                          </xs:restriction>
+                                        </xs:simpleType>
+                                      </xs:list>
+                                    </xs:simpleType>
+                                    <xs:minLength value="1"/>
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:attribute>
+                              <xs:attribute name="id" type="xs:string" use="required" />
+                              <xs:attribute name="name" type="xs:string" use="required" />
+                              <xs:attribute name="description" type="xs:string" use="required" />
+
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="direction" use="required" >
+                    <xs:simpleType>
+                      <xs:restriction>
+                        <xs:simpleType>
+                          <xs:list>
+                            <xs:simpleType>
+                              <xs:restriction base="xs:token">
+                                <xs:enumeration value="input"/>
+                                <xs:enumeration value="output"/>
+                                <xs:enumeration value="both"/>
+                                <xs:enumeration value="subworkflow"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:list>
+                        </xs:simpleType>
+                        <xs:minLength value="1"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:attribute>
+                  <xs:attribute name="dataType"  use="required" >
+                    <xs:simpleType>
+                      <xs:restriction>
+                        <xs:simpleType>
+                          <xs:list>
+                            <xs:simpleType>
+                              <xs:restriction base="xs:token">
+                                <xs:enumeration value="stringType"/>
+                                <xs:enumeration value="intType"/>
+                                <xs:enumeration value="dateType"/>
+                                <xs:enumeration value="boolType"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:list>
+                        </xs:simpleType>
+                        <xs:minLength value="1"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:attribute>
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="activities">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="unbounded" name="activity">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="name" minOccurs="1" maxOccurs="1">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="description" minOccurs="0" maxOccurs="1">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>                    
+                    <xs:element minOccurs="0" maxOccurs="1" name="linkedTo">
+                      <xs:complexType>
+                        <xs:attribute name="instance" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element minOccurs="0" maxOccurs="1" name="properties">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element minOccurs="0" maxOccurs="unbounded" name="property">
+                            <xs:complexType>
+                              <xs:attribute name="name" type="xs:string" use="required" />
+                              <xs:attribute name="direction" use="required" >
+                                <xs:simpleType>
+                                  <xs:restriction>
+                                    <xs:simpleType>
+                                      <xs:list>
+                                        <xs:simpleType>
+                                          <xs:restriction base="xs:token">
+                                            <xs:enumeration value="input"/>
+                                            <xs:enumeration value="output"/>
+                                            <xs:enumeration value="both"/>
+                                          </xs:restriction>
+                                        </xs:simpleType>
+                                      </xs:list>
+                                    </xs:simpleType>
+                                    <xs:minLength value="1"/>
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:attribute>
+                              <xs:attribute name="dataType"  use="required" >
+                                <xs:simpleType>
+                                  <xs:restriction>
+                                    <xs:simpleType>
+                                      <xs:list>
+                                        <xs:simpleType>
+                                          <xs:restriction base="xs:token">
+                                            <xs:enumeration value="stringType"/>
+                                            <xs:enumeration value="intType"/>
+                                            <xs:enumeration value="dateType"/>
+                                            <xs:enumeration value="boolType"/>
+                                          </xs:restriction>
+                                        </xs:simpleType>
+                                      </xs:list>
+                                    </xs:simpleType>
+                                    <xs:minLength value="1"/>
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:attribute>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="transition">
+                      <xs:complexType>
+                        <xs:sequence >
+                          <xs:element name="condition" minOccurs="0" type="xs:string">
+
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="to" type="xs:string" use="required" />
+                        <xs:attribute name="default" type="xs:boolean" use="optional" />
+                        <xs:attribute name="errorTransition" type="xs:boolean" use="optional" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="nr" type="xs:unsignedByte" use="required" />
+                  <xs:attribute name="id" type="xs:string" use="required" />
+                  <xs:attribute name="instance" type="xs:string" use="required" />
+
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:string" use="required" />
+      <xs:attribute name="name" type="xs:string" use="required" />
+      <xs:attribute name="status" type="xs:string" use="required" />
+      <xs:attribute name="demoMode" type="xs:boolean" use="required" />
+      <xs:attribute name="dataHelperName" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

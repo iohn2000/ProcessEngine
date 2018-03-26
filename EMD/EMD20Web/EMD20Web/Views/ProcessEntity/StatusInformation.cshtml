@@ -1,0 +1,49 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.ProcessEntityModel
+@using Kapsch.IS.EMD.EMD20Web.Models;
+
+
+@{
+    ViewBag.Title = "StatusInformation";
+}
+
+<style>
+    .info * {
+        display: inline-block;
+    }
+
+    .info > label {
+        font-family: Roboto-Black;
+    }
+
+
+
+    .info-value {
+        margin-left: 10px;
+    }
+</style>
+
+<h2>Workflow Status:</h2>
+
+@if (Model != null)
+{
+    if (Model.HasInfo)
+    {
+        <div class="info"><label>WF messages:</label><span class="info-value"><a href="javascript:showInWindow('/ProcessEntity/Manage/@Model.WFI_ID/true','Workflow messages');" style="color: blue"><span class="info-value">show</span></a></span></div>
+
+        <div class="info">@Html.LabelFor(model => model.RequestorEmplFullName):<span class="info-value">@Model.RequestorEmplFullName</span></div>
+
+        <div class="info">@Html.LabelFor(model => model.RequestingDate):<span class="info-value">@Model.RequestingDate</span></div>
+        <div class="info">@Html.LabelFor(model => model.WFTargetDate):<span class="info-value">@Model.WFTargetDate</span></div>
+    }
+    else
+    {
+        <div>Couldn't find any information for @Model.EntityGuid</div>
+    }
+}
+else
+{
+    <div>Couldn't find any information</div>
+}
+
+
+

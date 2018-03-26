@@ -1,0 +1,4 @@
+﻿<activity nr="" id="Kapsch.IS.ProcessEngine.WFActivity.Start.StartActivity" instance=".StartActivity">
+  <name>Start</name>
+  <transition to="" />
+</activity>

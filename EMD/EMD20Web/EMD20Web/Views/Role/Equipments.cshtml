@@ -1,0 +1,149 @@
+﻿@using Kapsch.IS.EMD.EMD20Web.Models;
+@model IEnumerable<OldRoleModel>
+
+@{
+    ViewBag.Title = "Role-Equipments";
+}
+
+<style>
+    .product {
+        /*float: left;
+        width: 220px;
+        height: 20px;
+        margin: 0;
+        padding: 5px;
+        cursor: pointer;
+            */
+    }
+
+    .listitem h3 {
+        font-size: .85em;
+        /*margin: 0;
+        padding: 10px 0 0 10px;
+        font-size: .9em;
+        overflow: hidden;
+        font-weight: normal;
+        float: left;
+        max-width: 100px;
+        text-transform: uppercase;*/
+    }
+</style>
+
+<div style="padding: 15px;width: 992px;   float:left;border:1px solid red;display:block;">
+
+    <script type="text/x-kendo-tmpl" id="template">
+        <div class="listitem">
+            <h3 id="#:Id#" style="color:#:Color#;">#:Name# (#:Id#)</h3>
+        </div>
+    </script>
+
+    @(Html.Kendo().ListView<OldRoleModel>(Model)
+    .Name("EquipmentAll")
+    .TagName("div")
+    .ClientTemplateId("template")
+    .DataSource(dataSource =>
+    {
+        dataSource.Read(read => read.Action("Read", "Role"));
+        //dataSource.PageSize(12);
+    })
+    .Pageable(p => p.Enabled(false))
+    .Selectable(selectable => selectable.Enabled(true).Mode(ListViewSelectionMode.Multiple))
+            .HtmlAttributes(new { style = "float:left;width:300px;min-height:500px;" })
+            //.Events(events => events.Change("onChange").DataBound("onDataBound"))
+    )
+    
+
+    @(Html.Kendo().Button().Name("buttonToLeft").Content("").HtmlAttributes(new { style = "position:relative;top:150px;margin-left:25px;", @class = "icon-caret-left kapsch-icon-button listview-move-arrow" }))
+    @(Html.Kendo().Button().Name("buttonToRight").Content("").HtmlAttributes(new { style = "position:relative;top:150px;", @class = "icon-caret-right kapsch-icon-button listview-move-arrow" }))
+
+
+
+    @(Html.Kendo().ListView<OldRoleModel>(Model)
+    .Name("EquipmentSelected")
+    .TagName("div")
+    .ClientTemplateId("template")
+            //.DataSource(dataSource => { dataSource.Read(read => read.Action("Read", "Role")); })
+    .Pageable(p => p.Enabled(false))
+    .Selectable(selectable => selectable.Enabled(true).Mode(ListViewSelectionMode.Multiple))
+    .HtmlAttributes(new { style = "margin-left:400px;width:300px;min-height:500px;" })
+
+        //.Events(events => events.Change("onChange").DataBound("onDataBound"))
+    )
+
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        @Html.Partial("ErrorHandling/ModalErrorWindowCheckForError")
+
+        $("#buttonToRight").kendoButton({
+            click: moveSelectedItemsWithButtons
+        });
+
+        $("#buttonToLeft").kendoButton({
+            click: moveSelectedItemsWithButtons
+        });
+
+        $("#EquipmentAll").dblclick(function () {
+            moveSelectedItems("#EquipmentAll","#EquipmentSelected");
+        });
+
+        $("#EquipmentSelected").dblclick(function () {
+            moveSelectedItems("#EquipmentSelected", "#EquipmentAll");
+        });
+
+    });
+
+    function moveSelectedItemsWithButtons(e)
+    {
+        if (e.sender.element[0].id == "buttonToRight") {
+            var ListViewFrom = "#EquipmentAll";
+            var ListViewTo = "#EquipmentSelected";
+
+        }
+        else {
+            var ListViewFrom = "#EquipmentSelected";
+            var ListViewTo = "#EquipmentAll";
+
+        }
+        moveSelectedItems(ListViewFrom, ListViewTo);
+    }
+
+    function moveSelectedItems(ListViewFrom, ListViewTo)
+    {
+        var listView = $(ListViewFrom).data("kendoListView");
+        var listViewSelected = $(ListViewTo).data("kendoListView");
+
+        var listViewDataSource = listView.dataSource;
+        var listViewSelectedDataSource = listViewSelected.dataSource;
+
+        var y = $.map($(ListViewFrom).data('kendoListView').select(), function (item)
+        {
+            dataItem = listViewDataSource.getByUid($(item).attr("data-uid"));
+            listViewSelectedDataSource.add(dataItem.toJSON());
+            listViewDataSource.remove(dataItem);
+            //return ($(item).attr("data-uid"));
+        });
+
+        var lvItems = $(ListViewTo).children('.listitem');
+        lvItems.sort(SortByName);
+
+        var lvSorted = lvItems;
+        for (var i = lvItems.length, l = 0; i > l; i--) {
+            dataItem = listViewSelectedDataSource.getByUid(lvItems[i - 1].getAttribute('data-uid'));
+            listViewSelectedDataSource.remove(dataItem);
+            listViewSelectedDataSource.insert(0, dataItem.toJSON());
+        }
+    }
+
+    function SortByName(a, b) {
+        //var aName = a.children[0].getAttribute('id').toLowerCase();
+        //var bName = b.children[0].getAttribute('id').toLowerCase();
+        var aName = a.children[0].innerHTML.toLowerCase();
+        var bName = b.children[0].innerHTML.toLowerCase();
+        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+    }
+    
+</script>

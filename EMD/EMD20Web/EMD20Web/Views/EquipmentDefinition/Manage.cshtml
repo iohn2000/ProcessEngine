@@ -1,0 +1,179 @@
+﻿@using Kapsch.IS.EMD.EMD20Web.Models.Onboarding;
+@model EquipmentDefinitionModel
+@{
+    ViewBag.Title = "Equipment definitions";
+    ViewBag.Identifier = "EquipmentDefinitionManagement";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/EquipmentDefinition_Manage.html";
+    ViewBag.TooltipWidth = 800;
+    ViewBag.TooltipHeight = 600;
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+
+
+
+<script id="grid_toolbar" type="text/x-kendo-template">
+
+
+</script>
+<div style="margin:10px;">
+    @if (Model.CanManage)
+    {
+        <button style="margin-right:10px;" class="k-button kapsch-text-button" id="grid_toolbar_create" name="grid_toolbar_create" onclick="showInWindow('Create/true','Add Equipment-Definition',false);">Add Equipment-Definition</button>
+    }
+    @if (Model.CanManagePrice)
+    {
+        <button style="margin-right:50px;" class="k-button kapsch-text-button" id="grid_toolbar_create" name="grid_toolbar_create" onclick="equipmentDefinition.Functions.UpdatePrices();">Update Prices for KBC-Accounting</button>
+    }
+
+    @if (Model.CanManage)
+    {
+        @(
+                                        Html.Kendo().DropDownListFor(m => m)
+                                        .OptionLabel("Filter by Owner")
+                                        .Name("FilterOwners")
+                                        .DataTextField("Text")
+                                        .DataValueField("Value")
+                                        .HtmlAttributes(new { @style = "width:350px;" })
+                                        .Filter(FilterType.Contains)
+                                        .IgnoreCase(true)
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("ReadOwnersForFilter", "EquipmentDefinition");
+                                            });
+                                        })
+                                        .Events(e =>
+                                        {
+                                            e.Change("equipmentDefinition.Events.OnOwnerFilterChanged");
+                                        })
+        )
+    }
+</div>
+
+
+@if (Model.CanView || Model.CanManage || Model.IsOwner)
+{
+    @(Html.Kendo().Grid<EquipmentDefinitionModel>()
+            .Name("Grid").HtmlAttributes(new { @class = "k-grid-big" })
+
+            .Sortable()
+            .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+            .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(true)
+                .ButtonCount(5)
+                .PageSizes(new[] { 15, 50, 100 }))
+            .Scrollable(s => s.Enabled(true).Height("auto"))
+            .Columns(columns =>
+            {
+                columns.Bound(item => item.Guid).Title("").Sortable(false)
+                .ClientTemplate(
+                "# if (CanManage == true || IsOwner == true) { #"
+                + "<a title='Edit' href='\\#' "
+                + "onclick='showInWindow(\""
+                + "Edit/"
+                + "#= Guid #/true\",\"Edit Definition\");' "
+                + "data-id='#=Guid#'"
+                + ">"
+                + "<i class='material-icons'>edit</i>"
+                + "</a>"
+
+
+                + "<a style='visibility: #=CssGridButtonPriceVisible#';' title='Edit Price' href='\\#' "
+                + "onclick='showInWindow(\""
+                + "/EquipmentDefinitionPrice/Edit/"
+                + "#= Guid #/true\",\"Edit Price - #=Name#\");' "
+                + "data-id='#=Guid#'"
+                + ">"
+                + "<i class='material-icons'>&#xE926;</i>"
+                //+ "< i class='material-icons'>euro_symbol</i>"
+                //+ "<i class='material-icons'>attach_money</i>"
+                //+ "<i class='material-icons'>radio_button_checked</i>"
+                + "</a>"
+
+                + "<a title='Manage categories' href='\\#' "
+                + "onclick='showInWindow(\""
+                + "/EquipmentDefinition/ManageCategories/"
+                + "#= Guid #/true\",\"Manage categories - #=Name#\");' "
+                + "data-id='#=Guid#'"
+                + ">"
+                + "<i class='material-icons'>dashboard</i>"
+                + "</a>"
+
+                //+ "# } else if (CanManage == true || IsOwner == true) { #"
+
+                //+ "<a style='visibility: #=CssGridButtonPriceVisible#';' title='Edit Price' href='\\#' "
+                //+ "onclick='showInWindow(\""
+                //+ "/EquipmentDefinitionPrice/Edit/"
+                //+ "#= Guid #/true\",\"Edit Price - #=Name#\");' "
+                //+ "data-id='#=Guid#'"
+                //+ ">"
+                //+ "<i class='material-icons'>&#xE926;</i>"
+                //+ "</a>"
+
+                + "# } else {#"
+
+                + "<a title='View' href='\\#' "
+                + "onclick='showInWindow(\""
+                + "View/"
+                + "#= Guid #/true\",\"View Equipment Definition\");' "
+                + "data-id='#=Guid#'"
+                + ">"
+                + "<i class='material-icons'>pageview</i>"
+                + "</a>"
+
+                + "#} #"
+
+                + "# if (CanManage == true) { #"
+
+                + "<a title='Manage Owners' href='\\#' "
+                + "onclick='showInWindow(\""
+                + "/EquipmentDefinition/ManageOwners/"
+                + "#= Guid #/true\",\"Manage Owners - #=Name#\");' "
+                + "data-id='#=Guid#'"
+                + ">"
+                + "<i class='material-icons'>person</i>"
+                + "</a>"
+
+                + "<a title='Delete' href='\\#' "
+                + "onclick='equipmentDefinition.Functions.Delete(\"#=Guid#\",\"Equipment Definition\",\"#=Name#\");' "
+                + "data-id='#=Guid#'"
+                + ">"
+                + "<i class='material-icons'>delete</i>"
+                + "</a>"
+
+                + "#} #"
+                                          ).Width(140).Filterable(false);
+
+
+                columns.Bound(item => item.Name).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")));
+                columns.Bound(item => item.HasExternalPriceSystem).Filterable(ftb => ftb.Cell(cell => cell.Operator("eq").SuggestionOperator(FilterType.Contains).ShowOperators(false)).Messages(m => m.IsFalse("no").IsTrue("yes"))).ClientTemplate("<input type='checkbox' disabled #= HasExternalPriceSystem == true ? checked='checked' : '' # />").Width(140);
+                columns.Bound(item => item.Description).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")));
+
+//columns.Bound(item => item.Config).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Template("kendoHelper.DisableAutocompleteFilter")));
+})
+
+        .Editable(editable => editable.Mode(GridEditMode.PopUp).DisplayDeleteConfirmation(false).Window(win => win.Width(700)))
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .ServerOperation(false)
+            .PageSize(15)
+            .Sort(a =>
+            {
+                a.Add("Name").Ascending();
+                a.Add("ActiveFrom").Ascending();
+            })
+            .Model(model => model.Id(item => item.Guid))
+            .Read(read => read.Action("Read", "EquipmentDefinition").Data("equipmentDefinition.Data.OwnerFilterParameters"))
+            .Events(events => events.Error("exceptionManager.Events.HandleError"))
+        )
+    )
+
+
+}
+
+
+

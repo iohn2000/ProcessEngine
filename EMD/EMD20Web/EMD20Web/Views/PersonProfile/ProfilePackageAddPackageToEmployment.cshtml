@@ -1,0 +1,80 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.AddPackageToEmploymentModel
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+@{
+    ViewBag.Title = "Add package to employment";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/PersonProfile_ProfilePackageAddPackageToEmployment.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+<div id="formcontent">
+    @using (Ajax.BeginForm("DoProfilePackageAddPackageToEmployment", "PersonProfile", null, new AjaxOptions
+    {
+        HttpMethod = "Post",
+        OnBegin = "formValidation.OnBegin(xhr)",
+        OnSuccess = "personprofile.Events.OnSuccessProfilePackageAddPackageToEmployment(xhr)",
+        OnFailure = "formValidation.OnFailure(xhr)"
+    }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.EP_Guid)
+
+        <div id="formresults" class="infobox error" style="display:none"></div>
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="k-edit-form-container" style="float:left;">
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.oc_guid, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @(
+                                            Html.Kendo().DropDownList().Name("oc_guid")
+                                            .DataTextField("Text")
+                                            .DataValueField("Value")
+                                            .OptionLabel("Please select")
+                                            .HtmlAttributes(new { @style = "width:400px" })
+                                            .Filter(FilterType.Contains)
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("ReadAvailableListOfPackagesForEmployment", "Package", new { empl_guid = Model.EP_Guid });
+                                                })
+                                                .ServerFiltering(false);
+                                            })
+                                            .Template("<span class=\"k-state-default\"><div style='padding-top: 3px !important; line-height: 1.5em !important; min-height: 1.5em !important'>#: Text #</div></span>" +
+                                                        "<span class=\"k-state-default\"><div style='font-size: 11px;'>#: Data #</div></span>")
+                        )
+                        @Html.ValidationMessageFor(model => model.oc_guid, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.TargetDate, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    <div class="col-md-10">
+                        @(Html.Kendo().DatePicker()
+                            .Name("TargetDate")
+                            .Format("dd.MM.yyyy")
+                            .HtmlAttributes(new { @style = "width:400px" })
+                        // .Events(b => b.Change("changeEmployment.Events.OnChangeTargetDate"))
+                        )
+                        @Html.ValidationMessageFor(model => model.TargetDate, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+
+                <div class="form-group form-group-buttons">
+                    <label></label>
+                    <div class="col-md-10">
+                        <button type="button" value="Cancel" class="k-button" onclick="closeWindow();">Cancel</button>
+                        <input type="submit" value="Save" class="btn k-button" />
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
+</div>

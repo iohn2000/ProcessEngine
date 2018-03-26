@@ -1,0 +1,67 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.PackageModel
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+
+@{
+    ViewBag.Title = "View Package";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/Package_View.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+<div id="formcontent">
+        @Html.AntiForgeryToken()
+
+        <div id="formresults" class="infobox error" style="display:none"></div>
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="k-edit-form-container" style="float:left;">
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Name, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Description, new { disabled = "disabled", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                @Html.Partial("Controls/_PartialRuleFilterView", Model.RuleFilterModel)
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Flags, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div>
+                            @Html.CheckBoxFor(model => model.Base, new { disabled = "disabled" })
+                            @Html.DisplayNameFor(model => model.Base)
+                        </div>
+                        <div>
+                            @Html.CheckBoxFor(model => model.Access, new { disabled = "disabled" })
+                            @Html.DisplayNameFor(model => model.Access)
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group form-group-buttons">
+                    <label></label>
+                    <div class="col-md-10">
+                        <button type="button" value="Close" class="k-button kapsch-text-button" onclick="closeWindow();">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+</div>
+
+<script>
+        $(function () {
+            $("form").kendoValidator();
+        });
+</script>

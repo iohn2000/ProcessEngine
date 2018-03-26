@@ -1,0 +1,172 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.EquipmentDefinitionPriceFutureModel
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+@{
+    ViewBag.Title = "Edit Price";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/EquipmentDefinitionPrice_Edit.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+<div id="formcontent">
+    @using (Ajax.BeginForm("Edit", "EquipmentDefinitionPrice", null, new AjaxOptions
+    {
+        HttpMethod = "Post",
+        OnBegin = "formValidation.OnBegin(xhr)",
+        OnSuccess = "equipmentDefinition.Events.OnChangedPriceInformationSuccess(xhr, true)",
+        OnFailure = "formValidation.OnFailure(xhr)"
+    }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.CurrentEquipmentDefinitionPrice.ValidFrom)
+        @Html.HiddenFor(model => model.CurrentEquipmentDefinitionPrice.ValidTo)
+        @Html.HiddenFor(model => model.CurrentEquipmentDefinitionPrice.ActiveTo)
+        @Html.HiddenFor(model => model.CurrentEquipmentDefinitionPrice.Guid)
+        @Html.HiddenFor(model => model.CurrentEquipmentDefinitionPrice.EQDE_Guid)
+
+        @Html.HiddenFor(model => model.FutureEquipmentDefinitionPrice.ValidFrom)
+        @Html.HiddenFor(model => model.FutureEquipmentDefinitionPrice.ValidTo)
+        @Html.HiddenFor(model => model.FutureEquipmentDefinitionPrice.ActiveTo)
+        @Html.HiddenFor(model => model.FutureEquipmentDefinitionPrice.Guid)
+        @Html.HiddenFor(model => model.FutureEquipmentDefinitionPrice.EQDE_Guid)
+
+        <div id="formresults" class="infobox error" style="display:none"></div>
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="k-edit-form-container" style="float:left;">
+
+                <div class="form-group">
+                    <label class="control-label col-md-2"><span>@Html.LabelForRequired(model => model.CurrentEquipmentDefinitionPrice.Price)</span></label>
+
+                    <div class="col-md-10">
+                        @(Html.EditorFor(model => Model.CurrentEquipmentDefinitionPrice.Price,  new { htmlAttributes = new { @class = "k-textbox" } }))
+                        @Html.ValidationMessageFor(model => model.CurrentEquipmentDefinitionPrice.Price, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2"><span>@Html.LabelForRequired(model => model.CurrentEquipmentDefinitionPrice.BillingPeriod)</span></label>
+
+                    <div class="col-md-10">
+                            @(Html.Kendo().DropDownList()
+                            .OptionLabel("Please select")
+                            .Name("CurrentEquipmentDefinitionPrice.BillingPeriod")
+                            .DataTextField("Text")
+                            .DataValueField("Value")
+                            .Filter(FilterType.Contains)
+                            .IgnoreCase(true)
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
+                                {
+                                    read.Action("GetBillingPeriods", "EquipmentDefinitionPrice");
+                                })
+                                .ServerFiltering(false);
+                            })
+                            )
+                        @Html.ValidationMessageFor(model => model.CurrentEquipmentDefinitionPrice.BillingPeriod, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 10px">
+                    <label class="control-label col-md-2" for="FutureContact_ActiveFrom"></label>
+                    <div class="col-md-10">
+                        
+                        @if (Model.HasFutureEquipmentDefinitionPrice)
+                        {
+                            @*<div><input id="is-future" type="checkbox" checked="checked" onchange="contactData.Events.OnEditContactData(this)" />future data</div>*@
+
+                            <div>@Html.CheckBoxFor(model => model.IsFutureChecked, new { @class = "form-control", onchange = "equipmentDefinitionPrice.Events.OnEditEquipmentDefinitionPrice(this)", @checked = "checked" })future data</div>
+                        }
+                        else
+                        {
+                            <div>@Html.CheckBoxFor(model => model.IsFutureChecked, new { @class = "form-control", onchange = "equipmentDefinitionPrice.Events.OnEditEquipmentDefinitionPrice(this)" })future data</div>
+                            @*<div><input id="is-future" type="checkbox" onchange="contactData.Events.OnEditContactData(this)" />future data</div>*@
+                        }
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label col-md-2"><span>@Html.LabelFor(model => model.FutureEquipmentDefinitionPrice.Price)</span></label>
+                    <div class="col-md-10">
+                        
+                        @if (Model.HasFutureEquipmentDefinitionPrice)
+                        {
+                            @(Html.EditorFor(model => Model.FutureEquipmentDefinitionPrice.Price, new { htmlAttributes = new { @class = "k-textbox" } }))
+                            @*@(Html.Kendo().NumericTextBoxFor(model => model.FutureEquipmentDefinitionPrice.Price).HtmlAttributes(new { style = "width:100%", }).Decimals(2).Culture("de-DE"))*@
+                            @*@(Html.Kendo().NumericTextBoxFor(model => model.FutureEquipmentDefinitionPrice.Price).HtmlAttributes(new { style = "width:100%", @class = "k-textbox" }).Decimals(2).Culture("de-DE"))*@
+                            @*@Html.EditorFor(model => model.FutureEquipmentDefinitionPrice.Price, new { htmlAttributes = new { @class = "form-control" } })*@
+                        }
+                        else
+                        {
+                            @(Html.EditorFor(model => Model.FutureEquipmentDefinitionPrice.Price, new { htmlAttributes = new { @class = "k-textbox", disabled = "disabled"} } ))
+                            @*@(Html.Kendo().NumericTextBoxFor(model => model.FutureEquipmentDefinitionPrice.Price).HtmlAttributes(new { style = "width:100%", disabled = "disabled" }).Decimals(2).Culture("de-DE"))*@
+                            //@(Html.Kendo().NumericTextBoxFor(model => model.FutureEquipmentDefinitionPrice.Price).HtmlAttributes(new { style = "width:100%", disabled = "disabled", @class = "k-textbox" }).Decimals(2).Culture("de-DE"))
+                            @*@(Html.Kendo().NumericTextBoxFor(model => model.FutureEquipmentDefinitionPrice.Price).HtmlAttributes(new { style = "width:100%",  @class = "k-textbox" }).Decimals(2).Culture("de-DE"))*@
+                            @*@Html.TextBoxFor(model => model.FutureEquipmentDefinitionPrice.Price, new { disabled = "disabled", @class = "k-textbox" })*@
+                        }
+                        @Html.ValidationMessageFor(model => model.FutureEquipmentDefinitionPrice.Price, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2"><span>@Html.LabelFor(model => model.FutureEquipmentDefinitionPrice.BillingPeriod)</span></label>
+
+                    <div class="col-md-10">
+                        @*@Html.EditorFor(model => model.CurrentEquipmentDefinitionPrice.BillingPeriod, new { htmlAttributes = new { @class = "form-control" } })*@
+                        @(Html.Kendo().DropDownListFor(m => m)
+                        .OptionLabel("Please select")
+                        .Name("FutureEquipmentDefinitionPrice.BillingPeriod")
+                        .DataTextField("Text")
+                        .DataValueField("Value")
+                        .Filter(FilterType.Contains)
+                        .IgnoreCase(true)
+                        .DataSource(source =>
+                        {
+                            source.Read(read =>
+                            {
+                                read.Action("GetBillingPeriods", "EquipmentDefinitionPrice");
+                            })
+                            .ServerFiltering(false);
+                        }).Enable(Model.HasFutureEquipmentDefinitionPrice)
+                        )
+                        @Html.ValidationMessageFor(model => model.FutureEquipmentDefinitionPrice.BillingPeriod, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.FutureEquipmentDefinitionPrice.ActiveFrom, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @(Html.Kendo().DatePicker()
+                                //.Name("FutureContact.ActiveFrom")
+                                .Name("ActiveFromFuture")
+                                .Enable(Model.HasFutureEquipmentDefinitionPrice)
+                                .Format("dd.MM.yyyy")
+                                .Min(Kapsch.IS.EMD.EMD20Web.Models.ContactModel.GetFutureDate())
+                        )
+                        @Html.ValidationMessageFor(model => model.FutureEquipmentDefinitionPrice.ActiveFrom, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group form-group-buttons">
+                    <label></label>
+                    <div class="col-md-10">
+
+                        <button type="button" value="Cancel" class="k-button kapsch-text-button" onclick="closeWindow();">Cancel</button>
+                        <input type="submit" value="Save" class="btn k-button kapsch-text-button" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+<script>
+    $(function () {
+        $("form").kendoValidator();
+    });
+</script>

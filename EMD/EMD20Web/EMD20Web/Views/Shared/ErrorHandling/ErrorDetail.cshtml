@@ -1,0 +1,20 @@
+﻿
+
+<p>
+    testerrorpage
+</p>
+@{if (Session["Error"] != null)
+    {
+        @Session["Error"].ToString();
+      }
+
+    if (@ViewBag.error != null)
+    {
+            <br />
+            @ViewBag.error;
+            <br />
+        }
+
+}
+    
+

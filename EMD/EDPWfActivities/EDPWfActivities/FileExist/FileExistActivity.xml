@@ -1,0 +1,8 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.FileExist.FileExistActivity" instance=".FileExistActivity">
+  <name>check for file activity</name>
+  <properties>
+    <!-- -->
+    <property name="fileName"  direction="input"  dataType="stringType" />
+  </properties>
+  <transition to=".TaskDecisionActivityWait"/>
+</activity>

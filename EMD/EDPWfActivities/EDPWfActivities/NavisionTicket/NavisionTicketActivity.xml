@@ -1,0 +1,29 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.NavisionTicket.NavisionTicketActivity" instance=".NavisionTicketActivity">
+  <name>Navision Ticket Create</name>
+  <properties>
+    <!-- this is a relative time in minutes : Now +  timePeriod[min] = DueDate -->
+    <property name="timeoutPeriodAngelegt"  direction="input"   dataType="stringType" />
+    <property name="timeoutPeriodBeendet"   direction="input"   dataType="stringType" />
+
+    <!-- Input Vars needed for Ticket -->
+    <property name="AuftraggeberName"           direction="input"   dataType="stringType" />
+    <property name="AuftraggeberTelefon"        direction="input"   dataType="stringType" />
+    <property name="Auftragsbeschreibung"       direction="input"   dataType="stringType" />
+    <property name="Einsatzart"                 direction="input"   dataType="stringType" />
+    <property name="EMail"                      direction="input"   dataType="stringType" />
+    <property name="EinsatzartBeschreibung"     direction="input"   dataType="stringType" />
+    <property name="LieferungAnPLZ"             direction="input"   dataType="stringType" />
+    <property name="LieferungAnLand"            direction="input"   dataType="stringType" />
+    <property name="Auftragsbeschreibung3"      direction="input"   dataType="stringType" />
+    <property name="QuellsystemNummer"          direction="input"   dataType="stringType" /> <!--ITUser, etc,, -->
+    
+    <!-- always the same -->
+    <property name="Prioritaet"            direction="input"   dataType="stringType" /> <!-- so far always 5 -->
+    <property name="Geschaeftsfall"        direction="input"   dataType="stringType" /> <!-- so far always IT -->
+    <property name="EmploymentGuid"        direction="input"   dataType="stringType" /> <!-- ( L_EL_ID * 10000 ) + E_ID  :als LocationID übergeben-->
+    
+    <!-- contains err msg if creating ticket failed; empty if OK -->
+    <property name="returnStatus"  direction="output"  dataType="stringType" /> 
+  </properties>
+  <transition to=".XXX"/>
+</activity>

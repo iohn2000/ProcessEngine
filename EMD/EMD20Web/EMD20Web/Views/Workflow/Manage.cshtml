@@ -1,0 +1,90 @@
+﻿@using Kapsch.IS.EMD.EMD20Web.Models;
+@model Kapsch.IS.EMD.EMD20Web.Models.WorkflowModel
+@Html.Partial("~/Views/Shared/Javascript/_nullableDropDownJS.cshtml")
+
+@{
+    ViewBag.Title = "Workflows";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/Workflow_Manage.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+@if (Model.CanManage)
+{
+    <div id="itemcontainer">
+
+        @(Html.Kendo().Grid<WorkflowModel>()
+        .Name("Grid").HtmlAttributes(new { @class = "k-grid-big" })
+        .ToolBar(tb =>
+        {
+            if (Model.CanManage)
+            {
+                tb.Custom().Text("Add Workflow").Url("#").HtmlAttributes(new { onclick = "showInWindow('Add/true','Add Workflow');", @class = "kapsch-text-button" });
+            }
+        })
+        .Sortable()
+        .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+        .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(true)
+            .ButtonCount(5)
+            .PageSizes(new[] { 10, 15, 50 }))
+        .Scrollable(s => s.Enabled(true).Height("auto"))
+        .Columns(columns =>
+        {
+            columns.Bound(item => item.IdWorkflow).Title("").Filterable(false).Width(90)
+                // .ClientTemplate(@"<a href=""#"" onclick='showInWindow(""Edit/#= IdWorkflow #"",""Edit Workflow"");' data-id=""#=IdWorkflow#"">Edit</a>");
+                .ClientTemplate("<a title='Edit' href='\\#' "
+                + "onclick='showInWindow(\""
+                + "Edit/"
+                + "#= IdWorkflow #/true\",\"Edit Workflow\");' "
+                + "data-id='#=IdWorkflow#'"
+                + ">"
+                + "<i class='material-icons'>edit</i>"
+                + "</a>"
+                + "<a title='Delete' href='\\#' "
+                + "onclick='workflow.Functions.Delete(\"#=IdWorkflow#\",\"Workflow\",\"#=Name#\");' "
+                + "data-id='#=IdWorkflow#'"
+                + ">"
+                + "<i class='material-icons'>delete</i>"
+                + "</a>"
+                + "<a title='Configure' href='\\#' "
+                + "onclick='showInWindow(\""
+                + "Configure/"
+                + "#= IdWorkflow #/true\",\"Configure Workflow\");' "
+                + "data-id='#=IdWorkflow#'"
+                + ">"
+                + "<i class='material-icons'>tune</i>"
+                + "</a>"
+                );
+
+            columns.Bound(item => item.Name).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+            columns.Bound(item => item.Description).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+            columns.Bound(item => item.Version).Width(100).Filterable(false);
+            //columns.Bound(item => item.CheckedOutBy).Width(140);
+            columns.Bound(item => item.IsCheckedOut).Width(40).Filterable(false).Width(110);
+            columns.Bound(item => item.ActiveProcesses).Width(100).Filterable(false);
+            columns.Bound(item => item.ValidFromDateOnly).Format("{0:dd.MM.yyyy}").Width(200);
+        })
+
+        .Editable(editable => editable.Mode(GridEditMode.PopUp).DisplayDeleteConfirmation(false).Window(win => win.Width(700)))
+
+        .DataSource(dataSource => dataSource
+        .Ajax().ServerOperation(true)
+        .Sort(a => a.Add("Name").Ascending())
+        .PageSize(15)
+        .Model(model => model.Id(p => p.IdWorkflow))
+                .Create("Create", "Workflow")
+                .Read("Read", "Workflow")
+        .Events(events => events.Error("exceptionManager.Events.HandleError"))
+        )
+    )
+
+    </div>
+}
+
+
+
+
+
+

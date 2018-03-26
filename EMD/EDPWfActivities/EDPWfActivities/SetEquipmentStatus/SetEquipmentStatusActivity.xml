@@ -1,0 +1,12 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.SetEquipmentStatus.SetEquipmentStatusActivity" instance=".SetEquipmentStatusActivity">
+  <name>Equipment (OBRE) Status Set</name>
+  <properties>
+    <property name="obreGuid"                 direction="input"   dataType="stringType" />
+    <property name="status"                   direction="input"   dataType="stringType" />
+    <!-- make the activity return a specific status, e.g.: NotCompleted, Complete, Wait, ErrorStop, Timeout, Paused, ErrorToHandle -->
+    <property name="ExpectedInitializeState"  direction="input"  dataType="stringType" />
+    <property name="returnStatus"             direction="output"  dataType="stringType" />
+  </properties>
+  <transition to=".XXX"/>
+</activity>
+

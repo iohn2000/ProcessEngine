@@ -1,0 +1,135 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.ContactDataFutureModel
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+@{
+    ViewBag.Title = "Edit Number";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/EditNumber_Edit.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+<div id="formcontent">
+    @using (Ajax.BeginForm("EditContactData", "ContactData", null, new AjaxOptions
+    {
+        HttpMethod = "Post",
+        OnBegin = "formValidation.OnBegin(xhr)",
+        OnSuccess = "personprofile.Events.OnChangedContactDataSuccess(xhr, true)",
+        OnFailure = "formValidation.OnFailure(xhr)"
+    }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.CurrentContact.ValidFrom)
+        @Html.HiddenFor(model => model.CurrentContact.ValidTo)
+        @Html.HiddenFor(model => model.CurrentContact.ActiveTo)
+        @Html.HiddenFor(model => model.CurrentContact.Guid)
+        @Html.HiddenFor(model => model.CurrentContact.CT_Guid)
+        @Html.HiddenFor(model => model.CurrentContact.EP_Guid)
+        @Html.HiddenFor(model => model.CurrentContact.P_Guid)
+        @Html.HiddenFor(model => model.CurrentContact.E_Guid)
+        @Html.HiddenFor(model => model.CurrentContact.L_Guid)
+        @Html.HiddenFor(model => model.CurrentContact.C_ID)
+        @Html.HiddenFor(model => model.CurrentContact.C_EP_ID)
+        @Html.HiddenFor(model => model.CurrentContact.C_E_ID)
+        @Html.HiddenFor(model => model.CurrentContact.C_P_ID)
+        @Html.HiddenFor(model => model.CurrentContact.C_CT_ID)
+        @Html.HiddenFor(model => model.CurrentContact.ACDDisplay)
+
+
+        @Html.HiddenFor(model => model.FutureContact.ValidFrom)
+        @Html.HiddenFor(model => model.FutureContact.ValidTo)
+        @Html.HiddenFor(model => model.FutureContact.ActiveTo)
+        @Html.HiddenFor(model => model.FutureContact.Guid)
+        @Html.HiddenFor(model => model.FutureContact.CT_Guid)
+        @Html.HiddenFor(model => model.FutureContact.EP_Guid)
+        @Html.HiddenFor(model => model.FutureContact.P_Guid)
+        @Html.HiddenFor(model => model.FutureContact.E_Guid)
+        @Html.HiddenFor(model => model.FutureContact.L_Guid)
+        @Html.HiddenFor(model => model.FutureContact.C_ID)
+        @Html.HiddenFor(model => model.FutureContact.C_EP_ID)
+        @Html.HiddenFor(model => model.FutureContact.C_E_ID)
+        @Html.HiddenFor(model => model.FutureContact.C_P_ID)
+        @Html.HiddenFor(model => model.FutureContact.C_CT_ID)
+        @Html.HiddenFor(model => model.FutureContact.ACDDisplay)
+
+        <div id="formresults" class="infobox error" style="display:none"></div>
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="k-edit-form-container" style="float:left;">
+
+                <div class="form-group">
+                    <label class="control-label col-md-2"><span>@Html.DisplayFor(model => model.CurrentContact.Name)</span></label>
+
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.CurrentContact.NumberAsText, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.CurrentContact.NumberAsText, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 10px">
+                    <label class="control-label col-md-2" for="FutureContact_ActiveFrom"></label>
+                    <div class="col-md-10">
+                        @if (Model.HasFutureContact)
+                        {
+                            @*<div><input id="is-future" type="checkbox" checked="checked" onchange="contactData.Events.OnEditContactData(this)" />future data</div>*@
+
+                            <div>@Html.CheckBoxFor(model => model.IsFutureChecked, new { @class = "form-control", onchange = "contactData.Events.OnEditContactData(this)", @checked = "checked" })future data</div>
+                        }
+                        else
+                        {
+                            <div>@Html.CheckBoxFor(model => model.IsFutureChecked, new { @class = "form-control", onchange = "contactData.Events.OnEditContactData(this)" })future data</div>
+                            @*<div><input id="is-future" type="checkbox" onchange="contactData.Events.OnEditContactData(this)" />future data</div>*@
+                        }
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label col-md-2"><span>@Html.DisplayFor(model => model.FutureContact.Name)</span></label>
+                    <div class="col-md-10">
+                        @if (Model.HasFutureContact)
+                        {
+                            @Html.EditorFor(model => model.FutureContact.NumberAsText, new { htmlAttributes = new { @class = "form-control" } })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.FutureContact.NumberAsText, new { disabled = "disabled", @class = "k-textbox" })
+                        }
+                        @Html.ValidationMessageFor(model => model.FutureContact.NumberAsText, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.FutureContact.ActiveFrom, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @(Html.Kendo().DatePicker()
+                                    //.Name("FutureContact.ActiveFrom")
+                                    .Name("ActiveFromFuture")
+                                    .Enable(Model.HasFutureContact)
+                                    .Format("dd.MM.yyyy")
+                                    .Min(Kapsch.IS.EMD.EMD20Web.Models.ContactModel.GetFutureDate())
+                        )
+                        @Html.ValidationMessageFor(model => model.FutureContact.ActiveFrom, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group form-group-buttons">
+                    <label></label>
+                    <div class="col-md-10">
+
+                        <button type="button" value="Cancel" class="k-button kapsch-text-button" onclick="closeWindow();">Cancel</button>
+                        <input type="submit" value="Save" class="btn k-button kapsch-text-button" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+<script>
+    $(function () {
+        $("form").kendoValidator();
+    });
+</script>

@@ -1,0 +1,26 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.ChangeEmployment.ChangeEmploymentActivity" instance=".ChangeEmploymentActivity">
+  <name>Change Employment</name>
+  <description>change all data on employment necessary for change. change for equipments is a different activities</description>
+  <properties>
+    <property name="NewEmploymentGuid" direction="input"   dataType="stringType"></property>
+    <property name="ChangeType" direction="input"   dataType="stringType"></property>
+    <property name="RequestingPersonEmploymentGuid"  direction="input"   dataType="stringType"></property>
+    <property name="EffectedPersonEmploymentGuid"  direction="input"   dataType="stringType"></property>
+    <property name="TargetDate"  direction="input"   dataType="stringType"></property>
+    <property name="GuidTargetEnterprise"  direction="input"   dataType="stringType"></property>
+    <property name="GuidCostCenter"  direction="input"   dataType="stringType"></property>
+    <property name="GuidEmploymentType"  direction="input"   dataType="stringType"></property>
+    <property name="GuidOrgUnit"  direction="input"   dataType="stringType"></property>
+    <property name="GuidDistributionGroup"  direction="input"   dataType="stringType"></property>
+    <property name="PersonalNumber"  direction="input"   dataType="stringType"></property>
+    <property name="RemoveEquipmentInfos"  direction="input"   dataType="stringType"></property>
+    <property name="DefaultEquipmentInfos"  direction="input"   dataType="stringType"></property>
+    <property name="KCCData"  direction="input"   dataType="stringType"></property>
+    <property name="EmailType"  direction="input"   dataType="stringType"></property>
+    <property name="MoveAllRoles"  direction="input"   dataType="stringType"></property>
+    <property name="GuidSponsor"  direction="input"   dataType="stringType"></property>
+    <property name="GuidLocation"  direction="input"   dataType="stringType"></property>
+    <property name="LeaveToDate"  direction="input"   dataType="stringType"></property>
+  </properties>
+  <transition to=".x4"/>
+</activity>

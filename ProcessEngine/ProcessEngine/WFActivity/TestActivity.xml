@@ -1,0 +1,18 @@
+﻿<!-- 
+XML Konfiguration für Activities die es ermöglicht einem Client die benötigten Eingangs 
+und Ausgangsvariablen der Activity zu übergeben.
+-->
+
+<activity nr="" id="Kapsch.IS.ProcessEngine.WFActivity.TestActivity" instance=".TestActivity">
+  <name>Test Activity : throwing errors</name>
+  <properties>
+    <property name="ExpectedInitializeState"  direction="input" dataType="stringType" />
+    <property name="ExpectedRunState"         direction="input" dataType="stringType" />
+    <property name="ExpectedFinishState"      direction="input" dataType="stringType" />
+    
+    <property name="ExpectedInitializeResult" direction="output" dataType="stringType" />
+    <property name="ExpectedRunResult"        direction="output" dataType="stringType" />
+    <property name="ExpectedFinishResult"     direction="output" dataType="stringType" />
+  </properties>
+  <transition to="" />
+</activity>

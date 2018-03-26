@@ -1,0 +1,229 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.EmploymentModel
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+
+@{
+    ViewBag.Title = "Edit Employment";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/Employment_Edit.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+<div id="formcontent">
+    @using (Ajax.BeginForm("Edit", "Employment", null, new AjaxOptions
+    {
+        HttpMethod = "Post",
+        OnBegin = "formValidation.OnBegin(xhr)",
+        OnSuccess = "personprofile.Events.OnChangedEmploymentDataSuccess(xhr)",
+        OnFailure = "formValidation.OnFailure(xhr)"
+    }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Guid)
+        @Html.HiddenFor(model => model.ValidFrom)
+        @Html.HiddenFor(model => model.ValidTo)
+        @Html.HiddenFor(model => model.ActiveFrom)
+        @Html.HiddenFor(model => model.ActiveTo)
+
+        @Html.HiddenFor(model => model.P_Guid)
+        @Html.HiddenFor(model => model.E_Guid)
+        @Html.HiddenFor(model => model.ENTE_Guid)
+        @Html.HiddenFor(model => model.ENLO_Guid)
+        @Html.HiddenFor(model => model.LOCA_Guid)
+        @Html.HiddenFor(model => model.ET_Guid)
+        //@Html.HiddenFor(model => model.DGT_Guid)
+        @Html.HiddenFor(model => model.E_ID)
+        @Html.HiddenFor(model => model.P_ID)
+        @Html.HiddenFor(model => model.L_ID)
+        @Html.HiddenFor(model => model.ET_ID)
+        @Html.HiddenFor(model => model.Entry)
+        @*@Html.HiddenFor(model => model.Exit)*@
+        @*@Html.HiddenFor(model => model.LastDay)*@
+
+        @*@Html.HiddenFor(model => model.PersNr)*@
+        @Html.HiddenFor(model => model.dpwKey)
+        @Html.HiddenFor(model => model.Exit_Report)
+        @Html.HiddenFor(model => model.DGT_ID)
+        @Html.HiddenFor(model => model.Sponsor)
+        //@Html.HiddenFor(model => model.Sponsor_Guid)
+        @Html.HiddenFor(model => model.FirstWorkDay)
+        @Html.HiddenFor(model => model.EnterpriseName)
+        @Html.HiddenFor(model => model.ValidityStatus)
+
+
+
+        <div id="formresults" class="infobox error" style="display:none"></div>
+
+        <div class="form-horizontal">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="k-edit-form-container" style="float:left;">
+
+
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Visible, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @{
+                                Html.EditorFor(model => model.Visible);
+                                if (Model.CanManageVisibleInPhonebook)
+                                {
+                                    @Html.CheckBoxFor(model => model.Visible, new { @class = "form-control" })
+                                }
+                                else
+                                {
+                                    @Html.HiddenFor(model => model.Visible)
+                                    @Html.CheckBoxFor(model => model.Visible, new { @class = "form-control", @disabled = "disabled" })
+                                }
+                                Html.ValidationMessageFor(model => model.Visible, "", new { @class = "text-danger" });
+                            }
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Main, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @{
+                                Html.EditorFor(model => model.Main);
+                                if (Model.CanManageMainEmployment)
+                                {
+                                    @Html.CheckBoxFor(model => model.Main, new { @class = "form-control" })
+                                }
+                                else
+                                {
+                                    @Html.HiddenFor(model => model.Main)
+                                    @Html.CheckBoxFor(model => model.Main, new { @class = "form-control", @disabled = "disabled" })
+                                }
+                                Html.ValidationMessageFor(model => model.Main, "", new { @class = "text-danger" });
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.AD_Update, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @{
+                                Html.EditorFor(model => model.AD_Update);
+                                if (Model.CanManageAdUpdate)
+                                {
+                                    @Html.CheckBoxFor(model => model.AD_Update, new { @class = "form-control" })
+                                }
+                                else
+                                {
+                                    @Html.HiddenFor(model => model.AD_Update)
+                                    @Html.CheckBoxFor(model => model.AD_Update, new { @class = "form-control", @disabled = "disabled" })
+                                }
+                                Html.ValidationMessageFor(model => model.AD_Update, "", new { @class = "text-danger" });
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.DGT_Guid, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @{
+                            Html.EditorFor(model => model.DGT_Guid);
+                            if (Model.CanManageDistributionGroup)
+                            {
+                                @Html.EditorFor(model => model.DGT_Guid, new { @class = "form-control" })
+                            }
+                            else
+                            {
+                                @*@Html.EditorFor(model => model.DGT_Guid, new { @class = "form-control", @disabled = "disabled" })*@
+                                @Html.HiddenFor(model => model.DGT_Guid)
+                                @Html.TextBoxFor(model => model.DistributionGroupName, new { @readonly = "readonly", @class = "k-textbox", htmlAttributes = new { @class = "form-control" } })
+                            }
+                            Html.ValidationMessageFor(model => model.DGT_Guid, "", new { @class = "text-danger" });
+                        }
+                    </div>
+                </div>
+
+                @if (Model.ShowSponsor)
+                {
+                    <div class="form-group">
+                        @Html.LabelForRequired(model => model.Sponsor_Guid, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.Partial("Controls/_TextValuePopupSelectionView", Model.SponsorSelection)
+                            @{
+                                Html.ValidationMessageFor(model => model.Sponsor_Guid, "", new { @class = "text-danger" });
+                            }
+                        </div>
+                    </div>
+                }
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.PersNr, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    <div class="col-md-10">
+                        @if (Model.CanManagePersNr)
+                        {
+                            @Html.EditorFor(model => model.PersNr)
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.PersNr, new { @readonly = "readonly", @class = "k-textbox" })
+                        }
+                        @Html.ValidationMessageFor(model => model.PersNr, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                @if (Model.CanManageExitDate)
+                {
+                    <div class="form-group">
+                        @Html.LabelForRequired(model => model.Exit, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                        <div class="col-md-10" style="white-space:nowrap;">
+                            @Html.TextBoxFor(model => model.ExitAsString, new { @readonly = "readonly", @class = "k-textbox k-valid", @style = "background-color: #FFF; color: #5f6268" })
+                            <a title="Reset" href="#" onclick="employment.Functions.ResetDateToInfinity('ExitAsString');"><i style="vertical-align:middle;" class="material-icons">delete</i></a>
+                            @Html.ValidationMessageFor(model => model.ExitAsString, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelForRequired(model => model.LastDay, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                        <div class="col-md-10" style="white-space:nowrap;">
+                            @Html.TextBoxFor(model => model.LastDayAsString, new { @readonly = "readonly", @class = "k-textbox k-valid", @style = "background-color: #FFF; color: #5f6268" })
+                            <a title="Reset" href="#" onclick="employment.Functions.ResetDateToInfinity('LastDayAsString');"><i style="vertical-align:middle;" class="material-icons">delete</i></a>
+                            @Html.ValidationMessageFor(model => model.LastDayAsString, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @Html.HiddenFor(model => model.Exit)
+                    @Html.HiddenFor(model => model.LastDay)
+                }
+
+
+
+                <div class="form-group form-group-buttons">
+                    <label></label>
+                    <div class="col-md-10">
+                        <button type="button" value="Cancel" class="k-button" onclick="closeWindow();">Cancel</button>
+                        @{
+                            if (Model.CanSave)
+                            {
+                                <input type="submit" value="Save" class="btn k-button" />
+                            }
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+                            }
+</div>
+
+<script>
+    $(function () {
+        $("form").kendoValidator();
+    });
+
+</script>

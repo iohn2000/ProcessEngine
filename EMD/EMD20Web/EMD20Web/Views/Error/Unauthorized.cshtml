@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewBag.Title = "Unauthorized";
+    Layout = "";
+}
+
+<h2>Unauthorized</h2>
+<p>
+    You are not authorized for this page. <br />
+    <a href="~/Access/Request?C=@(Request.Params["C"])&A=@(Request.Params["A"])">Request access</a>.
+</p>
+

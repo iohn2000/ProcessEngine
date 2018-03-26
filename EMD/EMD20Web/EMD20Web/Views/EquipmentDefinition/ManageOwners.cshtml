@@ -1,0 +1,94 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.ManageEquipmentDefinitionOwnerModel
+
+@{
+    ViewBag.Title = "Manage Equipment Owners";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/EquipmentDefinition_ManageOwners.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+
+<div id="formcontent1" style="float:left; width: 100%">
+    @*@using (Ajax.BeginForm("DoManageOwners", "EquipmentDefinition", null, new AjaxOptions
+    {
+        HttpMethod = "Post",
+        OnBegin = "formValidation.OnBegin(xhr)",
+        OnSuccess = "formValidation.OnSuccess(xhr)",
+        OnFailure = "formValidation.OnFailure(xhr)"
+    }))
+    {*@
+        @Html.AntiForgeryToken()
+
+        <div id="formresults" class="infobox error" style="display:none"></div>
+
+        <div class="form-horizontal1">
+
+            <h4>EquipmentDefinition: @Model.EquipmentDefinitionName</h4>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="k-edit-form-container1">
+
+                <div class="form-group1" style="width: 40%; float: left">
+                    @(Html.Kendo().Grid(Model.ConfiguredOwners)
+                        .Name("ConfiguredOwners")
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .ServerOperation(false)
+                            .Sort(a => a.Add("Text"))
+                            .Events(events => events.Error("exceptionManager.Events.HandleError"))
+                         )
+                         .HtmlAttributes(new { @class = "k-grid-list k-grid-selectable", style = "height: 500px" })
+                         .Columns(columns =>
+                         {
+                             //columns.Bound(item => item.Text).Title("Configured Owners");
+                             columns.Bound(item => item.Text).Title("Configured Owners").Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter"))).Sortable(true);
+                         })
+                        .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+                        .Sortable(sortable => sortable.Enabled(true))
+                        .Pageable(p => p.Enabled(false))
+                        .Scrollable(s => s.Enabled(true))
+                            .Selectable(selectable => selectable
+                            .Mode(GridSelectionMode.Multiple)
+                        )
+                    )
+                </div>
+
+                <div style="float:left;  margin-left: 2px; margin-top: 1px">
+                        @Html.Partial("Controls/_TextValuePopupSelectionAdd", Model.AvailableOwnersSelection)
+                        <button title="Delete selected owners" name="buttonDeleteItems" id="buttonDeleteItems" class="btn k-button kapsch-text-button" type="button" onclick="equipmentDefinitionOwner.Events.OnClickRemoveOwner()" style="margin: 0; height: 34px; padding: 7px"><i class="material-icons">delete</i></button>
+                </div>
+
+                @*<div class="form-group1" style="float:left;  width: 40%; margin-left: 30px">
+                    
+                </div>*@
+                <div style="clear: both; width: 100%; height: 20px"></div>
+                <div class="k-edit-form-container" style="float:left;">
+                    <div class="form-group form-group-buttons">
+                        <label></label>
+                        <div class="col-md-10">
+                            <button type="button" value="Cancel" class="k-button" onclick="closeWindow();">Cancel</button>
+                            <input  type="button" onclick="equipmentDefinitionOwner.Communication.SaveConfiguredOwners()" class="btn k-button kapsch-text-button" value="Save" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    @*}*@
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    equipmentDefinitionOwner.Entities.eqdeGuid = '@Model.EquipmentDefinitionGuid';
+
+
+    $(document).ready(function () {
+
+        @Html.Partial("ErrorHandling/ModalErrorWindowCheckForError")
+    });
+
+
+</script>

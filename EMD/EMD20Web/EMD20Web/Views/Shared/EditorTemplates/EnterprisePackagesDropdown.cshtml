@@ -1,0 +1,32 @@
+﻿@{ Boolean CascadeFromEnterprise = Convert.ToBoolean(ViewData["CascadeFromEnterprise"]); }
+
+
+<script>
+    function filterForEnterprise() {
+        return {
+            ente_guid: $("#Enterprise").val()
+        };
+    }
+</script>
+
+@(
+        Html.Kendo().DropDownListFor(m => m)
+        .OptionLabel("Please select")
+        .Name("EnterprisePackages")
+        .DataTextField("Text")
+        .DataValueField("Value")
+        .HtmlAttributes(new { @style = "width:500px" })
+        .Filter(FilterType.Contains)
+        .IgnoreCase(true)
+        .CascadeFrom("Enterprise")
+        .AutoBind(false)
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("ReadForSelectForEnterprisePackages", "Package").Data("filterForEnterprise");
+            })
+            .ServerFiltering(false);
+        })
+)
+

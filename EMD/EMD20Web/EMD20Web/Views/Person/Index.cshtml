@@ -1,0 +1,127 @@
+﻿@using Kapsch.IS.EMD.EMD20Web.Models;
+@using Kapsch.IS.EDP.Core.Framework;
+@model Kapsch.IS.EMD.EMD20Web.Models.PersonModel
+@Html.Partial("~/Views/Shared/Javascript/_nullableDropDownJS.cshtml")
+
+@{
+    ViewBag.Title = "Persons";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/Person_Manage.html";
+    ViewBag.TooltipWidth = 800;
+    ViewBag.TooltipHeight = 600;
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+<div id="itemcontainer">
+
+    @(Html.Kendo().Grid<PersonModel>()
+        .Name("Grid").HtmlAttributes(new { @class = "k-grid-big" })
+        .ToolBar(tb =>
+        {
+            if (Model.CanManage)
+            {
+                tb.Custom().Text("Add Person").Url("#").HtmlAttributes(new { onclick = "showInWindow('" + Url.Action("Create", "Person") + "/true','Add Person');", @class = "kapsch-text-button" });
+            }
+        })
+
+        .Sortable(sortable => sortable
+                .AllowUnsort(true)
+                .SortMode(GridSortMode.MultipleColumn))
+        .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+        .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(true)
+            .ButtonCount(5)
+            .PageSizes(new[] { 15, 50, 100 }))
+    .Scrollable(s => s.Enabled(true).Height("auto"))
+    .Sortable(s => s.Enabled(false))
+    .Columns(columns =>
+    {
+        columns.Bound(item => item.Guid).Title("").Filterable(false).Width(90)
+        .ClientTemplate(
+                            "# if (CanManage != true) { #"
+
+                            + "<a title='View' href='\\#' "
+                            + "onclick='showInWindow(\""
+                            + "/PersonProfile/Profile/"
+                            + "#= Guid #/true\",\"Person Profile\");' "
+                            + "data-id='#=Guid#'"
+                            + ">"
+                            + "<i class='material-icons'>pageview</i>"
+                            + "</a>"
+
+                            + "# } else {#"
+
+                            + "<a title='View' href='\\#' "
+                            + "onclick='showInWindow(\""
+                            + "/PersonProfile/Profile/"
+                            + "#= Guid #/true\",\"Person Profile\");' "
+                            + "data-id='#=Guid#'"
+                            + ">"
+                            + "<i class='material-icons'>pageview</i>"
+                            + "</a>"
+
+                            + "<a title='Edit' href='\\#' "
+                            + "onclick='showInWindow(\""
+                            + "/Person/Update/"
+                            + "#= Guid #/true\",\"Edit Person\");' "
+                            + "data-id='#=Guid#'"
+                            + ">"
+                            + "<i class='material-icons'>edit</i>"
+                            + "</a>"
+                            + "<a title='Delete' href='\\#' "
+                            + "onclick='person.Functions.Delete(\"#=Guid#\",\"Person\",\"#=FamilyName# #=FirstName#\");' "
+                            + "data-id='#=Guid#'"
+                            + ">"
+                            + "<i class='material-icons'>delete</i>"
+                            + "</a>"
+                            + "#} #"
+                          );
+
+
+        columns.Bound(item => item.FamilyName).Width(200).HtmlAttributes(new { @title = "#=FamilyName#" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Delay(800).Template("kendoHelper.DisableAutocompleteFilter")));
+        columns.Bound(item => item.FirstName).Width(200).HtmlAttributes(new { @title = "#=FirstName#" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").Delay(800).Template("kendoHelper.DisableAutocompleteFilter")));
+        columns.Bound(item => item.DegreePrefix).Width(120).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+        columns.Bound(item => item.DegreeSuffix).Width(120).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+        columns.Bound(item => item.UserID).Width(200).HtmlAttributes(new { @title = "#=UserID#" }).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+        columns.ForeignKey(item => item.Sex, (List<GenderModel>)ViewData["GenderNames"], "Key", "Name").EditorTemplateName("NullableDropDown").Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").ShowOperators(false)));
+        columns.Bound(item => item.CreatedDateOnly).ClientTemplate("#= kendo.toString(Created, 'dd.MM.yyyy') #").Width(200);
+        columns.Bound(item => item.IsCreatedByMe).Filterable(ftb => ftb.Cell(cell => cell.Operator("eq").SuggestionOperator(FilterType.Contains).ShowOperators(false)).Messages(m => m.IsFalse("no").IsTrue("yes"))).ClientTemplate("<input type='checkbox' disabled #= IsCreatedByMe == true ? checked='checked' : '' # />").Width(140);
+        columns.Bound(item => item.ActiveFromDateOnly).Format("{0:dd.MM.yyyy}").Width(200);
+
+        columns.Command(command =>
+        {
+            command.Custom("AddEmployment").Text("Add employment").HtmlAttributes(new { @class = "kapsch-grid-button", @style = "" }).SendDataKeys(true).Click("person.Events.OnAddEmploymentClick");
+            // command.Custom("ViewProfile").Text("View profile").HtmlAttributes(new { @class = "kapsch-grid-button", @style = "" }).SendDataKeys(true).Click("person.Events.OnShowPersonProfileClick");
+            // command.Custom("ManageRoles").Text("Manage roles").HtmlAttributes(new { @class = "kapsch-grid-button", @style = "" });
+            // command.Custom("RequestEquipment").Text("Request equipment").HtmlAttributes(new { @class = "kapsch-grid-button", @style = "" });
+
+        }).Width(130).Title("").Visible(Model.CanOnboard);
+
+
+
+
+
+    })
+
+.Editable(editable => editable.Mode(GridEditMode.PopUp).DisplayDeleteConfirmation(false).Window(win => win.Width(700)))
+
+.DataSource(dataSource => dataSource
+    .Ajax().ServerOperation(true)
+      .Sort(a =>
+      {
+          a.Add("FamilyName").Ascending();
+          a.Add("FirstName").Ascending();
+      })
+    .PageSize(15)
+    .Model(model => model.Id(p => p.Guid))
+            .Create("Create", "Person")
+            .Read("Read", "Person")
+    .Events(events => events.Error("exceptionManager.Events.HandleError"))
+)
+    )
+</div>
+
+
+
+<script src="~/Scripts/Views/Shared/formValidation.js" type="text/javascript"></script>

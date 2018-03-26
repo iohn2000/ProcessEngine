@@ -1,0 +1,497 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.PersonProfileEmploymentModel
+@using Kapsch.IS.EMD.EMD20Web.Models;
+@{
+    //initialize some common needed Variables
+    var cont = (Kapsch.IS.EMD.EMD20Web.Controllers.BaseController)ViewContext.Controller;
+    Kapsch.IS.EDP.Core.Framework.SecurityUser secUser = Kapsch.IS.EDP.Core.Framework.SecurityUser.NewSecurityUser(cont.UserName);
+    bool isAdmin = secUser.IsAdmin;
+}
+<style>
+    .displaylabel {
+        float: left;
+        text-align: left;
+        width: 300px;
+        /*border:1px solid red;*/
+        padding: 5px 0 5px 0;
+        margin: 0px;
+    }
+
+    .displayfield {
+        text-align: left;
+        padding: 5px 0 5px 0;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        margin-right: 0px;
+        margin-left: 305px;
+        /*border:1px solid green;*/
+        width: 100%;
+    }
+
+    .displayvalue {
+        display: inline-block;
+        width: 200px
+    }
+</style>
+
+
+<div>
+
+    <div class="text-header">
+        Contact Data:
+    </div>
+
+    <div class="form-horizontal" style="float:left;border:0px solid yellow;">
+        @*<div class="k-edit-form-container" style="border:1px solid blue;">*@
+
+        <div>
+
+            <div class="displaylabel">
+                @Html.DisplayNameFor(model => model.JobTitle)
+            </div>
+            <div id="main-jobtitle" class="displayfield">
+                @if (!Model.IsHistorical && Model.CanManageContactData)
+                {
+                    <a title="Edit job title" href="#" style="position: absolute; left: 280px;" onclick="javascript:  showInWindow('/ContactData/EditContactData/@Model.Guid/12/true','Edit job title')"><i class="material-icons">edit</i></a>
+                }
+                <div class="displayvalue" data-id="12" data-isFuture="false">@Html.DisplayFor(model => model.JobTitle)</div>
+                <div class="displayvalue" data-id="12" data-isFuture="true">@Html.DisplayFor(model => model.JobTitleFuture)</div>
+            </div>
+
+            <div class="displaylabel">
+                @Html.DisplayNameFor(model => model.Room)
+            </div>
+            <div id="main-room" class="displayfield">
+                @if (!Model.IsHistorical && Model.CanManageContactData)
+                {
+                    <a title="Edit room" href="#" style="position: absolute; left: 280px;" onclick="javascript:  showInWindow('/ContactData/EditContactData/@Model.Guid/7/true','Edit room number')"><i class="material-icons">edit</i></a>
+                }
+                <div class="displayvalue" data-id="7" data-isFuture="false"><a target="_blank" href="/Home/Index?ATR=ZimmerNr&TeleSuchString=@Model.Room&ELID=@Model.ElId">@Html.DisplayFor(model => model.Room) </a></div>
+                <div class="displayvalue" data-id="7" data-isFuture="true"><a target="_blank" href="/Home/Index?ATR=ZimmerNr&TeleSuchString=@Model.RoomFutureNumber&ELID=@Model.ElId">@Html.DisplayFor(model => model.RoomFuture)</a></div>
+            </div>
+
+            <div style="width: 100%; height: 20px"></div>
+
+            <div class="displaylabel">
+                @Html.DisplayNameFor(model => model.DirectPhone)
+            </div>
+            <div id="main-directphone" class="displayfield">
+                <div class="displayvalue" data-id="6" data-isFuture="false">@Html.DisplayFor(model => model.DirectPhone)</div>
+                <div class="displayvalue" data-id="6" data-isFuture="true">@Html.DisplayFor(model => model.DirectPhoneFuture)</div>
+            </div>
+
+            <div class="displaylabel">
+                @Html.DisplayNameFor(model => model.Mobile)
+            </div>
+            <div id="main-mobile" class="displayfield">
+                <div class="displayvalue" data-id="4" data-isFuture="false">@Html.DisplayFor(model => model.Mobile)</div>
+                <div class="displayvalue" data-id="4" data-isFuture="true">@Html.DisplayFor(model => model.MobileFuture)</div>
+            </div>
+
+            <div class="displaylabel">
+                @Html.DisplayNameFor(model => model.Phone)
+            </div>
+            <div id="main-phone" class="displayfield">
+                <div class="displayvalue" data-id="2" data-isFuture="false">@Html.DisplayFor(model => model.Phone)</div>
+                <div class="displayvalue" data-id="2" data-isFuture="true">@Html.DisplayFor(model => model.PhoneFuture)</div>
+            </div>
+
+            <div class="displaylabel">
+                @Html.DisplayNameFor(model => model.Fax)
+            </div>
+            <div id="main-fax" class="displayfield">
+                <div class="displayvalue" data-id="3" data-isFuture="false">@Html.DisplayFor(model => model.Fax)</div>
+                <div class="displayvalue" data-id="3" data-isFuture="true">@Html.DisplayFor(model => model.FaxFuture)</div>
+            </div>
+
+            <div class="displaylabel">
+                @Html.DisplayNameFor(model => model.eFax)
+            </div>
+            <div id="main-efax" class="displayfield">
+                <div class="displayvalue" data-id="5" data-isFuture="false">@Html.DisplayFor(model => model.eFax)</div>
+                <div class="displayvalue" data-id="5" data-isFuture="true">@Html.DisplayFor(model => model.eFaxFuture)</div>
+            </div>
+
+
+
+            @if (!Model.IsHistorical && Model.CanManageContactData)
+            {
+                <div style="margin-top: 10px">
+                    <input class="kapsch-text-button k-button k-button-icontext" type="button" value="Edit call numbers" onclick="javascript:  showInWindow('/ContactData/EditCallNumbers/@Model.Guid/true','Edit call numbers')" />
+                </div>
+            }
+        </div>
+
+        <hr style="margin-bottom: 20px; margin-top: 20px" />
+
+        <div class="text-header">
+            @if (!Model.ShowGuidEntities)
+            {
+                <div>Employment Details:</div>
+            }
+            else
+            {
+                <div>Employment Details (@Model.Guid):</div>
+            }
+
+            @{ if ((Model.LeaveTo > DateTime.Now) && (Model.LeaveFrom < Model.LeaveTo))
+                { <span>&nbsp; marked with Pause &nbsp;</span>}
+            }
+        </div>
+
+        <div class="displaylabel">
+            @Html.DisplayNameFor(model => model.EmploymentType)
+        </div>
+        <div class="displayfield">
+            @Html.DisplayFor(model => model.EmploymentType) &nbsp;
+        </div>
+
+        <div class="displaylabel">
+            @Html.DisplayNameFor(model => model.Enterprise)
+        </div>
+        <div class="displayfield">
+            @Html.DisplayFor(model => model.Enterprise) &nbsp;
+        </div>
+
+        <div class="displaylabel">
+            @Html.DisplayNameFor(model => model.Location)
+        </div>
+        <div class="displayfield">
+            @Html.DisplayFor(model => model.Location) &nbsp;
+        </div>
+
+        <div class="displaylabel">
+            @Html.DisplayNameFor(model => model.CostCenterName)
+        </div>
+        <div class="displayfield">
+            <a target="_blank" href="/Home/Index?ATR=AC&TeleSuchString=@Model.CostCenterAcId"> @Html.DisplayFor(model => model.CostCenterName)</a> &nbsp;
+        </div>
+
+        <div class="displaylabel">
+            Cost Center Responsible
+        </div>
+        <div class="displayfield">
+            @{
+                if (Model.CostCenterResponsibleGuid != null)
+                {
+                    <a target="_blank" href="/PersonProfile/Profile/@Model.CostCenterResponsibleGuid">
+                        @Html.DisplayFor(model => model.CostCenterResponsible)
+                    </a>
+                }
+            }
+            &nbsp;
+        </div>
+
+        <div class="displaylabel">
+            Start Date
+        </div>
+        <div class="displayfield">
+            @Html.DisplayFor(model => model.StartDate) &nbsp;
+        </div>
+
+        <div class="displaylabel">
+            Personal Nr.
+        </div>
+
+        <div id="personellNumber" class="displayfield">
+            @Html.DisplayFor(model => model.PersonalNumber)  &nbsp;
+        </div>
+
+        <div class="displaylabel">
+            EP_ID
+        </div>
+        <div class="displayfield">
+            @Html.DisplayFor(model => model.EP_ID) &nbsp;
+        </div>
+
+        <div class="displaylabel">
+            Org-Unit
+        </div>
+        <div class="displayfield">
+            @Html.Raw(Model.OrgUnit) &nbsp;
+        </div>
+
+        <div class="displaylabel">
+            Line Manager
+        </div>
+        <div class="displayfield">
+            @{
+                if (Model.LineManagerGuid != null)
+                {
+                    <a target="_blank" href="/PersonProfile/Profile/@Model.LineManagerGuid">
+                        @Html.DisplayFor(model => model.LineManager)
+                    </a>
+                }
+            }
+            &nbsp;
+        </div>
+
+        <div class="displaylabel">
+            Teamleader
+        </div>
+        <div class="displayfield">
+            @{
+                if (Model.TeamleaderGuid != null)
+                {
+                    <a target="_blank" href="/PersonProfile/Profile/@Model.TeamleaderGuid">
+                        @Html.DisplayFor(model => model.Teamleader)
+                    </a>
+                }
+            }
+            &nbsp;
+        </div>
+
+        <div class="displaylabel">
+            Assistance
+        </div>
+        <div class="displayfield">
+            @{
+                @Html.Raw(Model.Assistance)
+            }
+            &nbsp;
+        </div>
+
+        <div class="displaylabel">
+            Sponsor
+        </div>
+        <div class="displayfield">
+            @{
+                if (Model.SponsorGuid != null)
+                {
+                    <a target="_blank" href="/PersonProfile/Profile/@Model.SponsorGuid">
+                        @Html.DisplayFor(model => model.Sponsor)
+                    </a>
+                }
+            }
+            &nbsp;
+        </div>
+        @{
+            if (Model.IsSelf)
+            {
+                <div class="displaylabel">
+                    Inactive begin
+                </div>
+                <div class="displayfield">
+                    @Html.DisplayFor(model => model.LeaveFromDateString) &nbsp;
+                </div>
+                <div class="displaylabel">
+                    Inactive end
+                </div>
+                <div class="displayfield">
+                    @Html.DisplayFor(model => model.LeaveToDateString) &nbsp;
+                </div>
+            }
+        }
+
+        @*</div>*@
+    </div>
+    <div style="clear: both; "></div>
+    <div id="employment-change-section" style="float: left; margin-top: 10px;">
+        @{ if (Model.CanOffboard && (!Model.IsHistorical || Model.IsHistorical && Model.Status == Kapsch.IS.EDP.Core.Logic.ProcessStatus.STATUSITEM_ACTIVE))
+            {
+                if (Model.IsOffboardingDisabled)
+                {
+                    <input class="kapsch-text-button k-button k-button-icontext" type="button" title="@Model.DisabledTitle" value="End this employment" disabled />
+                }
+                else
+                {
+                    <input class="kapsch-text-button k-button k-button-icontext" type="button" value="End this employment" onclick="javascript:  showInWindow('/Offboarding/DoOffboarding/@Model.Guid/true','End this employment')" />
+                }
+            }
+            if (Model.CanChange && (!Model.IsHistorical || Model.IsHistorical && Model.Status == Kapsch.IS.EDP.Core.Logic.ProcessStatus.STATUSITEM_ACTIVE))
+            {
+                if (Model.IsWorkflowDisabled)
+                {
+                    <input class="kapsch-text-button k-button k-button-icontext" type="button" value="Change employment" disabled />
+                }
+                else
+                {
+                    <input class="kapsch-text-button k-button k-button-icontext" type="button" value="Change employment" onclick="javascript: showInWindow('/Change/ChangeEmployment/@Model.Guid/@Model.ente_guid/true', 'Change employment')" />
+                }
+
+            }
+        }
+        @*@{ if (Model.CanOffboard && !Model.IsHistorical)
+                {
+                    if (Model.IsWorkflowDisabled)
+                    {
+                        <input class="kapsch-text-button k-button k-button-icontext" type="button" value="End this employment" disabled />
+                    }
+                    else
+                    {
+                        <input class="kapsch-text-button k-button k-button-icontext" type="button" value="End this employment" onclick="javascript:  showInWindow('/Offboarding/DoOffboarding/@Model.Guid/true','End this employment')" />
+                    }
+                }
+                if (Model.CanChange && !Model.IsHistorical)
+                {
+                    if (Model.IsWorkflowDisabled)
+                    {
+                        <input class="kapsch-text-button k-button k-button-icontext" type="button" value="Change employment" disabled />
+                    }
+                    else
+                    {
+                        <input class="kapsch-text-button k-button k-button-icontext" type="button" value="Change employment" onclick="javascript: showInWindow('/Change/ChangeEmployment/@Model.Guid/@Model.ente_guid/true', 'Change employment')" />
+                    }
+
+                }
+            }*@
+
+    </div>
+
+
+
+    <dl class="dl-horizontal" style="display:none;">
+        <dt>
+            @Html.DisplayNameFor(model => model.CostCenterKstID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CostCenterKstID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CostCenterResponsible)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CostCenterResponsible)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PersonalNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PersonalNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EP_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EP_ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrgUnit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrgUnit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LineManager)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LineManager)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Teamleader)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Teamleader)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Assistance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Assistance)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Sponsor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Sponsor)
+        </dd>
+
+    </dl>
+
+
+
+</div>
+
+@{
+    if (Model.CanViewUser)
+    {
+        <div style="clear: both;"></div>
+        <hr style="margin-bottom: 20px; margin-top: 20px">
+        <div class="text-header">Configured Users:</div>
+
+        <div>
+
+            @(Html.Kendo().Grid<UserModel>()
+            .Name("UserModel" + Model.Guid)
+
+                .ToolBar(tb =>
+                {
+                    if (Model.CanManageUser && !Model.IsHistorical && Model.IsMainEmployment)
+                    {
+                        tb.Custom().Text("Add User").Url("#").HtmlAttributes(new { onclick = "showInWindow('/User/Add/" + Model.Guid + "/true','Add User');", @class = "kapsch-text-button" });
+                    }
+                })
+            .Sortable(s => s.Enabled(Model.CanManageUser && !Model.IsHistorical))
+            .Columns(columns =>
+            {
+                if (Model.CanManageUser && !Model.IsHistorical)
+                {
+                    columns.Bound(item => item.Guid).Title("").Filterable(false).Width(70)
+                      .ClientTemplate("<a title='Edit' href='\\#' "
+                        + "onclick='showInWindow(\""
+                        + "/User/Edit/"
+                        + "#= Guid #/true\",\"Edit User\");' "
+                        + "data-id='#=Guid#'"
+                        + ">"
+                        + "<i class='material-icons'>edit</i>"
+                        + "</a>"
+                        + "<a title='Delete' href='\\#' "
+                        + "onclick='user.Functions.Delete(\"#=Guid#\",\"User\",\"#=Username#\",\"UserModel\");' "
+                        + "data-id='#=Guid#'"
+                        + ">"
+                        + "<i class='material-icons'>delete</i>"
+                        + "</a>"
+                      );
+                }
+                columns.Bound(item => item.IsMainUser).Filterable(ftb => ftb.Cell(cell => cell.Operator("eq").SuggestionOperator(FilterType.Contains).ShowOperators(false)).Messages(m => m.IsFalse("no").IsTrue("yes"))).ClientTemplate("<input type='checkbox' disabled #= IsMainUser == true ? checked='checked' : '' # />").Width(140);
+                columns.Bound(item => item.UserDomainDisplayName).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+                columns.Bound(item => item.Username).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+                columns.Bound(item => item.StatusDisplayName).Width(200).Filterable(false);
+                columns.Bound(item => item.UserTypeDisplayName).Width(200).Filterable(false);
+            })
+            .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(false)
+            )
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(5)
+                .Read("ReadUserList", "Employment", new { empl_guid = Model.Guid })
+                .Events(events => events.Error("exceptionManager.Events.HandleError"))
+            )
+            )
+        </div>
+
+    }
+
+}
+
+<script>
+    $(document).ready(function (e) {
+        helper.Functions.Performance.SetStopped();
+    });
+</script>

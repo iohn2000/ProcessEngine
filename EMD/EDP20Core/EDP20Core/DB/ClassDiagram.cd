@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Kapsch.IS.EDP.Core.Entities.EMDBaseObjectHandler">
+    <Position X="1.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAIAAAIAAAAAAAAAAAAgAAAAAABAAAAAA=</HashCode>
+      <FileName>Entities\EMDBaseObjectHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Kapsch.IS.EDP.Core.Entities.EMDHistorizableObject" Collapsed="true">
+    <Position X="8.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAQAAAAAAAACYAAAQAAIACAAACAAAAAAAAA=</HashCode>
+      <FileName>Entities\EMDHistorizableObject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Kapsch.IS.EDP.Core.Entities.EMDHistorizableObjectHandler">
+    <Position X="3.75" Y="4.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AEAAAQAAAAAgAAACIAAAAAAAAAAAAgAAAAAABABAAAA=</HashCode>
+      <FileName>Entities\EMDHistorizableObjectHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Kapsch.IS.EDP.Core.Entities.EMDObject" Collapsed="true">
+    <Position X="9.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAABAAAAACAAAABAQQAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\EMDObject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Kapsch.IS.EDP.Core.Entities.EMDObjectHandler">
+    <Position X="0.5" Y="4.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAIAAAAAAAAAAAAgAAAAAAAABAAAA=</HashCode>
+      <FileName>Entities\EMDObjectHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Kapsch.IS.EDP.Core.Entities.PersonHandler">
+    <Position X="3.75" Y="8" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAgJCAAAAAAAAAqAGAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Entities\PersonHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Kapsch.IS.EDP.Core.Entities.EMDPerson" Collapsed="true">
+    <Position X="8.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CEAAAEABCAAABAAABQEEAAggAAAAAgACIEoAAAMUQAI=</HashCode>
+      <FileName>Entities\Person.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Kapsch.IS.EDP.Core.Entities.PersonSex" Collapsed="true">
+    <Position X="8" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Entities\Person.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Kapsch.IS.EDP.Core.Entities.EMDObjectContainer" Collapsed="true">
+    <Position X="10.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Entities\ObjectContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Kapsch.IS.EDP.Core.Entities.ObjectContainerHandler">
+    <Position X="0.5" Y="8.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAAQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\ObjectContainerHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Kapsch.IS.EDP.Core.Entities.IEMDBaseObjectHandler" Collapsed="true">
+    <Position X="8" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAIAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\IEMDBaseObjectHandler.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Kapsch.IS.EDP.Core.Entities.IEMDHistorizableObject">
+    <Position X="5.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAACAAAAAAAAA=</HashCode>
+      <FileName>Entities\IEMDHistorizableObject.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Kapsch.IS.EDP.Core.Entities.IEMDHistorizableObjectHandler">
+    <Position X="8.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Entities\IEMDHistorizableObjectHandler.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Kapsch.IS.EDP.Core.Entities.IEMDObject" Collapsed="true">
+    <Position X="5.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAABAAAAAAAAAABAQQAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\IEMDObject.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Kapsch.IS.EDP.Core.Entities.IEMDObjectHandler" Collapsed="true">
+    <Position X="8" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Entities\IEMDObjectHandler.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

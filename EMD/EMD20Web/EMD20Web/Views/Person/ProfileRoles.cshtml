@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Profile";
+    Layout = null;
+}
+
+
+@(Html.Kendo().DropDownList().Name("DDEmployment")
+            .OptionLabel("Please Select")
+            .DataTextField("Guid")
+            .DataValueField("Guid")
+        .DataSource(source =>
+         {
+             source.Read("Read", "Employment", new { P_Guid = HttpContext.Current.Request["P_GUID"].ToString() });
+         }
+         
+
+    )
+    )
+

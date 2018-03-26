@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewBag.Title = "Error List";
+}
+
+
+
+<div class="body-content ">
+    <button title="Download Error List as file" onclick="exceptionManager.Events.OnHandleDownloadClick(this)" class="kapsch-text-button k-button k-button-icontext">Download</button>
+</div>
+
+<div id="errorListGrid"></div>
+
+
+
+<script>
+
+
+
+    $(document).ready(function () {
+        $("#errorListGrid").kendoGrid({
+            dataSource: {
+                data: exceptionManager.Functions.GetErrors(),
+                schema: {
+                    model: {
+                        fields: {
+                            TimeStamp: { type: "date" },
+                            Url: { type: "string" },
+                            User: { type: "string" },
+                            ErrorCode: { type: "string" },
+                            ErrorMessage: { type: "string" },
+                            StackTrace: { type: "string" }
+                        }
+                    }
+                },
+                pageSize: 20
+            },
+            height: 750,
+            scrollable: true,
+            sortable: true,
+            filterable: {
+                mode: "row"
+            },
+            pageable: {
+                input: true,
+                numeric: false
+            },
+            columns: [
+
+
+             { command: [{ text: "Details", click: exceptionManager.Functions.ShowErrorInWindow, imageClass: "button" }], title: " ", width: "100px" },
+                  {
+                      field: "TimeStamp", type: "date", format: "{0:dd.MM.yyyy HH:mm:ss}",
+                      filterable: {
+                          cell: {
+                              showOperators: true, suggestionOperator: "eq",
+                              template: function (args) {
+                                  args.element.kendoDateTimePicker({ format: "dd.MM.yyyy  HH:mm" });
+                              }
+                          }
+                      },
+                      width: 300
+                  },
+
+
+                //{
+                //    field: "TimeStamp",
+                //    title: "Time stamp",
+                //    template: "#= kendo.toString(kendo.parseDate(new Date(TimeStamp), 'yyyy-MM-dd'), 'dd.MM.yyyy HH:mm:ss') #",
+                //    filterable: {
+                //        cell: {
+                //            showOperators: true, suggestionOperator: "eq",
+                //            template: function (args) {
+                //                args.element.kendoDatePicker({ format: "dd.MM.yyyy" });
+                //            }
+                //        }
+                //    },
+                //    width: 250
+                //},
+                { field: "ErrorCode", filterable: { cell: { showOperators: false, suggestionOperator: "contains" } }, width: 120 },
+                { field: "ErrorMessage", filterable: { cell: { showOperators: false, suggestionOperator: "contains" } } },
+                { field: "StackTrace", filterable: { cell: { showOperators: false, suggestionOperator: "contains" } } }
+
+                 //{
+                 //    field: "TimeStamp", title: "TimeStamp", type: "date", format: "{0:dd.MM.yyyy}",
+                 //    filterable: {
+                 //        cell: {
+                 //            showOperators: true, suggestionOperator: "eq",
+                 //            template: function (args) {
+                 //                args.element.kendoDatePicker({ format: "dd.MM.yyyy" });
+                 //            }
+                 //        }
+                 //    }
+                 //},
+
+                //{ field: "TimeStamp", filterable: { cell: { showOperators: false, suggestionOperator: "contains" } } },
+
+            ]
+
+        }).addClass("k-grid-big");
+
+
+
+
+    });
+</script>

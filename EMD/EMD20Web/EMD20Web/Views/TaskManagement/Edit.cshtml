@@ -1,0 +1,250 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.TaskItemModel
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+@using System.Xml;
+@{
+    ViewBag.Title = "Approve Task";
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/TaskManagement_Edit.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+<div id="formcontent">
+    @using (Ajax.BeginForm("DoEdit", "TaskManagement", null, new AjaxOptions
+    {
+        HttpMethod = "Post",
+        OnBegin = "formValidation.OnBegin(xhr)",
+        OnSuccess = "taskManagement.Events.OnApproveTasksSuccess(xhr)",
+        OnFailure = "formValidation.OnFailure(xhr)"
+    }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.Guid)
+        @Html.HiddenFor(model => model.TSK_ProcessName)
+        @Html.HiddenFor(model => model.TSK_TaskTitle)
+        @Html.HiddenFor(model => model.TSK_ToDo)
+        @Html.HiddenFor(model => model.Requestor_Name)
+        @Html.HiddenFor(model => model.Requestor_pers_guid)
+        @Html.HiddenFor(model => model.Effected_Person_Name)
+        @Html.HiddenFor(model => model.TSK_DateRequested)
+        @Html.HiddenFor(model => model.TSK_EffectedPerson_EmplGUID)
+        @Html.HiddenFor(model => model.TSK_Requestor_EmplGUID)
+        @Html.HiddenFor(model => model.TSK_Approver_EmplGUID)
+        @Html.HiddenFor(model => model.TSK_DecisionOptions)
+        @Html.HiddenFor(model => model.TSK_Duedate)
+        @Html.HiddenFor(model => model.TSK_DateRequested)
+        @Html.HiddenFor(model => model.TSK_LinkedTasks_ID)
+        @Html.HiddenFor(model => model.TSK_DateNextReminder)
+        @Html.HiddenFor(model => model.ValidFrom)
+        @Html.HiddenFor(model => model.ValidTo)
+        @Html.HiddenFor(model => model.ActiveFrom)
+        @Html.HiddenFor(model => model.ActiveTo)
+
+        @*<div style="display: none;">@Html.EditorFor(model => model.BatchItems)</div>*@
+
+        for (int i = 0; i < Model.BatchItems.Count; i++)
+        {
+            @Html.HiddenFor(model => Model.BatchItems[i])
+        }
+
+        <div id="formresults" class="infobox error" style="display:none"></div>
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="k-edit-form-container" style="float:left;">
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TSK_ProcessName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.ValueFor(model => model.TSK_ProcessName)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TSK_TaskTitle, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.ValueFor(model => model.TSK_TaskTitle)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TSK_ToDo, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.ValueFor(model => model.TSK_ToDo)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Requestor_Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.ValueFor(model => model.Requestor_Name)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Effected_Person_Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.ValueFor(model => model.Effected_Person_Name)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TSK_DateRequested, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.ValueFor(model => model.TSK_DateRequested)
+                    </div>
+                </div>
+
+                @{
+                    if (!Model.IsClosed)
+                    {
+                        XmlDocument xmldoc = new XmlDocument();
+                        //string filepath = @"C:\Workspaces\WS_EDP20\EMD\EMD20Web\EMD20Web\EquipmentFields.xml";
+                        xmldoc.LoadXml(Model.TSK_DecisionOptions);
+
+                        String XPath = "/Taskfields/Field";
+                        XmlNodeList Nodes = xmldoc.SelectNodes(XPath);
+                        foreach (XmlNode xnode in Nodes)
+                        {
+                            switch (xnode.Attributes["type"].Value)
+                            {
+                                case "dropdown":
+                                case "multiselect":
+                                case "radiobutton":
+                                    List<Kapsch.IS.EMD.EMD20Web.Models.TextValueModel> listitems = new List<Kapsch.IS.EMD.EMD20Web.Models.TextValueModel>();
+
+
+                                    XmlNodeList optionList = xnode.SelectNodes("option");
+                                    foreach (XmlNode xnodeoption in optionList)
+                                    {
+                                        Kapsch.IS.EMD.EMD20Web.Models.TextValueModel newListitem = new Kapsch.IS.EMD.EMD20Web.Models.TextValueModel(xnodeoption.InnerText, xnodeoption.Attributes["value"].Value);
+                                        listitems.Add(newListitem);
+                                    }
+                                    ViewData[xnode.Attributes["id"].Value] = listitems.AsEnumerable();
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }
+
+                        foreach (XmlNode xnode in Nodes)
+                        {
+                            <div class="form-group">
+                                @Html.Label(@xnode.Attributes["name"].InnerText.ToString())
+                                <div class="col-md-10">
+                                    @switch (xnode.Attributes["type"].Value)
+                                    {
+                                        case "dropdown":
+                                            @Html.Kendo().DropDownList().OptionLabel("Please select").Name(@xnode.Attributes["id"].InnerText.ToString()).DataTextField("Text").DataValueField("Value").HtmlAttributes(new { @style = "width:500px", @required = "required", @validationMessage = "Field required!" }).Filter(FilterType.Contains).Value(Model.ApprovalDecision).BindTo((System.Collections.IEnumerable)ViewData[xnode.Attributes["id"].Value])
+                                            break;
+                                        case "multiselect":
+                                            @Html.Kendo().MultiSelect().Placeholder("Please select").Name(@xnode.Attributes["id"].InnerText.ToString()).DataTextField("Text").DataValueField("Value").HtmlAttributes(new { @style = "width:500px", @required = "required", @validationMessage = "Field required!" }).Filter(FilterType.Contains).BindTo((System.Collections.IEnumerable)ViewData[xnode.Attributes["id"].Value])
+                                            break;
+                                        case "textbox":
+                                            if (xnode.Attributes["id"].InnerText.ToString().Equals("approvalComment", StringComparison.InvariantCultureIgnoreCase))
+                                            {
+                                                @Html.Kendo().TextBox().Name(@xnode.Attributes["id"].InnerText.ToString()).HtmlAttributes(new { @id = @xnode.Attributes["id"].InnerText.ToString() });
+                                            }
+                                            else
+                                            {
+                                                @Html.Kendo().TextBox().Name(@xnode.Attributes["id"].InnerText.ToString()).HtmlAttributes(new { @id = @xnode.Attributes["id"].InnerText.ToString(), @required = "required", @data_required_msg = "Field required!" });
+                                            }
+                                            break;
+                                        case "date":
+                                            @Html.Kendo().DatePicker().Name(@xnode.Attributes["id"].InnerText.ToString()).HtmlAttributes(new { @id = @xnode.Attributes["id"].InnerText.ToString(), @required = "required", @validationMessage = "Field required!" });
+                                            break;
+                                        case "datetime":
+                                            @Html.Kendo().DateTimePicker().Name(@xnode.Attributes["id"].InnerText.ToString()).HtmlAttributes(new { @id = @xnode.Attributes["id"].InnerText.ToString(), @required = "required", @validationMessage = "Field required!" });
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TSK_Information, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.ValueFor(model => model.TSK_Information)
+                        @*@Html.TextArea(model => model.TSK_Information, new { style = "width:400px;height:100px;disabled=disabled" })*@
+                    </div>
+                </div>
+
+                @{if (!Model.IsClosed)
+                    {
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.TSK_Notes, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(model => model.TSK_Notes, new { style = "width:400px;height:100px;" })
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <hr />
+                        foreach (System.Collections.Generic.KeyValuePair<string, string> item in Model.DecisionResults)
+                        {
+                            <div class="form-group">
+                                <label class="control-label col-md-2">@item.Key</label>
+                                <div class="col-md-10">
+                                    @item.Value
+                                </div>
+                            </div>
+                        }
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Note</label>
+                            <div class="col-md-10">
+                                @Model.TSK_Notes
+                            </div>
+                        </div>
+                    }
+                }
+
+                <div class="form-group form-group-buttons">
+                    <label></label>
+                    <div class="col-md-10">
+                        @if (!Model.IsClosed && Model.CanManage)
+                        {
+                            <button type="button" value="Cancel" class="k-button" onclick="closeWindow();">Cancel</button>
+                            @*<button type="button" value="Save" class="k-button" onclick="taskManagement.Events.OnButtonSaveClick();">Save</button>*@
+                            <input type="submit" value="Save" name="action:save" class="btn k-button" />
+                            <input type="submit" value="Confirm" name="action:approve" class="btn k-button" />
+                        }
+                        else
+                        {
+                            <button type="button" value="Cancel" class="k-button" onclick="closeWindow();">Close</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    $(function () {
+        $("form").kendoValidator();
+    });
+
+    $("#Decision").prop('required', 'required');
+
+    $(document).ready(function (e) {
+        var formRoot = $('form[action="/TaskManagement/DoEdit"]');
+
+        var counter = 0;
+        for (var key in taskManagement.Entities.SelectedTaskGuids) {
+            var inputField = '<input id="BatchItems_' + counter + '_" name="BatchItems[' + counter + ']" type="hidden" value="' + key + '">';
+
+            $(formRoot).append(inputField);
+            counter++;
+        }
+    });
+
+
+</script>

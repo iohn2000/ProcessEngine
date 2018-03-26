@@ -1,0 +1,93 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.EmploymentTabModel
+
+@{
+    ViewBag.Title = "Add Package to Employment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("DoProfilePackageAddPackageToEmployment", "Person"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal" style="width:900px;border:1px solid red;float:left;">
+        <h4>Add Package to Employment</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="k-edit-form-container" style="width:800px;border:1px solid green;float:left;">
+            <div class="editor-label">Package</div>
+            <div class="editor-field">
+                @(
+                Html.Kendo().DropDownList().Name("ddWinAddPackage" + Model.EP_Guid)
+                .DataTextField("Name")
+                .DataValueField("Guid")
+                //.HtmlAttributes(new { style = "width: 100%" })
+                .Filter(FilterType.Contains)
+                .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("ReadAvailableListOfPackagesForEmployment", "Package", new { ep_guid = Model.EP_Guid });
+                    })
+                    .ServerFiltering(true);
+                })
+                    //.BindTo((System.Collections.IEnumerable)ViewData["PackagesForEmploymentAvailableToAdd" + Model.EP_Guid ])
+                    //.DataSource(source => {
+                    //    source.Read(read =>
+                    //    {
+                    //        read.Action("ReadPackagesForEmploymentAvailableToAdd", "Package",new { EP_Guid = Model.EP_Guid });
+                    //    });
+                    //})
+                )
+            </div>
+
+            <div class="editor-label">
+                <input type="submit" value="Create Package" class="k-button" /><br />
+                <input type="submit" value="Cancel" class="k-button" onclick="closeWindow();" /><br />
+                @Html.Kendo().Button().Name("btnWinAddPackage" + Model.EP_Guid).Content("Add Package")
+            </div>
+            
+        </div>
+    </div>
+}
+
+            <script type="text/javascript">
+            var btnWinAddPackage = '#btnWinAddPackage' + '@Model.EP_Guid';
+            $(btnWinAddPackage).click(function (e) {
+                e.preventDefault();
+
+                var ep_guid = '@Model.EP_Guid';
+                var dropdownlistId = '#ddWinAddPackage' + '@Model.EP_Guid';
+
+                alert("Package Add To Implement - " + dropdownlistId);
+                var dropdownlistEQ = $(dropdownlistId).data("kendoDropDownList");
+                if (dropdownlistEQ == null) {
+                    alert('x');
+                }
+                else {
+                    alert('y');
+                }
+
+                var dropdownlistValue = dropdownlistEQ.value();
+                alert(dropdownlistValue);
+
+                $.ajax({
+                    //url: "/Person/ProfilePackageAddPackageToEmployment",
+                    url: "/Person/DoProfilePackageAddPackageToEmployment/" + ep_guid + "/" + dropdownlistValue,
+                    type: 'Post',
+                    data: {
+                        ep_guid: ep_guid,
+                        oc_guid: dropdownlistValue
+                    },
+                    success: function (response) {
+                        alert("Success");
+
+                    },
+                    error: function (response) {
+                        alert('AJAX-Error' + response);
+                    }
+                });
+
+            });
+
+
+            </script>

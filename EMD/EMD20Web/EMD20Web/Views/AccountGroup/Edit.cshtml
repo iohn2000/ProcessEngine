@@ -1,0 +1,270 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.GroupAccountManagementModel
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+
+@{
+    ViewBag.Title = Model.Guid == null ? "Add Costcenter group" : "Edit Costcenter group";
+    ViewBag.TooltipUrl = Model.Guid == null ? "http://" + Request.Url.Authority + "/Quickinfo/AccountGroup_Add.html" : "http://" + Request.Url.Authority + "/Quickinfo/AccountGroup_Edit.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+<script>
+    var model = '@Html.Raw(Json.Encode(Model.AssignedEmploymentStrings))';
+    accountGroup.Entity.AssignedEmployees = JSON.parse(model);
+
+    accountGroup.Entity.SelectedEnterprise = '@Model.E_Guid';
+</script>
+
+<div id="formcontent">
+    @using (Ajax.BeginForm("Edit", "AccountGroup", null, new AjaxOptions
+    {
+        HttpMethod = "Post",
+        OnBegin = "formValidation.OnBegin(xhr)",
+        OnSuccess = "formValidation.OnSuccess(xhr)",
+        OnFailure = "formValidation.OnFailure(xhr)"
+    }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.Guid)
+        @Html.HiddenFor(model => model.Acgr_Guid)
+
+        @Html.HiddenFor(model => model.ValidFrom)
+        @Html.HiddenFor(model => model.ValidTo)
+        @Html.HiddenFor(model => model.ActiveFrom)
+        @Html.HiddenFor(model => model.ActiveTo)
+
+
+        @Html.HiddenFor(model => model.ValidTo)
+        @Html.HiddenFor(model => model.ActiveFrom)
+        @Html.HiddenFor(model => model.ActiveTo)
+
+
+
+
+
+        <div id="formresults" class="infobox error" style="display:none"></div>
+
+        <div class="form-horizontal">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="k-edit-form-container" style="float:left;">
+
+
+                @*<div class="form-group">
+                        <div></div>
+                        <div class="col-md-10">INFO: changing the Group-name and the Enterprise, will change all underlying group infos</div>
+                    </div>*@
+
+                <div class="form-group">
+
+                    @Html.LabelForRequired(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+
+                        <text>
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+
+                        </text>
+
+
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                    @if (!string.IsNullOrEmpty(Model.Acgr_Guid))
+                    {
+                        <div>
+                            <div style="float:left; padding: 3px; width: auto"><i class="material-icons" data-role="tooltip">info</i></div>
+                            <div style="float:left; width: 250px; display:inline">changing the 'Group Name', will change all underlying group infos</div>
+                        </div>
+                    }
+                </div>
+
+                @*<div class="form-group">
+                        @Html.LabelForRequired(model => model.E_Guid, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @(
+                                    Html.Kendo().DropDownListFor(m => m)
+                                    .OptionLabel("Please select")
+                                    .Name("E_Guid")
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .HtmlAttributes(new { @style = "width:100%" })
+                                    .Filter(FilterType.Contains)
+                                    .IgnoreCase(true)
+                                    .AutoBind(true)
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("ReadForSelect", "Enterprise");
+                                        })
+                                        .ServerFiltering(false);
+                                    })
+                                    .Events(b => b.Select("accountGroup.Events.OnEnterpriseDropDownlistSelectionSelect")) //.DataBound("accountGroup.Events.OnEnterpriseDropDownlistDataBound"))
+                            )
+                            @Html.ValidationMessageFor(model => model.E_Guid, "", new { @class = "text-danger" })
+                        </div>
+                        @if (!string.IsNullOrEmpty(Model.Acgr_Guid))
+                        {
+                            <div>
+                                <div style="float:left; padding: 3px; width: auto"><i class="material-icons" data-role="tooltip">info</i></div>
+                                <div style="float:left; width: 250px; display:inline">changing the 'Enterprise', will change all underlying group infos</div>
+                            </div>
+                        }
+                    </div>*@
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.E_Guid, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Partial("Controls/_TextValuePopupSelectionView", Model.EnterpriseSelection)
+                        @Html.ValidationMessageFor(model => model.E_Guid, "", new { @class = "text-danger" })
+                    </div>
+                    @if (!string.IsNullOrEmpty(Model.Acgr_Guid))
+                    {
+                        <div>
+                            <div style="float:left; padding: 3px; width: auto"><i class="material-icons" data-role="tooltip">info</i></div>
+                            <div style="float:left; width: 250px; display:inline">changing the 'Enterprise', will change all underlying group infos</div>
+                        </div>
+                    }
+                </div>
+
+
+                @*<div class="form-group">
+                        @Html.LabelForRequired(model => model.Acco_Guid, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @(
+                                Html.Kendo().DropDownListFor(m => m)
+                                .OptionLabel("Please select")
+                                .Name("Acco_Guid")
+                                .DataTextField("Text")
+                                .DataValueField("Value")
+                                .HtmlAttributes(new { @style = "width:100%" })
+                                .Filter(FilterType.Contains)
+                                .IgnoreCase(true)
+                                .AutoBind(true)
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("ReadForSelect", "Account");
+                                    })
+                                    .ServerFiltering(false);
+                                })
+                                  .Value(Model.Acco_Guid)
+                            )
+                            @Html.ValidationMessageFor(model => model.Acco_Guid, "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
+
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.Acco_Guid, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Partial("Controls/_TextValuePopupSelectionView", Model.AccountSelection)
+                        @Html.ValidationMessageFor(model => model.Acco_Guid, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div style="clear:both;  "></div>
+
+            <!-- Members Mapping Start -->
+            <div class="form-group" style="margin-left: 5px; margin-top: 30px; width: 100%">
+                <div style="width: 40%; float: left;">
+
+
+                    @(
+                            Html.Kendo().Grid(Model.AvailableEmployments)
+                            .Name("AvailableEmployments")
+                            .DataSource(dataSource => dataSource
+                                .Ajax().ServerOperation(false)
+                                .Read(read =>
+                                {
+                                    read.Action("ReadAvailableEmployments", "AccountGroup").Data("accountGroup.Data.AvailableEmploymentParameters");
+                                })
+                                .Sort(a => a.Add("Text"))
+                                .Events(events => events.Error("exceptionManager.Events.HandleError"))
+                             )
+                             .HtmlAttributes(new { @class = "k-grid-list k-grid-selectable", style = "height: 300px" })
+
+                             .Columns(columns =>
+                             {
+
+                                 columns.Bound(item => item.Text).Title("Available Employments").Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter"))).Sortable(true);
+
+                             })
+                            .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+                             .Sortable(sortable => sortable.Enabled(true))
+                            .Pageable(p => p.Enabled(false))
+                            .Scrollable(s => s.Enabled(true))
+                            .Selectable(selectable => selectable
+                                .Mode(GridSelectionMode.Multiple)
+                            )
+
+
+                    )
+                </div>
+
+
+                <div style="float:left;  margin-left: 30px; margin-top: 30px">
+                    <button name="buttonToLeft" id="buttonToLeft" class="btn k-button kapsch-text-button" type="button" onclick="accountGroup.Events.OnClickRemoveEmployment()" style="margin: 0; height: 34px; padding: 7px"><i class="material-icons">arrow_back</i></button>
+                    <button name="buttonToRight" id="buttonToRight" class="btn k-button kapsch-text-button" type="button" onclick="accountGroup.Events.OnClickAddEmployment()" style="margin: 0; height: 34px; padding: 7px"><i class="material-icons">arrow_forward</i></button>
+                </div>
+
+                <div class="form-group1" style="float:left;  width: 40%; margin-left: 30px">
+                    @(Html.Kendo().Grid(Model.AssignedEmployments)
+                        .Name("AssignedEmployments")
+
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .ServerOperation(false)
+                            .Sort(a => a.Add("Text"))
+                            .Events(events => events.Error("exceptionManager.Events.HandleError"))
+                         )
+                         .HtmlAttributes(new { @class = "k-grid-list k-grid-selectable", style = "height: 300px" })
+                         .Columns(columns =>
+                         {
+                             columns.Bound(item => item.Text).Title("Assigned Employments").Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter"))).Sortable(true);
+                         })
+                        .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+                        .Sortable(sortable => sortable.Enabled(true))
+                        .Pageable(p => p.Enabled(false))
+                        .Scrollable(s => s.Enabled(true))
+                        .Selectable(selectable => selectable
+                            .Mode(GridSelectionMode.Multiple)
+                        )
+                        .Events(e => e.DataBound("accountGroup.Events.OnAssignedEmploymentsDataBound"))
+
+                    )
+                </div>
+
+                <div style="clear: both; width: 100%; "></div>
+                <div class="k-edit-form-container" style="float:left;">
+                    <div class="form-group form-group-buttons">
+                        <label></label>
+                        <div class="col-md-10">
+                            <button type="button" value="Cancel" class="k-button kapsch-text-button" onclick="closeWindow();">Cancel</button>
+                            <input type="submit" value="Save" class="btn k-button kapsch-text-button" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+
+</div>
+
+<script>
+    $(function () {
+        $("form").kendoValidator();
+    });
+
+    $(document).ready(function () {
+        $("form").bind("keypress", function (e) {
+            if (e.keyCode == 13) {
+                return false;
+            }
+        });
+    });
+</script>

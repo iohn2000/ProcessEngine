@@ -1,0 +1,20 @@
+﻿@(
+        Html.Kendo().DropDownListFor(m => m)
+        .OptionLabel("Please select")
+        .Name("DGT_Guid")
+        .DataTextField("Text")
+        .DataValueField("Value")
+        .HtmlAttributes(new { @style = "width:500px" })
+        .Filter(FilterType.Contains)
+        .IgnoreCase(true)
+        .AutoBind(true)
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("ReadForSelect", "DistributionGroup");
+            });
+        })
+)
+
+

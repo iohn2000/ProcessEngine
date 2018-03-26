@@ -1,0 +1,10 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.OffBoarding.OffBoardingActivity" instance=".OffBoardingActivity">
+  <name>Offboarding</name>
+  <properties>
+    <property name="RequestingPersonEmploymentGuid"  direction="input"   dataType="stringType" />
+    <property name="EffectedPersonEmploymentGuid"    direction="input"   dataType="stringType" />
+    <property name="RemoveEquipmentInfos"            direction="input"   dataType="stringType" />
+    <property name="ReturnStatus"                    direction="output"  dataType="stringType" />
+  </properties>
+  <transition to=".XXX"/>
+</activity>

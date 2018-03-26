@@ -1,0 +1,92 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.ErrorModel
+
+@{
+    ViewBag.Title = "An error occured";
+
+}
+
+<div class="body-content ">
+
+    <div style="float:left; width: 300px">
+        <h2>An error occured</h2>
+    </div>
+    <div style="float:right; margin-top: 20px">
+        <a href="/Error/ErrorList">Go to Error List</a>
+    </div>
+
+    <div style="clear: both;"></div>
+
+    @*TODO: Log Error? Send Mail?*@
+    <div>
+        <hr />
+
+        @{
+            //string currentError = HttpContext.Current.Session["Error"].ToString();
+
+            Kapsch.IS.EMD.EMD20Web.Models.ErrorModel em = (Kapsch.IS.EMD.EMD20Web.Models.ErrorModel)HttpContext.Current.Session["ErrorMod"];
+
+        }
+
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.ErrorMessage)
+            </dt>
+
+            <dd>
+                @*@Html.DisplayFor(model => model.ErrorMessage)*@
+                @em.ErrorMessage
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.StackTrace)
+            </dt>
+
+            <dd>
+                @*@Html.DisplayFor(model => model.StackTrace)*@
+                @em.StackTrace
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.KapschErrorNumber)
+            </dt>
+
+            <dd>
+                @*@Html.DisplayFor(model => model.KapschErrorNumber)*@
+                @em.KapschErrorNumber
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Source)
+            </dt>
+
+            <dd>
+                @*@Html.DisplayFor(model => model.Source)*@
+                @em.Source
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.KapschErrorType)
+            </dt>
+
+            <dd>
+                @*@Html.DisplayFor(model => model.KapschErrorType)*@
+                @em.KapschErrorType
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @*@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+            @Html.ActionLink("Back to List", "Index")*@
+    </p>
+
+</div>
+<script>
+    var errorCode = @em.KapschErrorNumber;
+    var errorMessage = '@em.ErrorMessage';
+    var errorTechnical = @Html.Raw(Json.Encode(em.StackTrace));
+
+    $(document).ready(function(e){
+        exceptionManager.Functions.AddError(new exceptionManager.Entities.Error(errorCode, errorMessage, errorTechnical));
+    });
+</script>

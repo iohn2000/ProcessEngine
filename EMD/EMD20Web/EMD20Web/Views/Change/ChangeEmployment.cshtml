@@ -1,0 +1,113 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.Change.ChangeEmploymentModel
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+@{
+    ViewBag.Title = "Change Employment";
+    // Used for OrgUnit Selection
+    ViewData["EnterpriseGuid"] = Model.SourceEnterpriseGuid;
+    ViewBag.TooltipUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/Quickinfo/Change_ChangeEmployment.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+
+<div id="formcontent">
+
+    @using (Ajax.BeginForm("DoChange", "Change", null, new AjaxOptions
+    {
+        HttpMethod = "Post",
+        OnBegin = "formValidation.OnBegin(xhr)",
+        OnSuccess = "changeEmployment.Events.OnChangedEmploymentSuccess(xhr)",
+        OnFailure = "formValidation.OnFailure(xhr)"
+    }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.SourceEmploymentGuid)
+        @Html.HiddenFor(model => model.SourceEnterpriseGuid)
+
+        <div id="formresults" class="infobox error" style="display:none"></div>
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="k-edit-form-container" style="float:left;">
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.SelectedChangeType, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @(Html.Kendo().DropDownListFor(m => m.SelectedChangeType)
+        .Name("SelectedChangeType")
+        .DataTextField("Name")
+        .DataValueField("ChangeType")
+        .Filter(FilterType.Contains)
+        .OptionLabel("Please select")
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("GetChangeTypeModelList", "Change");
+            })
+            .ServerFiltering(false);
+        })
+        .Events(b => b.Change("changeEmployment.Events.OnChangeTypeChanged"))
+        .Value(null)
+                        )
+
+                        @Html.ValidationMessageFor(model => model.SelectedChangeType, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelForRequired(model => model.TargetDate, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    <div class="col-md-10">
+                        @(Html.Kendo().DatePicker()
+                    .Name("TargetDate")
+                    .Format("MMMM yyyy")
+                    .Start(CalendarView.Year).Depth(CalendarView.Year)
+                    .Events(b => b.Change("changeEmployment.Events.OnChangeTargetDate"))
+                        )
+                        @Html.ValidationMessageFor(model => model.TargetDate, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+
+
+                <div id="area_change_employment_selection"></div>
+                <div id="area_equipments_overview"></div>
+
+                <div class="form-group form-group-buttons">
+                    <label></label>
+                    <div class="col-md-10">
+                        <button id="button_get_equipments" type="button" style="display: none" class="k-button kapsch-text-button" onclick="changeEmployment.Events.OnButtonGetEquipmentsClick();">Get Equipments</button>
+                    </div>
+                </div>
+
+                <div class="form-group form-group-buttons">
+                    <label></label>
+                    <div class="col-md-10">
+                        <button type="button" value="Cancel" class="k-button kapsch-text-button" onclick="closeWindow();">Cancel</button>
+                        <input id="button_submit_change" type="submit" value="Do Change" disabled class="btn k-button kapsch-text-button" />
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+    }
+
+</div>
+
+<script>
+    //$(function () {
+    //    $("form").kendoValidator();
+    //});
+
+    changeEmployment.Entities.EmploymentGuid = '@Model.SourceEmploymentGuid';
+    changeEmployment.Entities.EnterpriseGuid = '@Model.SourceEnterpriseGuid';
+    changeEmployment.Entities.EmploymentTypeGuid = '@Model.GuidEmploymentType';
+
+</script>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="33a27715-a612-4b2c-9baa-2bcaca87c0b7" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>
+        The EDP20Core handles the access to the Kapsch EDP-Database.
+      </para>
+    </introduction>
+
+    <section>
+    </section>
+
+    <relatedTopics>
+      <link xlink:href="dd2f4935-ee07-4423-9575-c2f9c3a3f5d6" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,41 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.EmploymentTabModel
+@using Kapsch.IS.EMD.EMD20Web.Models;
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ProfilePackage</title>
+</head>
+<body>
+    <div> 
+        <br /><br />
+        @(Model.EP_Guid)
+        <div class="kapsch-label-full">
+            @(Html.Kendo().Grid<PackageModel>()
+    .Name("Grid")
+    .Columns(columns =>
+    {
+        columns.Bound(item => item.Guid).Title("Guid").Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains")));
+        columns.Bound(item => item.Name).Title("Name").Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains")));
+    })
+    .Scrollable(scr => scr.Height(80))
+    //.Sortable()
+
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .PageSize(100000)
+        .Model(model => model.Id(m => m.Guid))
+        .Read("ReadPackagesForEmployment", "Package", new { EP_Guid = Model.EP_Guid })
+        )
+
+            )
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,94 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDPWfActivities", "EDPWfActivities\EDPWfActivities.csproj", "{1C831980-4222-48C6-A843-DCA11437FB36}"
+	ProjectSection(ProjectDependencies) = postProject
+		{014E7240-BEC9-459A-BD5E-AFAF6A05C4F2} = {014E7240-BEC9-459A-BD5E-AFAF6A05C4F2}
+		{A4294BB6-64AA-4DC3-A377-6649EB2BB1C7} = {A4294BB6-64AA-4DC3-A377-6649EB2BB1C7}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDPWfActivities_UnitTest", "EDPWfActivities_UnitTest\EDPWfActivities_UnitTest.csproj", "{FF2502C6-96D8-4319-A4B5-AA1AC3068E5D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{014E7240-BEC9-459A-BD5E-AFAF6A05C4F2} = {014E7240-BEC9-459A-BD5E-AFAF6A05C4F2}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".KapschLibs", ".KapschLibs", "{893EC2A1-79C6-438A-B932-96E75602D7DD}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\Css.Diagnostics.TraceComLib.dll = ..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\Css.Diagnostics.TraceComLib.dll
+		..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\FastMember.dll = ..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\FastMember.dll
+		..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\Ionic.Zip.dll = ..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\Ionic.Zip.dll
+		..\..\KapschLibs\Kapsch.IS.ITAutomation.Shared\1.0.1.0\Kapsch.IS.ITAutomation.Shared.dll = ..\..\KapschLibs\Kapsch.IS.ITAutomation.Shared\1.0.1.0\Kapsch.IS.ITAutomation.Shared.dll
+		..\..\KapschLibs\Kapsch.IS.ProcessEngine.Shared\1.0.25.0\Kapsch.IS.ProcessEngine.Shared.dll = ..\..\KapschLibs\Kapsch.IS.ProcessEngine.Shared\1.0.25.0\Kapsch.IS.ProcessEngine.Shared.dll
+		..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\Kapsch.IS.Util.dll = ..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\Kapsch.IS.Util.dll
+		..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\log4net.dll = ..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\log4net.dll
+		..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\MoreLinq.dll = ..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\MoreLinq.dll
+		..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\Nini.dll = ..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\Nini.dll
+		..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\Nustache.Core.dll = ..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\Nustache.Core.dll
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDP20Core", "..\EDP20Core\EDP20Core\EDP20Core.csproj", "{014E7240-BEC9-459A-BD5E-AFAF6A05C4F2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A4294BB6-64AA-4DC3-A377-6649EB2BB1C7} = {A4294BB6-64AA-4DC3-A377-6649EB2BB1C7}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kapsch.IS.EDP.DataAccess", "..\EDP20Core\Kapsch.IS.EDP.DataAccess\Kapsch.IS.EDP.DataAccess.csproj", "{A4294BB6-64AA-4DC3-A377-6649EB2BB1C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDPExports", "..\EDPExports\EDPExports\EDPExports.csproj", "{62F486BB-40BD-454D-9123-A055731942B4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C831980-4222-48C6-A843-DCA11437FB36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C831980-4222-48C6-A843-DCA11437FB36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C831980-4222-48C6-A843-DCA11437FB36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C831980-4222-48C6-A843-DCA11437FB36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF2502C6-96D8-4319-A4B5-AA1AC3068E5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF2502C6-96D8-4319-A4B5-AA1AC3068E5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF2502C6-96D8-4319-A4B5-AA1AC3068E5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF2502C6-96D8-4319-A4B5-AA1AC3068E5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{014E7240-BEC9-459A-BD5E-AFAF6A05C4F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{014E7240-BEC9-459A-BD5E-AFAF6A05C4F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{014E7240-BEC9-459A-BD5E-AFAF6A05C4F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{014E7240-BEC9-459A-BD5E-AFAF6A05C4F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4294BB6-64AA-4DC3-A377-6649EB2BB1C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4294BB6-64AA-4DC3-A377-6649EB2BB1C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4294BB6-64AA-4DC3-A377-6649EB2BB1C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4294BB6-64AA-4DC3-A377-6649EB2BB1C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62F486BB-40BD-454D-9123-A055731942B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62F486BB-40BD-454D-9123-A055731942B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62F486BB-40BD-454D-9123-A055731942B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62F486BB-40BD-454D-9123-A055731942B4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CDDDE3F2-8895-40BB-8238-876921328129}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://tfs.kapsch.co.at:8080/tfs/is_dev
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = EDPWfActivities\\EDPWfActivities.csproj
+		SccProjectName1 = EDPWfActivities
+		SccLocalPath1 = EDPWfActivities
+		SccProjectUniqueName2 = EDPWfActivities_UnitTest\\EDPWfActivities_UnitTest.csproj
+		SccProjectName2 = EDPWfActivities_UnitTest
+		SccLocalPath2 = EDPWfActivities_UnitTest
+		SccProjectUniqueName3 = ..\\EDP20Core\\EDP20Core\\EDP20Core.csproj
+		SccProjectName3 = ../EDP20Core/EDP20Core
+		SccLocalPath3 = ..\\EDP20Core\\EDP20Core
+		SccProjectUniqueName4 = ..\\EDP20Core\\Kapsch.IS.EDP.DataAccess\\Kapsch.IS.EDP.DataAccess.csproj
+		SccProjectName4 = ../EDP20Core/Kapsch.IS.EDP.DataAccess
+		SccLocalPath4 = ..\\EDP20Core\\Kapsch.IS.EDP.DataAccess
+		SccProjectUniqueName5 = ..\\EDPExports\\EDPExports\\EDPExports.csproj
+		SccProjectName5 = ../EDPExports/EDPExports
+		SccLocalPath5 = ..\\EDPExports\\EDPExports
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,17 @@
+﻿@(Html.Kendo().Window()
+    .Name("modalErrorWindow")
+    .Title("Error")
+    .Content(@<text>
+        <div id="modalErrMsg" class="errorWindow">
+            An Error happended
+        </div>
+    </text>)
+            .Draggable(false)
+            .Pinned(false)
+            .Actions(a => a.Maximize())
+            .Width(600)
+            .Visible(false)
+            .Modal(true)
+            .Actions(actions => actions.Close())
+        //.Events(ev => ev.Close("onWinClose"))
+)

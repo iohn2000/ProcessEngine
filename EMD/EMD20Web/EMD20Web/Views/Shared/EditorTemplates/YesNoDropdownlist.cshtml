@@ -1,0 +1,8 @@
+﻿@(
+    Html.Kendo().DropDownListFor(m => m)
+    .OptionLabel("Please select")
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .HtmlAttributes(new { @style = "width:300px" })
+    .BindTo(new List<SelectListItem>() { new SelectListItem() { Text = "Yes", Value = "true" }, new SelectListItem() { Text = "No", Value = "false" } })
+)

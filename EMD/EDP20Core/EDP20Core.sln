@@ -1,0 +1,97 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDP20Core", "EDP20Core\EDP20Core.csproj", "{014E7240-BEC9-459A-BD5E-AFAF6A05C4F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDP20Core_UnitTest", "EDP20Core_UnitTest\EDP20Core_UnitTest.csproj", "{50AF244C-46A2-4FE7-AE22-49B40B9CEA44}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".KapschLibs", ".KapschLibs", "{531E74D7-E136-4297-96EE-A8028E6C136C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Specifications", "Specifications", "{271712E6-2B5D-4C97-A0D7-879BC74F2AD8}"
+	ProjectSection(SolutionItems) = preProject
+		EquipmentDefinition.xml = EquipmentDefinition.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kapsch.IS.Util", "Kapsch.IS.Util", "{143CC957-A260-4740-90A9-67120E3ADDE8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.0.3.0", "1.0.3.0", "{BF28E6CD-CE5F-449A-B1D3-B21F2DB0D01C}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\Css.Diagnostics.TraceComLib.dll = ..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\Css.Diagnostics.TraceComLib.dll
+		..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\FastMember.dll = ..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\FastMember.dll
+		..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\Ionic.Zip.dll = ..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\Ionic.Zip.dll
+		..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\Kapsch.IS.Util.dll = ..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\Kapsch.IS.Util.dll
+		..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\log4net.dll = ..\..\KapschLibs\Kapsch.IS.Util\1.0.3.0\log4net.dll
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transactiontester", "Transactiontester\Transactiontester.csproj", "{9A6D0F35-01C7-4018-A99B-C5613E8D1735}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDP20Core.Test", "EDP20Core.Test\EDP20Core.Test.csproj", "{8EDF4429-251A-416D-BB68-93F227191BCF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kapsch.IS.EDP.DataAccess", "Kapsch.IS.EDP.DataAccess\Kapsch.IS.EDP.DataAccess.csproj", "{A4294BB6-64AA-4DC3-A377-6649EB2BB1C7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".libs", ".libs", "{A8B2CE0C-3AFC-4C20-978B-FEA089F32A5D}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\libs\Flee\Ciloci.Flee.dll = ..\..\libs\Flee\Ciloci.Flee.dll
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{014E7240-BEC9-459A-BD5E-AFAF6A05C4F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{014E7240-BEC9-459A-BD5E-AFAF6A05C4F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{014E7240-BEC9-459A-BD5E-AFAF6A05C4F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{014E7240-BEC9-459A-BD5E-AFAF6A05C4F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50AF244C-46A2-4FE7-AE22-49B40B9CEA44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50AF244C-46A2-4FE7-AE22-49B40B9CEA44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50AF244C-46A2-4FE7-AE22-49B40B9CEA44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50AF244C-46A2-4FE7-AE22-49B40B9CEA44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A6D0F35-01C7-4018-A99B-C5613E8D1735}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A6D0F35-01C7-4018-A99B-C5613E8D1735}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A6D0F35-01C7-4018-A99B-C5613E8D1735}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A6D0F35-01C7-4018-A99B-C5613E8D1735}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4294BB6-64AA-4DC3-A377-6649EB2BB1C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4294BB6-64AA-4DC3-A377-6649EB2BB1C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4294BB6-64AA-4DC3-A377-6649EB2BB1C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4294BB6-64AA-4DC3-A377-6649EB2BB1C7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{143CC957-A260-4740-90A9-67120E3ADDE8} = {531E74D7-E136-4297-96EE-A8028E6C136C}
+		{BF28E6CD-CE5F-449A-B1D3-B21F2DB0D01C} = {143CC957-A260-4740-90A9-67120E3ADDE8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DAC3E6A2-21A6-4CA0-8907-C6FA00E8345F}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://tfs.kapsch.co.at:8080/tfs/is_dev
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = EDP20Core\\EDP20Core.csproj
+		SccProjectName1 = EDP20Core
+		SccLocalPath1 = EDP20Core
+		SccProjectUniqueName2 = EDP20Core_UnitTest\\EDP20Core_UnitTest.csproj
+		SccProjectName2 = EDP20Core_UnitTest
+		SccLocalPath2 = EDP20Core_UnitTest
+		SccProjectUniqueName3 = Transactiontester\\Transactiontester.csproj
+		SccProjectName3 = Transactiontester
+		SccLocalPath3 = Transactiontester
+		SccProjectUniqueName4 = EDP20Core.Test\\EDP20Core.Test.csproj
+		SccProjectName4 = EDP20Core.Test
+		SccLocalPath4 = EDP20Core.Test
+		SccProjectUniqueName5 = Kapsch.IS.EDP.DataAccess\\Kapsch.IS.EDP.DataAccess.csproj
+		SccProjectName5 = Kapsch.IS.EDP.DataAccess
+		SccLocalPath5 = Kapsch.IS.EDP.DataAccess
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,230 @@
+﻿@using Kapsch.IS.EMD.EMD20Web.Models;
+@model Kapsch.IS.EMD.EMD20Web.Models.OrgUnitModel
+@{
+    ViewBag.Title = Model.IsSecurity ? "Orgunits (Security)" : "Orgunits";
+    ViewBag.TooltipUrl = Model.IsSecurity ? "http://" + Request.Url.Authority + "/Quickinfo/OrgUnit_Manage.html" : "http://" + Request.Url.Authority + "/Quickinfo/OrgUnit_Manage.html";
+}
+
+@Html.Partial("~/Views/Shared/Javascript/_TooltipMetaData.cshtml")
+
+
+<script>
+    orgunit.Entities.IsSecurity = @Model.IsSecurity.ToString().ToLower();
+</script>
+
+<style>
+    .k-grid tbody .k-grid .k-grid-header {
+        display: none;
+    }
+</style>
+
+@if (Model.CanView || Model.CanManage)
+{
+    @*<div class="form-horizontal">
+            <div class="form-group" style="margin: 10px;">
+                Show tasks from user:
+                <div class="col-md-10">
+                    @(
+                    Html.Kendo().DropDownListFor(m => m)
+                    .OptionLabel("Please select")
+                    .Name("SelectedOrgunitRoot")
+                    .DataTextField("Text")
+                    .DataValueField("Value")
+                    .HtmlAttributes(new { @style = "width:500px" })
+                    .Filter(FilterType.Contains)
+                    .IgnoreCase(true)
+                    .AutoBind(true)
+                    .Events(ev => ev.Change("orgunit.Events.OnRootOrgunitSelected"))
+                        .DataSource(source =>
+                        {
+                            source.Read(read =>
+                            {
+                                read.Action("ReadRootsForSelect", "OrgUnit");
+                            })
+                            .ServerFiltering(false);
+                        })
+                    )
+                </div>
+            </div>
+
+
+        </div>*@
+
+
+
+    @(Html.Kendo().Grid<OrgUnitModel>()
+        .Name("Grid").HtmlAttributes(new { @class = "k-grid-big" })
+
+        .Sortable()
+
+        .Filterable(filterable => filterable.Mode(GridFilterMode.Row).Enabled(true))
+          .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(true)
+            .ButtonCount(5)
+            .PageSizes(new[] { 15, 50, 100 }))
+        .Scrollable(s => s.Enabled(true).Height("auto"))
+        .Columns(columns =>
+        {
+            columns.Bound(item => item.Guid).Title("").Filterable(false).Width(100)
+            .ClientTemplate(
+                                  "# if (CanManage == true) { #"
+
+                              + "<a title='Edit' style='margin-left: 20px' href='\\#' "
+                              + "onclick='showInWindow(\""
+                              + "Edit/"
+                              + "#= Guid #/true\",\"Edit Orgunit\");' "
+                              + "data-id='#=Guid#'"
+                              + ">"
+                              + "<i class='material-icons'>edit</i>"
+                              + "</a>"
+                              + "<a title='Delete' href='\\#' "
+                                + "onclick='orgunit.Functions.Delete(\"#=Guid#\",\"Orgunit\",\"#=Name#\");' "
+                                + "data-id='#=Guid#'"
+                                + ">"
+                                + "<i class='material-icons'>delete</i>"
+                                + "</a>"
+
+                                       + "# } else {#"
+
+                                + "<a title='View' href='\\#' "
+                                + "onclick='showInWindow(\""
+                                + "View/"
+                                + "#= Guid #/true\",\"View Orgunit\");' "
+                                + "data-id='#=Guid#'"
+                                + ">"
+                                + "<i class='material-icons'>pageview</i>"
+                                + "</a>"
+
+                                    + "#} #"
+                              );
+
+            //columns.Bound(item => item.HasChildren).Filterable(false);
+            columns.Bound(item => item.Name).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(true).Template("kendoHelper.DisableAutocompleteFilter"))).Width(500).HtmlAttributes(new { title = "#=Name#" });
+            columns.Bound(item => item.CountAssignedPersons).Filterable(false).Width(180).Title(" ")
+               .ClientTemplate(
+
+
+                               "<a title='Edit' style='margin-left: 20px' href='\\#' "
+                              + "onclick='showInWindow(\""
+                              + "/OrgUnitRole/Manage/true"
+                              + "?Guid=#= Guid #\",\"Orgunit employees from #= Name #\");' "
+                              + "data-id='#=Guid#'"
+                              + ">"
+                              + "#= CountAssignedPersons # Persons"
+                              + "</a>"
+
+                              );
+
+            //  columns.Bound(item => item.Level).Filterable(true);
+            columns.Bound(item => item.ParentName).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(true).Template("kendoHelper.DisableAutocompleteFilter"))).Width(500).HtmlAttributes(new { title = "#=ParentName#" });
+            columns.Bound(item => item.RootName).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+            ////columns.ForeignKey(item => item.Guid_Parent, (List<TextValueModel>)ViewData["OrgUnitNames"], "Value", "Text").Width(200);
+            //columns.ForeignKey(item => item.Guid_Root, (List<TextValueModel>)ViewData["OrgUnitNames"], "Value", "Text").Width(200);
+
+            //columns.Bound(item => item.IsSecurity).Filterable(ftb => ftb.Cell(cell => cell.Operator("eq").SuggestionOperator(FilterType.Contains).ShowOperators(false)).Messages(m => m.IsFalse("no").IsTrue("yes"))).ClientTemplate("<input type='checkbox' disabled #= IsSecurity == true ? checked='checked' : '' # />").Width(150);
+            columns.Bound(item => item.E_ShortName).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains).ShowOperators(false).Template("kendoHelper.DisableAutocompleteFilter")));
+            columns.Bound(item => item.ActiveFromDateOnly).Format("{0:dd.MM.yyyy}").Width(200);
+
+        })
+        .ClientDetailTemplateId("template")
+    .Editable(editable => editable.Mode(GridEditMode.PopUp).DisplayDeleteConfirmation(false).Window(win => win.Width(700)))
+    .ToolBar(tb =>
+    {
+        tb.Custom().Text("Show grid tree").Url("#").HtmlAttributes(new { onclick = "orgunit.Functions.ChangeGridToTreeOrFlat(this);", @id = "btnShowHideTree", @class = "kapsch-text-button" });
+        if (Model.CanManage)
+        {
+            tb.Custom().Text("Add Orgunit").Url("#").HtmlAttributes(new { onclick = "showInWindow('Create/" + Model.IsSecurity.ToString().ToLower() + "/true','Add Orgunit',false);", @class = "kapsch-text-button" });
+
+        }
+
+        if (Model.IsAdmin)
+        {
+            tb.Custom().Text("Cleanup Relations (Admin)").Url("#").HtmlAttributes(new { Title = "This is a long running process and locks the database. ONLY for old Data-Cleanup. Deletion of Orgunit works already.", onclick = "orgunit.Functions.CleanupOrgunits(this);", @id = "btnShowHideTree", @class = "kapsch-text-button" });
+        }
+
+        //tb.Custom().Text("Clear Filter").Url("#").HtmlAttributes(new { onclick = "kendoHelper.Grid.ClearFilter('#Grid');", @class = "kapsch-text-button" });
+    })
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .ServerOperation(true)
+        .Sort(a => a.Add("Name").Ascending())
+        .PageSize(15)
+        .Model(model => model.Id(item => item.Guid))
+        .Read(read => read.Action("ReadSubOrgunits", "Orgunit").Data("orgunit.Grid.DataOrgUnit"))
+        .Events(events => events.Error("exceptionManager.Events.HandleError"))
+    )
+    .Events(d => d.DataBound("orgunitrole.Events.OnGriddataBound"))
+    )
+
+
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var url = '@Request.Url';
+        kendoHelper.Grid.FilterGrid('#Grid', "Guid", "equals", url);
+    });
+</script>
+
+
+<script id="template" type="text/kendo-tmpl">
+
+    @(Html.Kendo().Grid<OrgUnitModel>()
+                        .Name("grid_#=Guid#") // template expression, to be evaluated in the master context
+                        .Columns(columns =>
+                        {
+                            //columns.Bound(o => o.Guid).Title("").Filterable(false).Width(90).ClientTemplate("\\#= templateLinks \\#");
+                            columns.Bound(o => o.Guid).Title("").Filterable(false).Width(90).ClientTemplate(
+                                 "# if (CanManage == true) { #"
+                                + "<a title='Edit' onclick='showInWindow(\"Edit/\\#=Guid\\#/true\",\"Edit Orgunit\");' data-id='\\#=Guid\\#'><i class='material-icons'>edit</i></a><a title='View' onclick='orgunit.Functions.Delete(\"\\#=Guid\\#\",\"Orgunit\",\"\\#=Name\\#\");' data-id='\\#=Guid\\#'><i class='material-icons'>delete</i></a>"
+                                    + "# } else {#"
+                                + "<a title='View' onclick='showInWindow(\"View/\\#=Guid\\#/true\",\"View Orgunit\");' data-id='\\#=Guid\\#'><i class='material-icons'>pageview</i></a>"
+                                   + "#} #"
+                                ).Width(100);
+                            //columns.Bound(o => o.Level).Width(140);
+                            columns.Bound(item => item.Name).Filterable(false).Width(500).HtmlAttributes(new { title = "#=Name#" });
+                            columns.Bound(item => item.CountAssignedPersons).Filterable(false).Width(200)
+             .ClientTemplate(
+
+
+                             "<a title='Edit' style='margin-left: 20px'  "
+                            + "onclick='showInWindow(\""
+                            + "/OrgUnitRole/Manage/true"
+                            + "?Guid=\\#= Guid \\#\",\"Orgunit employees from \\#= Name \\#\");' "
+                            + "data-id='#=Guid#'"
+                            + ">"
+                            + "\\#= CountAssignedPersons \\# Persons"
+                            + "</a>"
+
+                            );
+                            //columns.Bound(item => item.Level).Filterable(false);
+                            //columns.Bound(item => item.ParentName).Filterable(false);
+                            //columns.Bound(item => item.RootName).Filterable(false);
+                            //columns.Bound(item => item.IsSecurity).Filterable(false).ClientTemplate("<input type='checkbox' disabled \\#= IsSecurity == true ? checked='checked' : '' \\# />");
+                            columns.Bound(item => item.E_ShortName).Filterable(false).Width(500);
+                            columns.Bound(item => item.ActiveFromDateOnly).Format("{0:dd.MM.yyyy}").Width(200);
+
+
+
+
+
+                        })
+        .DataSource(
+            dataSource => dataSource
+
+            .Ajax()
+               .Sort(a => a.Add("Name").Ascending())
+            .Read(read => read.Action("ReadSubOrgunits", "Orgunit", new { parentGuid = "#=Guid#", isSecurity = Model.IsSecurity, showTree = true }))
+        )
+          .Events(d => d.DataBound("orgunitrole.Events.OnGriddataBound"))
+        .ClientDetailTemplateId("template")
+        .ToClientTemplate()
+    )
+
+
+
+
+</script>
+
+

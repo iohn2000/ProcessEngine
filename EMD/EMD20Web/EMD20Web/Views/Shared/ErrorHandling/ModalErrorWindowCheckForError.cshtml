@@ -1,0 +1,6 @@
+﻿var error = '@(ViewBag.error)';
+        if (error != '') {
+            openModal("#modalErrorWindow");
+            var msg = $("#modalErrMsg");
+            msg.replaceWith(error);
+        }

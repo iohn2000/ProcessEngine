@@ -1,0 +1,12 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.JIRA.JIRATicketCallbackActivity" instance=".JIRATicketCallbackActivity">
+  <name>JIRATicketCallbackActivity</name>
+  <description>
+    handle JIRA callbacks
+  </description>
+  <properties>
+    <property name = "ClientReferenceID"  direction="input"  dataType="stringType" ></property>
+    <property name = "Status"  direction="output"  dataType="stringType" ></property>
+    <property name = "Result"  direction="output"  dataType="stringType" ></property>
+  </properties>
+  <transition to=".xx"/>
+</activity>

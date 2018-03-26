@@ -1,0 +1,94 @@
+﻿@{ Boolean EnterpriseFromURL = Convert.ToBoolean(ViewData["EnterpriseFromURL"]); }
+@{ String EnterpriseGuid = ViewData["EnterpriseGuid"] == null ? "" : ViewData["EnterpriseGuid"].ToString(); }
+@{ Boolean CascadeFromEnterprise = Convert.ToBoolean(ViewData["CascadeFromEnterprise"]); }
+
+@if (CascadeFromEnterprise)
+{
+    <script>
+            function filterForEnterprise() {
+                return {
+                    ente_guid: $("#Enterprise").val()
+                };
+            }
+    </script>
+
+    @(
+    Html.Kendo().DropDownListFor(m => m)
+    .OptionLabel("Please select")
+    .Name("Location")
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .HtmlAttributes(new { @style = "width:500px" })
+    .Filter(FilterType.Contains)
+    .CascadeFrom("Enterprise")
+    .IgnoreCase(true)
+    .AutoBind(false)
+    .DataSource(source =>
+    {
+        source.Read(read =>
+        {
+            read.Action("ReadForSelectForEnterprise", "Location").Data("filterForEnterprise");
+        })
+        .ServerFiltering(false);
+    })
+    )
+}
+else if (EnterpriseFromURL)
+{
+    <script>
+            function filterForEnterprise() {
+                return {
+                    ente_guid: '@EnterpriseGuid'
+                };
+            }
+    </script>
+
+    @(
+    Html.Kendo().DropDownListFor(m => m)
+    .OptionLabel("Please select")
+    .Name("Location")
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .HtmlAttributes(new { @style = "width:300px" })
+    .Filter(FilterType.Contains)
+    .IgnoreCase(true)
+    .AutoBind(true)
+    .DataSource(source =>
+    {
+        source.Read(read =>
+        {
+            read.Action("ReadForSelectForEnterprise", "Location").Data("filterForEnterprise");
+        })
+        .ServerFiltering(false);
+    })
+    )
+    
+}
+else
+{
+    @(
+    Html.Kendo().DropDownListFor(m => m)
+    .OptionLabel("Please select")
+    .Name("Location")
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .HtmlAttributes(new { @style = "width:300px" })
+    .Filter(FilterType.Contains)
+    .IgnoreCase(true)
+    .DataSource(source =>
+    {
+        source.Read(read =>
+        {
+            read.Action("ReadForSelect", "Location");
+        })
+        .ServerFiltering(false);
+    })
+    )
+
+}
+
+
+
+
+
+

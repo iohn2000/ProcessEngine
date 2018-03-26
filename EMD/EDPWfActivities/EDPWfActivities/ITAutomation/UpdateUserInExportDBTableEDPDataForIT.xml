@@ -1,0 +1,9 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.ITAutomation.UpdateUserInExportDBTableEDPDataForIT" instance=".UpdateUserInExportDBTableEDPDataForIT">
+  <name>User - Update User in ExportDB table EDPDataForIT</name>
+  <properties>
+    <!-- -->
+    <property name="UserID" direction="input" dataType="stringType" />    
+  </properties>
+  <transition to=".PleaseFillIn"/>
+</activity>
+

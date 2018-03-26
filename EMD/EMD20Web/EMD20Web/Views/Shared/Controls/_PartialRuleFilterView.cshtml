@@ -1,0 +1,169 @@
+﻿@model Kapsch.IS.EMD.EMD20Web.Models.Shared.RuleFilterModel
+@using Kapsch.IS.EMD.EMD20Web.HelperExtensions
+<div class="form-group">
+    @Html.LabelForRequired(model => model.Enterprises, htmlAttributes: new { @class = "control-label col-md-2" })
+
+
+    <div class="col-md-10">
+        @(Html.Kendo().MultiSelect()
+                .Name("RuleFilterModel.Enterprises")
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .Filter(FilterType.Contains)
+                .Placeholder("Please select")
+                .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("ReadForSelect", "Enterprise");
+                    })
+                    .ServerFiltering(false);
+                })
+                .Value(Model.Enterprises)
+        )
+        @Html.ValidationMessageFor(model => model.Enterprises, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label col-md-2"></label>
+    <div class="col-md-10">
+        @Html.CheckBox("RuleFilterModel.EnterpriseInvertFlag", Model.EnterpriseInvertFlag, htmlAttributes: new { @class = "control-label col-md-2" }) all but
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label col-md-2"></label>
+    <div class="col-md-10">
+        @Html.CheckBox("RuleFilterModel.EnteIsNotInherited", Model.EnteIsNotInherited, htmlAttributes: new { @class = "control-label col-md-2" }) do not inherit rules to child enterprises
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelForRequired(model => model.Locations, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @(Html.Kendo().MultiSelect()
+                .Name("RuleFilterModel.Locations")
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .Filter(FilterType.Contains)
+                .Placeholder("Please select")
+                .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("ReadForSelect", "Location");
+                    })
+                    .ServerFiltering(false);
+                })
+                .Value(Model.Locations)
+        )
+        @Html.ValidationMessageFor(model => model.Locations, "", new { @class = "text-danger" })
+
+
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label col-md-2"></label>
+    <div class="col-md-10">
+        @Html.CheckBox("RuleFilterModel.LocationInvertFlag", Model.LocationInvertFlag, htmlAttributes: new { @class = "control-label col-md-2" }) all but
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelForRequired(model => model.Accounts, htmlAttributes: new { @class = "control-label col-md-2" })
+
+    <div class="col-md-10">
+        @(Html.Kendo().MultiSelect()
+                .Name("RuleFilterModel.Accounts")
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .Filter(FilterType.Contains)
+                .Placeholder("Please select")
+                .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("ReadForSelect", "Account");
+                    })
+                    .ServerFiltering(false);
+                })
+                .Value(Model.Accounts)
+        )
+
+        @Html.ValidationMessageFor(model => model.Accounts, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label col-md-2"></label>
+    <div class="col-md-10">
+        @Html.CheckBox("RuleFilterModel.AccountInvertFlag", Model.AccountInvertFlag, htmlAttributes: new { @class = "control-label col-md-2" }) all but
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelForRequired(model => model.EmploymentTypes, htmlAttributes: new { @class = "control-label col-md-2" })
+
+    <div class="col-md-10">
+        @(Html.Kendo().MultiSelect()
+                .Name("RuleFilterModel.EmploymentTypes")
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .Filter(FilterType.Contains)
+                .Placeholder("Please select")
+                .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("ReadForSelect", "EmploymentType");
+                    })
+                    .ServerFiltering(false);
+                })
+                .Value(Model.EmploymentTypes)
+        )
+
+        @Html.ValidationMessageFor(model => model.EmploymentTypes, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label col-md-2"></label>
+    <div class="col-md-10">
+        @Html.CheckBox("RuleFilterModel.EmploymentTypeInvertFlag", Model.EmploymentTypeInvertFlag, htmlAttributes: new { @class = "control-label col-md-2" }) all but
+    </div>
+</div>
+
+
+<div class="form-group">
+    @Html.LabelForRequired(model => model.UserTypes, htmlAttributes: new { @class = "control-label col-md-2" })
+
+    <div class="col-md-10">
+        @(Html.Kendo().MultiSelect()
+                .Name("RuleFilterModel.UserTypes")
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .Filter(FilterType.Contains)
+                .Placeholder("Please select")
+                .BindTo(Model.AvailableUserTypes)
+                .Value(Model.UserTypes)
+        )
+
+        @Html.ValidationMessageFor(model => model.UserTypes, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label col-md-2"></label>
+    <div class="col-md-10">
+        @Html.CheckBox("RuleFilterModel.UserTypeInvertFlag", Model.UserTypeInvertFlag, htmlAttributes: new { @class = "control-label col-md-2" }) all but
+    </div>
+</div>
+
+
+
+
+
+
+

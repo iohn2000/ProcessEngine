@@ -1,0 +1,97 @@
+﻿@{ Boolean CascadeFromEnterprise = Convert.ToBoolean(ViewData["CascadeFromEnterprise"]); }
+@{ Boolean EnterpriseFromURL = Convert.ToBoolean(ViewData["EnterpriseFromURL"]); }
+@{ String EnterpriseGuid = ViewData["EnterpriseGuid"] == null ? "" : ViewData["EnterpriseGuid"].ToString(); }
+
+@if (CascadeFromEnterprise)
+{
+    <script>
+        function costcenterServerFilterForEnterprise() {
+            //alert($("#Enterprise").val());
+            //alert($("#Costcenter").data("kendoDropDownList").value());
+            return {
+                ente_guid: $("#Enterprise").val(),
+                text: $("#Costcenter").data("kendoDropDownList").filterInput.val()
+            };
+        }
+    </script>
+
+    @(
+        Html.Kendo().DropDownListFor(m => m)
+        .OptionLabel("Please select")
+        .Name("Costcenter")
+        .DataTextField("Text")
+        .DataValueField("Value")
+        .HtmlAttributes(new { @style = "width:500px" })
+        .Filter(FilterType.Contains)
+        .IgnoreCase(true)
+        .CascadeFrom("Enterprise")
+        .AutoBind(false)
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("ReadForSelectForEnterprise", "Account").Data("costcenterServerFilterForEnterprise");
+            })
+            .ServerFiltering(true);
+        })
+    )
+
+    
+}
+else if (EnterpriseFromURL)
+{
+    <script>
+            function filterForEnterprise() {
+                return {
+                    //ente_guid: getParameterByName('ente_guid', window.location.href)
+                    ente_guid: '@EnterpriseGuid'
+                };
+            }
+    </script>
+    @(
+    Html.Kendo().DropDownListFor(m => m)
+    .OptionLabel("Please select")
+    .Name("Costcenter")
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .HtmlAttributes(new { @style = "width:500px" })
+    .Filter(FilterType.Contains)
+    .IgnoreCase(true)
+    .AutoBind(true)
+    .DataSource(source =>
+    {
+        source.Read(read =>
+        {
+            read.Action("ReadForSelectForEnterprise", "Account").Data("filterForEnterprise"); ;
+        })
+        .ServerFiltering(false);
+    })
+    )
+    
+}
+else
+{
+    @(
+    Html.Kendo().DropDownListFor(m => m)
+    .OptionLabel("Please select")
+    .Name("Costcenter")
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .HtmlAttributes(new { @style = "width:500px" })
+    .Filter(FilterType.Contains)
+    .IgnoreCase(true)
+    .AutoBind(true)
+    //.CascadeFrom("Enterprise")
+    .DataSource(source =>
+    {
+        source.Read(read =>
+        {
+            //read.Action("ReadForSelectForEnterprise", "Account").Data("filterForEnterprise");
+            read.Action("ReadForSelect", "Account");
+        })
+        .ServerFiltering(false);
+    })
+    )
+}
+
+

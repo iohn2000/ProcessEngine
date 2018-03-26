@@ -1,0 +1,12 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.FileExist.FileExistActivityWait" instance=".FileExistActivityWait">
+  <name>check for file wait</name>
+  <linkedTo instance=".FileExistActivity" />
+
+  <properties>
+    <property name="pollingIntervalSeconds" direction="input"  dataType="intType"/>
+    <property name="timeOutIntervalDays"    direction="input"  dataType="intType" />
+    <property name="demoDecision"           direction="input"  dataType="stringType"/>
+    <property name="returnStatus"           direction="output" dataType="stringType"/>
+  </properties>
+  
+</activity>

@@ -1,0 +1,23 @@
+﻿<activity nr="" id="Kapsch.IS.EDP.WFActivity.ITAutomation.AddUserToADActivity" instance=".AddUserToADActivity">
+  <name>User - Add User To AD</name>
+  <properties>
+    <!-- -->
+    <property name="UserID" direction="input" dataType="stringType" />
+
+    <property name="FirstName" direction="input" dataType="stringType" />
+    <property name="FamilyName" direction="input" dataType="stringType" />
+    <property name="DisplayName" direction="input" dataType="stringType" />
+    <property name="Gender" direction="input" dataType="stringType" />
+    <property name="Site" direction="input" dataType="stringType" />
+    <property name="CompanyShortName" direction="input" dataType="stringType" />
+    <property name="Country" direction="input" dataType="stringType" />
+    <property name="EmploymentType" direction="input" dataType="stringType" />
+    <property name="MailAdress" direction="input" dataType="stringType" />
+    <property name="UserType" direction="input" dataType="stringType" />
+    <property name="PersonID" direction="input" dataType="stringType" />
+
+    <property name="ScriptRunID" direction="output" dataType="stringType" />
+  </properties>
+  <transition to=".ITAutomationActivityWait"/>
+</activity>
+

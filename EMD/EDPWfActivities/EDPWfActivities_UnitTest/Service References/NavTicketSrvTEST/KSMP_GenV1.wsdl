@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://kapsch.net/KSMP_GenV1.PublicSchemas/1.0" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://kapsch.net/KSMP_GenV1.PublicSchemas/1.0" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://kapsch.net/KSMP_GenV1.PublicSchemas/1.0">
+      <s:element name="TicketRequest">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TicketRequest">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="Quelle" type="s:string" />
+                  <s:choice minOccurs="0" maxOccurs="unbounded">
+                    <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="Attachment">
+                      <s:complexType>
+                        <s:sequence>
+                          <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="FileName" type="s:string" />
+                          <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="FileSize" type="s:long" />
+                          <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="FileID" type="s:string" />
+                          <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="FileID2" type="s:string" />
+                          <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="FileContents" type="s:base64Binary" />
+                        </s:sequence>
+                      </s:complexType>
+                    </s:element>
+                    <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="StringVal">
+                      <s:complexType>
+                        <s:simpleContent>
+                          <s:extension base="s:string">
+                            <s:attribute name="Name" type="s:string" />
+                          </s:extension>
+                        </s:simpleContent>
+                      </s:complexType>
+                    </s:element>
+                    <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="CI">
+                      <s:complexType>
+                        <s:sequence>
+                          <s:choice minOccurs="0" maxOccurs="unbounded">
+                            <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="CIStringVal">
+                              <s:complexType>
+                                <s:simpleContent>
+                                  <s:extension base="s:string">
+                                    <s:attribute name="Name" type="s:string" />
+                                  </s:extension>
+                                </s:simpleContent>
+                              </s:complexType>
+                            </s:element>
+                            <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="CIIntVal">
+                              <s:complexType>
+                                <s:simpleContent>
+                                  <s:extension base="s:int">
+                                    <s:attribute name="Name" type="s:string" />
+                                  </s:extension>
+                                </s:simpleContent>
+                              </s:complexType>
+                            </s:element>
+                          </s:choice>
+                        </s:sequence>
+                      </s:complexType>
+                    </s:element>
+                    <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="DateTimeVal">
+                      <s:complexType>
+                        <s:simpleContent>
+                          <s:extension base="s:dateTime">
+                            <s:attribute name="Name" type="s:string" />
+                          </s:extension>
+                        </s:simpleContent>
+                      </s:complexType>
+                    </s:element>
+                    <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="IntVal">
+                      <s:complexType>
+                        <s:simpleContent>
+                          <s:extension base="s:int">
+                            <s:attribute name="Name" type="s:string" />
+                          </s:extension>
+                        </s:simpleContent>
+                      </s:complexType>
+                    </s:element>
+                  </s:choice>
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TicketRequestResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TicketResponse">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="1" maxOccurs="1" form="unqualified" name="success" type="s:boolean" />
+                  <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="errorMsg" type="s:string" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PullFile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PullFileRequest">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="Quelle" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="FileName" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="FileID" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="Reference" type="s:string" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PullFileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PullFileResponse">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="FileContent" type="s:base64Binary" />
+                  <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="FileName" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="FileID" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="Reference" type="s:string" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="TicketRequestSoapIn">
+    <wsdl:part name="parameters" element="tns:TicketRequest" />
+  </wsdl:message>
+  <wsdl:message name="TicketRequestSoapOut">
+    <wsdl:part name="parameters" element="tns:TicketRequestResponse" />
+  </wsdl:message>
+  <wsdl:message name="PullFileSoapIn">
+    <wsdl:part name="parameters" element="tns:PullFile" />
+  </wsdl:message>
+  <wsdl:message name="PullFileSoapOut">
+    <wsdl:part name="parameters" element="tns:PullFileResponse" />
+  </wsdl:message>
+  <wsdl:portType name="KSMP_GenV1Soap">
+    <wsdl:operation name="TicketRequest">
+      <wsdl:input message="tns:TicketRequestSoapIn" />
+      <wsdl:output message="tns:TicketRequestSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PullFile">
+      <wsdl:input message="tns:PullFileSoapIn" />
+      <wsdl:output message="tns:PullFileSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="KSMP_GenV1Soap" type="tns:KSMP_GenV1Soap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="TicketRequest">
+      <soap:operation soapAction="http://kapsch.net/KSMP_GenV1.PublicSchemas/1.0/KSMP_GenV1/TicketRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PullFile">
+      <soap:operation soapAction="http://kapsch.net/KSMP_GenV1.PublicSchemas/1.0/KSMP_GenV1/PullFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="KSMP_GenV1Soap12" type="tns:KSMP_GenV1Soap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="TicketRequest">
+      <soap12:operation soapAction="http://kapsch.net/KSMP_GenV1.PublicSchemas/1.0/KSMP_GenV1/TicketRequest" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PullFile">
+      <soap12:operation soapAction="http://kapsch.net/KSMP_GenV1.PublicSchemas/1.0/KSMP_GenV1/PullFile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="KSMP_GenV1">
+    <wsdl:port name="KSMP_GenV1Soap" binding="tns:KSMP_GenV1Soap">
+      <soap:address location="http://s900x250/KSMP_GenV1/KSMP_GenV1.asmx" />
+    </wsdl:port>
+    <wsdl:port name="KSMP_GenV1Soap12" binding="tns:KSMP_GenV1Soap12">
+      <soap12:address location="http://s900x250/KSMP_GenV1/KSMP_GenV1.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
