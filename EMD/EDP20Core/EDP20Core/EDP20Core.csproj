@@ -454,7 +454,6 @@
     <Compile Include="Logic\EquipmentManager.cs" />
     <Compile Include="Logic\Filter\BaseFilterAction.cs" />
     <Compile Include="Logic\Filter\ColumnRuleSet.cs" />
-    <Compile Include="Logic\Filter\EnumFilterCriteria.cs" />
     <Compile Include="Logic\Filter\FilterCriteria.cs" />
     <Compile Include="Logic\Filter\FilterManager.cs" />
     <Compile Include="Logic\Filter\FilterRuleSubSetForCriteria.cs" />
@@ -523,6 +522,7 @@
     <Compile Include="WF\WorkflowCallback.cs" />
     <Compile Include="WF\WorkflowCallbackException.cs" />
     <Compile Include="WF\WorkflowHelper.cs" />
+    <Compile Include="Logic\Filter\enumFilterCriteria.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
