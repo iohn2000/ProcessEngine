@@ -66,7 +66,8 @@ namespace Kapsch.IS.ProcessEngine
 
         public string WorkflowDefinitionName { get; set; }
 
-        public Engine(string instanceID, string instanceXml, Guid runtimeGuid, EngineAlert alert)
+        public Engine(string instanceID, string instanceXml, Guid runtimeGuid, EngineAlert alert, 
+                      Tuple<Dictionary<string, object>, Dictionary<string, MethodInfo>> dllCache = null)
         {
             string ctx = "";
             try
@@ -96,20 +97,35 @@ namespace Kapsch.IS.ProcessEngine
             {
                 this.ErrorRunMode = true;
             }
-            //
-            // load all activity DLLs into cache
-            //
-            logger.Debug(string.Format("{0} calling ConfigurationManager.GetSection('ActivityDLLsConfig')", ctx));
-            ActivityDLLConfigurationSection dllConfig;
-            dllConfig = ConfigurationManager.GetSection("ActivityDLLsConfig") as ActivityDLLConfigurationSection;
 
-            logger.Debug(string.Format("{0} START calling ActivityDLLCacheHandler.ReloadActivityCache(dllConfig)", ctx));
-            ActivityDLLCacheHandler acH = new ActivityDLLCacheHandler();
-            Tuple<Dictionary<string, object>, Dictionary<string, MethodInfo>> returnValue = acH.ReloadActivityCache(dllConfig);
-            logger.Debug(string.Format("{0} END calling ActivityDLLCacheHandler.ReloadActivityCache(dllConfig)", ctx));
 
-            this.dicDLLCache = returnValue.Item1;
-            this.dicMethodCache = returnValue.Item2;
+
+
+
+            if (dllCache == null)
+            {
+                //
+                // load all activity DLLs into cache
+                //
+                logger.Debug(string.Format("{0} calling ConfigurationManager.GetSection('ActivityDLLsConfig')", ctx));                
+                ActivityDLLConfigurationSection dllConfig;
+                dllConfig = ConfigurationManager.GetSection("ActivityDLLsConfig") as ActivityDLLConfigurationSection;
+                logger.Debug(string.Format("{0} START calling ActivityDLLCacheHandler.ReloadActivityCache(dllConfig)", ctx));
+                ActivityDLLCacheHandler acH = new ActivityDLLCacheHandler();    
+                Tuple<Dictionary<string, object>, Dictionary<string, MethodInfo>> returnValue = acH.ReloadActivityCache(dllConfig);
+                logger.Debug(string.Format("{0} END calling ActivityDLLCacheHandler.ReloadActivityCache(dllConfig)", ctx));
+                this.dicDLLCache = returnValue.Item1;
+                this.dicMethodCache = returnValue.Item2;
+            }
+            else
+            {
+                this.dicDLLCache = dllCache.Item1;
+                this.dicMethodCache = dllCache.Item2;                
+            }
+
+
+
+
         }
 
         /// <summary>

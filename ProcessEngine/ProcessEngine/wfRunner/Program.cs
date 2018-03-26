@@ -91,8 +91,9 @@ namespace Kapsch.IS.ProcessEngine.wfRunner
             try
             {
                 Stopwatch sw = Stopwatch.StartNew();
-                runTime = new Runtime();
-                string returnMsg = runTime.RunEngine();
+                runTime = new Runtime(buildDllCache: true);
+                string returnMsg = runTime.RunEngine(runTime.dllCache);
+
                 sw.Stop();
 
                 string processingTime = "Processing time : " + sw.ElapsedMilliseconds.ToString() + " ms";

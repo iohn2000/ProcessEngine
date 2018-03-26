@@ -1,11 +1,11 @@
-﻿using Kapsch.IS.Util.ErrorHandling;
-using Kapsch.IS.Util.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Kapsch.IS.Util.ErrorHandling;
+using Kapsch.IS.Util.Logging;
 
 namespace Kapsch.IS.ProcessEngine.DLLConfiguration
 {
@@ -15,6 +15,23 @@ namespace Kapsch.IS.ProcessEngine.DLLConfiguration
     public class ActivityDLLCacheHandler
     {
         private IEDPLogger logger = EDPLogger.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// where to find activity dlls 
+        /// add key = "DLLStepsBaseDir" value="C:\Quartz\_ProcessEngine\Activities\"
+        /// </summary>
+        private string DllBaseDir = null;
+
+        public ActivityDLLCacheHandler()
+        {
+            this.DllBaseDir = ConfigurationManager.AppSettings["DLLStepsBaseDir"];
+        }
+
+        public ActivityDLLCacheHandler(string dllBaseDir)
+        {
+            this.DllBaseDir = dllBaseDir;
+        }
+
         /// <summary>
         /// fill the activity cache (dlls) with all activities from all DLLs
         /// throws a BaseException 
@@ -30,15 +47,14 @@ namespace Kapsch.IS.ProcessEngine.DLLConfiguration
             MethodInfo activityMethod = null;
 
             string fullDLLPath = "";
-            string baseDir = ConfigurationManager.AppSettings["DLLStepsBaseDir"];
 
             foreach (ActivityDLLElement item in dllConfig.ActivityDLLs)
             {
                 // build path
                 if (!Path.IsPathRooted(item.DLLPath))
                 {
-                    if (!string.IsNullOrWhiteSpace(baseDir))
-                        fullDLLPath = Path.Combine(baseDir, item.DLLPath);
+                    if (!string.IsNullOrWhiteSpace(this.DllBaseDir))
+                        fullDLLPath = Path.Combine(this.DllBaseDir, item.DLLPath);
                     else
                     {
                         string exePath = Path.GetDirectoryName((new Uri(Assembly.GetExecutingAssembly().CodeBase)).LocalPath);

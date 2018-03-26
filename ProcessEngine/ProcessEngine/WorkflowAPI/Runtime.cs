@@ -1,11 +1,14 @@
 ﻿using Kapsch.IS.ProcessEngine.DataLayer;
+using Kapsch.IS.ProcessEngine.DLLConfiguration;
 using Kapsch.IS.ProcessEngine.Shared.DataClasses;
 using Kapsch.IS.ProcessEngine.Shared.Enums;
 using Kapsch.IS.Util.ErrorHandling;
 using Kapsch.IS.Util.Logging;
 using Kapsch.IS.Util.ReflectionHelper;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Reflection;
 
 namespace Kapsch.IS.ProcessEngine
 {
@@ -31,6 +34,8 @@ namespace Kapsch.IS.ProcessEngine
         private bool errorRunMode = false;
         private string workflowDefinitionName = null;
 
+        public Tuple<Dictionary<string, object>, Dictionary<string, MethodInfo>> dllCache = null;
+
         /// <summary>   Class to access the data layer. 
         ///             The <see cref="DatabaseAccess"/> keeps an open database connection through the lifetime of 
         ///             the function <see cref="RunEngine"/> (heart beat). This is done for performance reasons as a
@@ -40,9 +45,21 @@ namespace Kapsch.IS.ProcessEngine
         ///
         /// <remarks>   Fleckj, 16.03.2015. </remarks>
         #endregion
-        public Runtime()
+        public Runtime(bool buildDllCache = false)
         {
-
+            if (buildDllCache)
+            {
+                //
+                // load all activity DLLs into cache
+                //
+                logger.Debug("Runtime() calling ConfigurationManager.GetSection('ActivityDLLsConfig')");
+                ActivityDLLConfigurationSection dllConfig;
+                dllConfig = ConfigurationManager.GetSection("ActivityDLLsConfig") as ActivityDLLConfigurationSection;
+                logger.Debug("Runtime() START calling ActivityDLLCacheHandler.ReloadActivityCache(dllConfig)");
+                ActivityDLLCacheHandler acH = new ActivityDLLCacheHandler();
+                this.dllCache = acH.ReloadActivityCache(dllConfig);
+                logger.Debug("Runtime() STOP calling ActivityDLLCacheHandler.ReloadActivityCache(dllConfig)");
+            }
         }
 
         #region Documentation -----------------------------------------------------------------------------
@@ -58,7 +75,7 @@ namespace Kapsch.IS.ProcessEngine
         ///
         /// <remarks>   Fleckj, 16.03.2015. </remarks>
         #endregion
-        public string RunEngine()
+        public string RunEngine(Tuple<Dictionary<string, object>, Dictionary<string, MethodInfo>> dllCache = null)
         {
             int amountProcesses;
             int maxProcesses = 30;
@@ -173,7 +190,7 @@ namespace Kapsch.IS.ProcessEngine
                 logger.Debug(string.Format("{0} END Engine instance.GetInstanceXml()",
                     DataHelper.BuildLogContextPrefix(this.uniqueRuntimeID.ToString(), workflowDefinitionName, alert.EA_WFI_ID)));
 
-                engine = new Engine(processInstance.InstanceID, instanceXML, this.uniqueRuntimeID, engineAlert);
+                engine = new Engine(processInstance.InstanceID, instanceXML, this.uniqueRuntimeID, engineAlert, dllCache);
                 engine.WorkflowDefinitionName = workflowDefinitionName;
                 logger.Debug(string.Format("{0} Engine instance created.",
                     DataHelper.BuildLogContextPrefix(this.uniqueRuntimeID.ToString(), workflowDefinitionName, alert.EA_WFI_ID)));
